@@ -1,0 +1,641 @@
+recomendacoes_df
+          0         1         2         3         4         5    ...       994       995       996       997       998       999
+0    4.963511  4.986859  4.951195  4.685325  4.186841  4.883540  ...  4.125752  3.386072  3.500295  2.883015  2.800231  4.517995
+1    4.965580  4.987601  4.953954  4.702088  4.210408  4.890017  ...  4.178298  3.460698  3.507565  2.848467  2.694910  4.542400
+2    4.962713  4.986570  4.950129  4.678676  4.164438  4.881042  ...  4.110136  3.386520  3.451679  2.872144  2.733734  4.508342
+3    4.969646  4.989079  4.959414  4.735521  4.288310  4.902837  ...  4.260904  3.548655  3.630976  2.886356  2.751451  4.591618
+4    4.966970  4.988111  4.955831  4.713546  4.236833  4.894428  ...  4.195457  3.469378  3.563379  2.876391  2.732069  4.559177
+..        ...       ...       ...       ...       ...       ...  ...       ...       ...       ...       ...       ...       ...
+295  4.954314  4.983523  4.938944  4.612143  4.060622  4.854764  ...  3.974698  3.425657  3.358682  2.901034  2.732835  4.412175
+296  4.965858  4.987702  4.954409  4.704936  4.216826  4.891027  ...  4.179770  3.468526  3.511384  2.847161  2.704967  4.546295
+297  4.973477  4.990457  4.964611  4.768113  4.366422  4.914875  ...  4.328838  3.631270  3.742797  2.969836  2.760401  4.639050
+298  4.965711  4.987655  4.954135  4.702978  4.212456  4.890442  ...  4.170016  3.477100  3.511292  2.836373  2.676437  4.543930
+299  4.960360  4.985715  4.947002  4.659914  4.115263  4.873698  ...  4.086842  3.337249  3.365039  2.823623  2.705811  4.481037
+
+[300 rows x 1000 columns]
+Server-side evaluation :: Round 24
+loss 1.0962272380164126 / RMSE 1.0470131635665894 / accuracy 0.4908930973817655 / Precision@10 0.7 / Recall@10 1.0
+RgrpActivity 0.004577101394345749 / RgrpGender 0.006474121522828821 / RgrpAge 0.012068437125715151
+RgrpActivity_Losses 1    0.971199
+2    1.106508
+dtype: float64 / RgrpGender_Losses 1    1.065370
+2    1.226294
+dtype: float64 / RgrpAge_Losses 1    1.031175
+2    1.106098
+3    1.068175
+4    1.126096
+5    1.116052
+6    1.085421
+7    1.391056
+dtype: float64
+INFO :      fit progress: (24, 1.0962272380164126, {'rmse': 1.0470131635665894, 'accuracy': 0.4908930973817655, 'precision_at_10': 0.7, 'recall_at_10': 1.0, 'RgrpActivity': 0.004577101394345749, 'RgrpGender': 0.006474121522828821, 'RgrpAge': 0.012068437125715151, 'RgrpActivity_Losses': 1    0.971199
+2    1.106508
+dtype: float64, 'RgrpGender_Losses': 1    1.065370
+2    1.226294
+dtype: float64, 'RgrpAge_Losses': 1    1.031175
+2    1.106098
+3    1.068175
+4    1.126096
+5    1.116052
+6    1.085421
+7    1.391056
+dtype: float64}, 6007.4805860002525)
+INFO :      configure_evaluate: strategy sampled 300 clients (out of 300)
+(ClientAppActor pid=12336) [Cliente 161] evaluate, config: {}
+(ClientAppActor pid=6200)  [repeated 148x across cluster]
+(ClientAppActor pid=6200) Tamanho do trainloader do Cliente 243: 25 [repeated 37x across cluster]
+(ClientAppActor pid=21020) [Cliente 171] Número de lotes processados: 24 [repeated 11x across cluster]
+(ClientAppActor pid=21020) [Cliente 171] Número de exemplos processados: 384 [repeated 11x across cluster]
+(ClientAppActor pid=21020) [Cliente 171] Época 20: loss 0.06061089501599781 [repeated 11x across cluster]
+(ClientAppActor pid=11212) [Cliente 292] evaluate, config: {} [repeated 61x across cluster]
+(ClientAppActor pid=9324)  [repeated 236x across cluster]
+(ClientAppActor pid=9324) Tamanho do trainloader do Cliente 109: 30 [repeated 59x across cluster]
+(ClientAppActor pid=6200) [Cliente 146] evaluate, config: {} [repeated 59x across cluster]
+(ClientAppActor pid=12336)  [repeated 244x across cluster]
+(ClientAppActor pid=12336) Tamanho do trainloader do Cliente 121: 30 [repeated 61x across cluster]
+(ClientAppActor pid=12336) [Cliente 58] evaluate, config: {} [repeated 58x across cluster]
+(ClientAppActor pid=11212)  [repeated 236x across cluster]
+(ClientAppActor pid=11212) Tamanho do trainloader do Cliente 138: 29 [repeated 59x across cluster]
+(ClientAppActor pid=6200) [Cliente 181] evaluate, config: {} [repeated 63x across cluster]
+(ClientAppActor pid=5136)  [repeated 240x across cluster]
+(ClientAppActor pid=5136) Tamanho do trainloader do Cliente 212: 26 [repeated 60x across cluster]
+INFO :      aggregate_evaluate: received 300 results and 0 failures
+INFO :
+INFO :      [SUMMARY]
+INFO :      Run finished 24 rounds in 6032.78s
+INFO :      History (loss, centralized):
+INFO :          ('\tround 0: 1.3541981675569585\n'
+INFO :           '\tround 1: 1.1970931320198324\n'
+INFO :           '\tround 2: 1.288889749456715\n'
+INFO :           '\tround 3: 1.2634021868768908\n'
+INFO :           '\tround 4: 1.22408353936988\n'
+INFO :           '\tround 5: 1.1371915881207446\n'
+INFO :           '\tround 6: 1.066458820556568\n'
+INFO :           '\tround 7: 1.0292619995723498\n'
+INFO :           '\tround 8: 1.0192420833454228\n'
+INFO :           '\tround 9: 1.0197549466265747\n'
+INFO :           '\tround 10: 1.0301371994890913\n'
+INFO :           '\tround 11: 1.040505273551341\n'
+INFO :           '\tround 12: 1.0607858677178819\n'
+INFO :           '\tround 13: 1.073143509247445\n'
+INFO :           '\tround 14: 1.087174851669381\n'
+INFO :           '\tround 15: 1.0857579185078476\n'
+INFO :           '\tround 16: 1.077781864694807\n'
+INFO :           '\tround 17: 1.0755218074515165\n'
+INFO :           '\tround 18: 1.0725461481422778\n'
+INFO :           '\tround 19: 1.0736565691548468\n'
+INFO :           '\tround 20: 1.0774381921583454\n'
+INFO :           '\tround 21: 1.0802668271870013\n'
+INFO :           '\tround 22: 1.0816860853244137\n'
+INFO :           '\tround 23: 1.0853127731096666\n'
+INFO :           '\tround 24: 1.0962272380164126\n')History (metrics, centralized):
+INFO :          {'RgrpActivity': [(0, 0.0009916494409340129),
+INFO :                            (1, 0.00012513038437607707),
+INFO :                            (2, 0.0007124408152582294),
+INFO :                            (3, 0.0005557030840900752),
+INFO :                            (4, 0.0003269292364549846),
+INFO :                            (5, 6.068845457635158e-05),
+INFO :                            (6, 5.9988732952882975e-06),
+INFO :                            (7, 0.00012190922534734544),
+INFO :                            (8, 0.00022593998775695103),
+INFO :                            (9, 0.0003369153269077224),
+INFO :                            (10, 0.0004078199019479866),
+INFO :                            (11, 0.0004929191817988286),
+INFO :                            (12, 0.0005689242254486736),
+INFO :                            (13, 0.000666873359689263),
+INFO :                            (14, 0.0007423002219660278),
+INFO :                            (15, 0.0009818442528903362),
+INFO :                            (16, 0.0011972670864087705),
+INFO :                            (17, 0.0014755965300282106),
+INFO :                            (18, 0.0018651055899288997),
+INFO :                            (19, 0.002278779644934633),
+INFO :                            (20, 0.0026809260088077437),
+INFO :                            (21, 0.00301730515469446),
+INFO :                            (22, 0.0035583773111890534),
+INFO :                            (23, 0.004084855581130965),
+INFO :                            (24, 0.004577101394345749)],
+INFO :           'RgrpActivity_Losses': [(0, 1    1.429528
+INFO :          2    1.366547
+INFO :          dtype: float64),
+INFO :                                   (1, 1    1.232358
+INFO :          2    1.209986
+INFO :          dtype: float64),
+INFO :                                   (2, 1    1.355108
+INFO :          2    1.301725
+INFO :          dtype: float64),
+INFO :                                   (3, 1    1.323403
+INFO :          2    1.276256
+INFO :          dtype: float64),
+INFO :                                   (4, 1    1.273502
+INFO :          2    1.237340
+INFO :          dtype: float64),
+INFO :                                   (5, 1    1.167273
+INFO :          2    1.151692
+INFO :          dtype: float64),
+INFO :                                   (6, 1    1.076172
+INFO :          2    1.081070
+INFO :          dtype: float64),
+INFO :                                   (7, 1    1.020529
+INFO :          2    1.042611
+INFO :          dtype: float64),
+INFO :                                   (8, 1    1.001100
+INFO :          2    1.031163
+INFO :          dtype: float64),
+INFO :                                   (9, 1    0.994006
+INFO :          2    1.030717
+INFO :          dtype: float64),
+INFO :                                   (10, 1    1.000201
+INFO :          2    1.040590
+INFO :          dtype: float64),
+INFO :                                   (11, 1    1.005862
+INFO :          2    1.050265
+INFO :          dtype: float64),
+INFO :                                   (12, 1    1.022481
+INFO :          2    1.070186
+INFO :          dtype: float64),
+INFO :                                   (13, 1    1.030620
+INFO :          2    1.082268
+INFO :          dtype: float64),
+INFO :                                   (14, 1    1.041488
+INFO :          2    1.095978
+INFO :          dtype: float64),
+INFO :                                   (15, 1    1.031717
+INFO :          2    1.094386
+INFO :          dtype: float64),
+INFO :                                   (16, 1    1.017279
+INFO :          2    1.086482
+INFO :          dtype: float64),
+INFO :                                   (17, 1    1.007053
+INFO :          2    1.083880
+INFO :          dtype: float64),
+INFO :                                   (18, 1    0.994729
+INFO :          2    1.081103
+INFO :          dtype: float64),
+INFO :                                   (19, 1    0.987076
+INFO :          2    1.082549
+INFO :          dtype: float64),
+INFO :                                   (20, 1    0.983368
+INFO :          2    1.086923
+INFO :          dtype: float64),
+INFO :                                   (21, 1    0.980308
+INFO :          2    1.090168
+INFO :          dtype: float64),
+INFO :                                   (22, 1    0.972611
+INFO :          2    1.091915
+INFO :          dtype: float64),
+INFO :                                   (23, 1    0.968000
+INFO :          2    1.095825
+INFO :          dtype: float64),
+INFO :                                   (24, 1    0.971199
+INFO :          2    1.106508
+INFO :          dtype: float64)],
+INFO :           'RgrpAge': [(0, 0.0024528035157195182),
+INFO :                       (1, 0.0049388671504325046),
+INFO :                       (2, 0.0030882376186150058),
+INFO :                       (3, 0.003152556101715296),
+INFO :                       (4, 0.003111658547266367),
+INFO :                       (5, 0.003119137593959187),
+INFO :                       (6, 0.003103623662512507),
+INFO :                       (7, 0.0034106641767700672),
+INFO :                       (8, 0.0031871466996228615),
+INFO :                       (9, 0.0031676733377094),
+INFO :                       (10, 0.0028946135038735005),
+INFO :                       (11, 0.002800187665909699),
+INFO :                       (12, 0.0027415338552130852),
+INFO :                       (13, 0.0027292276681484947),
+INFO :                       (14, 0.0028410408829906567),
+INFO :                       (15, 0.0029503337218017497),
+INFO :                       (16, 0.0034097992040300023),
+INFO :                       (17, 0.0037570831013153424),
+INFO :                       (18, 0.004561341347982369),
+INFO :                       (19, 0.005327780972156555),
+INFO :                       (20, 0.006348093759606531),
+INFO :                       (21, 0.007446128365763497),
+INFO :                       (22, 0.009054595904415584),
+INFO :                       (23, 0.010761781360156703),
+INFO :                       (24, 0.012068437125715151)],
+INFO :           'RgrpAge_Losses': [(0,
+INFO :                               1    1.413159
+INFO :          2    1.424959
+INFO :          3    1.396978
+INFO :          4    1.293850
+INFO :          5    1.294633
+INFO :          6    1.358467
+INFO :          7    1.378431
+INFO :          dtype: float64),
+INFO :                              (1,
+INFO :                               1    1.286538
+INFO :          2    1.270873
+INFO :          3    1.226936
+INFO :          4    1.149902
+INFO :          5    1.138089
+INFO :          6    1.148843
+INFO :          7    1.324048
+INFO :          dtype: float64),
+INFO :                              (2,
+INFO :                               1    1.370368
+INFO :          2    1.355012
+INFO :          3    1.329148
+INFO :          4    1.233005
+INFO :          5    1.223279
+INFO :          6    1.298611
+INFO :          7    1.354798
+INFO :          dtype: float64),
+INFO :                              (3,
+INFO :                               1    1.345130
+INFO :          2    1.331000
+INFO :          3    1.301626
+INFO :          4    1.209583
+INFO :          5    1.198337
+INFO :          6    1.265175
+INFO :          7    1.334811
+INFO :          dtype: float64),
+INFO :                              (4,
+INFO :                               1    1.305859
+INFO :          2    1.293681
+INFO :          3    1.259825
+INFO :          4    1.172312
+INFO :          5    1.162467
+INFO :          6    1.217956
+INFO :          7    1.296644
+INFO :          dtype: float64),
+INFO :                              (5,
+INFO :                               1    1.210157
+INFO :          2    1.209624
+INFO :          3    1.166907
+INFO :          4    1.093639
+INFO :          5    1.082411
+INFO :          6    1.121220
+INFO :          7    1.229898
+INFO :          dtype: float64),
+INFO :                              (6,
+INFO :                               1    1.125469
+INFO :          2    1.136257
+INFO :          3    1.087913
+INFO :          4    1.032804
+INFO :          5    1.021468
+INFO :          6    1.048643
+INFO :          7    1.183001
+INFO :          dtype: float64),
+INFO :                              (7,
+INFO :                               1    1.076360
+INFO :          2    1.092295
+INFO :          3    1.042961
+INFO :          4    1.001499
+INFO :          5    0.991217
+INFO :          6    1.017710
+INFO :          7    1.171498
+INFO :          dtype: float64),
+INFO :                              (8,
+INFO :                               1    1.050892
+INFO :          2    1.076785
+INFO :          3    1.029907
+INFO :          4    0.992790
+INFO :          5    0.981752
+INFO :          6    1.015744
+INFO :          7    1.161019
+INFO :          dtype: float64),
+INFO :                              (9,
+INFO :                               1    1.036493
+INFO :          2    1.074864
+INFO :          3    1.028455
+INFO :          4    0.994130
+INFO :          5    0.978357
+INFO :          6    1.023991
+INFO :          7    1.161228
+INFO :          dtype: float64),
+INFO :                              (10,
+INFO :                               1    1.031008
+INFO :          2    1.085216
+INFO :          3    1.038976
+INFO :          4    1.003765
+INFO :          5    0.983882
+INFO :          6    1.039563
+INFO :          7    1.159232
+INFO :          dtype: float64),
+INFO :                              (11,
+INFO :                               1    1.026619
+INFO :          2    1.093911
+INFO :          3    1.047932
+INFO :          4    1.015835
+INFO :          5    0.991189
+INFO :          6    1.056230
+INFO :          7    1.162878
+INFO :          dtype: float64),
+INFO :                              (12,
+INFO :                               1    1.030365
+INFO :          2    1.113370
+INFO :          3    1.068029
+INFO :          4    1.036769
+INFO :          5    1.008207
+INFO :          6    1.081976
+INFO :          7    1.173635
+INFO :          dtype: float64),
+INFO :                              (13,
+INFO :                               1    1.031463
+INFO :          2    1.125771
+INFO :          3    1.079288
+INFO :          4    1.050525
+INFO :          5    1.018600
+INFO :          6    1.098093
+INFO :          7    1.178792
+INFO :          dtype: float64),
+INFO :                              (14,
+INFO :                               1    1.034771
+INFO :          2    1.138002
+INFO :          3    1.092265
+INFO :          4    1.066959
+INFO :          5    1.031644
+INFO :          6    1.114303
+INFO :          7    1.191086
+INFO :          dtype: float64),
+INFO :                              (15,
+INFO :                               1    1.028379
+INFO :          2    1.134114
+INFO :          3    1.087412
+INFO :          4    1.069603
+INFO :          5    1.035410
+INFO :          6    1.112747
+INFO :          7    1.195578
+INFO :          dtype: float64),
+INFO :                              (16,
+INFO :                               1    1.017071
+INFO :          2    1.122340
+INFO :          3    1.076600
+INFO :          4    1.066220
+INFO :          5    1.033724
+INFO :          6    1.100785
+INFO :          7    1.206116
+INFO :          dtype: float64),
+INFO :                              (17,
+INFO :                               1    1.011344
+INFO :          2    1.116369
+INFO :          3    1.070415
+INFO :          4    1.068973
+INFO :          5    1.037153
+INFO :          6    1.097141
+INFO :          7    1.215588
+INFO :          dtype: float64),
+INFO :                              (18,
+INFO :                               1    1.006219
+INFO :          2    1.108726
+INFO :          3    1.063421
+INFO :          4    1.072171
+INFO :          5    1.042074
+INFO :          6    1.091591
+INFO :          7    1.235774
+INFO :          dtype: float64),
+INFO :                              (19,
+INFO :                               1    1.006861
+INFO :          2    1.106409
+INFO :          3    1.060396
+INFO :          4    1.079412
+INFO :          5    1.052445
+INFO :          6    1.088695
+INFO :          7    1.256658
+INFO :          dtype: float64),
+INFO :                              (20,
+INFO :                               1    1.009675
+INFO :          2    1.105389
+INFO :          3    1.061138
+INFO :          4    1.089055
+INFO :          5    1.065562
+INFO :          6    1.090146
+INFO :          7    1.282586
+INFO :          dtype: float64),
+INFO :                              (21,
+INFO :                               1    1.011698
+INFO :          2    1.104339
+INFO :          3    1.061133
+INFO :          4    1.097346
+INFO :          5    1.075970
+INFO :          6    1.089375
+INFO :          7    1.305908
+INFO :          dtype: float64),
+INFO :                              (22,
+INFO :                               1    1.015458
+INFO :          2    1.100127
+INFO :          3    1.059297
+INFO :          4    1.104180
+INFO :          5    1.086514
+INFO :          6    1.084049
+INFO :          7    1.334826
+INFO :          dtype: float64),
+INFO :                              (23,
+INFO :                               1    1.020898
+INFO :          2    1.098163
+INFO :          3    1.059851
+INFO :          4    1.112971
+INFO :          5    1.099837
+INFO :          6    1.080522
+INFO :          7    1.363730
+INFO :          dtype: float64),
+INFO :                              (24,
+INFO :                               1    1.031175
+INFO :          2    1.106098
+INFO :          3    1.068175
+INFO :          4    1.126096
+INFO :          5    1.116052
+INFO :          6    1.085421
+INFO :          7    1.391056
+INFO :          dtype: float64)],
+INFO :           'RgrpGender': [(0, 4.680547514593341e-05),
+INFO :                          (1, 0.00014965637503871655),
+INFO :                          (2, 9.995194070307722e-05),
+INFO :                          (3, 0.00011789295205712196),
+INFO :                          (4, 0.00019062770968690724),
+INFO :                          (5, 0.0005223670890336121),
+INFO :                          (6, 0.0012510523511091518),
+INFO :                          (7, 0.0021520468275870253),
+INFO :                          (8, 0.0026954572811850753),
+INFO :                          (9, 0.0031196418347655104),
+INFO :                          (10, 0.00339995316741905),
+INFO :                          (11, 0.0037969832834194076),
+INFO :                          (12, 0.004027496205127678),
+INFO :                          (13, 0.004294997374623971),
+INFO :                          (14, 0.004454646183805361),
+INFO :                          (15, 0.0046985118443421455),
+INFO :                          (16, 0.004937507081169176),
+INFO :                          (17, 0.005099501756396517),
+INFO :                          (18, 0.005308760979286245),
+INFO :                          (19, 0.005558559192658675),
+INFO :                          (20, 0.005837258613483973),
+INFO :                          (21, 0.005988975517647982),
+INFO :                          (22, 0.006173942230362923),
+INFO :                          (23, 0.006338377953230641),
+INFO :                          (24, 0.006474121522828821)],
+INFO :           'RgrpGender_Losses': [(0, 1    1.368577
+INFO :          2    1.382260
+INFO :          dtype: float64),
+INFO :                                 (1, 1    1.206919
+INFO :          2    1.231385
+INFO :          dtype: float64),
+INFO :                                 (2, 1    1.301823
+INFO :          2    1.321818
+INFO :          dtype: float64),
+INFO :                                 (3, 1    1.275559
+INFO :          2    1.297275
+INFO :          dtype: float64),
+INFO :                                 (4, 1    1.234688
+INFO :          2    1.262302
+INFO :          dtype: float64),
+INFO :                                 (5, 1    1.144016
+INFO :          2    1.189727
+INFO :          dtype: float64),
+INFO :                                 (6, 1    1.067038
+INFO :          2    1.137778
+INFO :          dtype: float64),
+INFO :                                 (7, 1    1.023044
+INFO :          2    1.115825
+INFO :          dtype: float64),
+INFO :                                 (8, 1    1.008868
+INFO :          2    1.112704
+INFO :          dtype: float64),
+INFO :                                 (9, 1    1.006407
+INFO :          2    1.118115
+INFO :          dtype: float64),
+INFO :                                 (10, 1    1.015059
+INFO :          2    1.131677
+INFO :          dtype: float64),
+INFO :                                 (11, 1    1.023156
+INFO :          2    1.146396
+INFO :          dtype: float64),
+INFO :                                 (12, 1    1.042120
+INFO :          2    1.169045
+INFO :          dtype: float64),
+INFO :                                 (13, 1    1.053108
+INFO :          2    1.184180
+INFO :          dtype: float64),
+INFO :                                 (14, 1    1.066141
+INFO :          2    1.199627
+INFO :          dtype: float64),
+INFO :                                 (15, 1    1.063245
+INFO :          2    1.200336
+INFO :          dtype: float64),
+INFO :                                 (16, 1    1.054191
+INFO :          2    1.194726
+INFO :          dtype: float64),
+INFO :                                 (17, 1    1.050581
+INFO :          2    1.193403
+INFO :          dtype: float64),
+INFO :                                 (18, 1    1.046535
+INFO :          2    1.192257
+INFO :          dtype: float64),
+INFO :                                 (19, 1    1.046651
+INFO :          2    1.195762
+INFO :          dtype: float64),
+INFO :                                 (20, 1    1.049712
+INFO :          2    1.202516
+INFO :          dtype: float64),
+INFO :                                 (21, 1    1.052107
+INFO :          2    1.206884
+INFO :          dtype: float64),
+INFO :                                 (22, 1    1.052695
+INFO :          2    1.209844
+INFO :          dtype: float64),
+INFO :                                 (23, 1    1.055571
+INFO :          2    1.214799
+INFO :          dtype: float64),
+INFO :                                 (24, 1    1.065370
+INFO :          2    1.226294
+INFO :          dtype: float64)],
+INFO :           'accuracy': [(0, 0.2859877884714892),
+INFO :                        (1, 0.5224050501914519),
+INFO :                        (2, 0.2849011694090862),
+INFO :                        (3, 0.28547035082272587),
+INFO :                        (4, 0.3307461450895167),
+INFO :                        (5, 0.426989547759495),
+INFO :                        (6, 0.4357342440235952),
+INFO :                        (7, 0.4480492600641623),
+INFO :                        (8, 0.4519300424298872),
+INFO :                        (9, 0.4518782986650109),
+INFO :                        (10, 0.45741488150677845),
+INFO :                        (11, 0.4976197868156887),
+INFO :                        (12, 0.5067784331987996),
+INFO :                        (13, 0.5142812791058677),
+INFO :                        (14, 0.5176446238228294),
+INFO :                        (15, 0.5093138776777398),
+INFO :                        (16, 0.5068301769636758),
+INFO :                        (17, 0.49943081858636035),
+INFO :                        (18, 0.49285936044706613),
+INFO :                        (19, 0.4929628479768188),
+INFO :                        (20, 0.4942564420987271),
+INFO :                        (21, 0.4931698230363241),
+INFO :                        (22, 0.49146227879540516),
+INFO :                        (23, 0.49177274138466315),
+INFO :                        (24, 0.4908930973817655)],
+INFO :           'precision_at_10': [(0, 0.0),
+INFO :                               (1, 0.0),
+INFO :                               (2, 0.0),
+INFO :                               (3, 0.0),
+INFO :                               (4, 0.0),
+INFO :                               (5, 0.1),
+INFO :                               (6, 0.4),
+INFO :                               (7, 0.9),
+INFO :                               (8, 0.5),
+INFO :                               (9, 0.3),
+INFO :                               (10, 0.7),
+INFO :                               (11, 0.8),
+INFO :                               (12, 0.5),
+INFO :                               (13, 0.7),
+INFO :                               (14, 0.6),
+INFO :                               (15, 0.7),
+INFO :                               (16, 0.7),
+INFO :                               (17, 0.8),
+INFO :                               (18, 0.7),
+INFO :                               (19, 0.4),
+INFO :                               (20, 0.7),
+INFO :                               (21, 0.7),
+INFO :                               (22, 0.8),
+INFO :                               (23, 1.0),
+INFO :                               (24, 0.7)],
+INFO :           'recall_at_10': [(0, 0.0),
+INFO :                            (1, 0.0),
+INFO :                            (2, 0.0),
+INFO :                            (3, 0.0),
+INFO :                            (4, 0.0),
+INFO :                            (5, 0.25),
+INFO :                            (6, 0.4444444444444444),
+INFO :                            (7, 1.0),
+INFO :                            (8, 0.7142857142857143),
+INFO :                            (9, 0.375),
+INFO :                            (10, 0.875),
+INFO :                            (11, 0.8888888888888888),
+INFO :                            (12, 1.0),
+INFO :                            (13, 1.0),
+INFO :                            (14, 0.75),
+INFO :                            (15, 1.0),
+INFO :                            (16, 1.0),
+INFO :                            (17, 1.0),
+INFO :                            (18, 1.0),
+INFO :                            (19, 1.0),
+INFO :                            (20, 1.0),
+INFO :                            (21, 1.0),
+INFO :                            (22, 1.0),
+INFO :                            (23, 1.0),
+INFO :                            (24, 1.0)],
+INFO :           'rmse': [(0, 1.1636936664581299),
+INFO :                    (1, 1.0941013097763062),
+INFO :                    (2, 1.1353051662445068),
+INFO :                    (3, 1.1240124702453613),
+INFO :                    (4, 1.1063876152038574),
+INFO :                    (5, 1.066398024559021),
+INFO :                    (6, 1.0326982736587524),
+INFO :                    (7, 1.0145307779312134),
+INFO :                    (8, 1.0095463991165161),
+INFO :                    (9, 1.0098247528076172),
+INFO :                    (10, 1.0149548053741455),
+INFO :                    (11, 1.0200411081314087),
+INFO :                    (12, 1.0299276113510132),
+INFO :                    (13, 1.0359303951263428),
+INFO :                    (14, 1.0426697731018066),
+INFO :                    (15, 1.0420047044754028),
+INFO :                    (16, 1.038161039352417),
+INFO :                    (17, 1.0370806455612183),
+INFO :                    (18, 1.0356084108352661),
+INFO :                    (19, 1.0361772775650024),
+INFO :                    (20, 1.0379855632781982),
+INFO :                    (21, 1.0393681526184082),
+INFO :                    (22, 1.0400292873382568),
+INFO :                    (23, 1.041798710823059),
+INFO :                    (24, 1.0470131635665894)]}

@@ -167,6 +167,7 @@ def test(net, testloader, tolerance=0.7, server=False):
     total = correct = loss = squared_error = 0.0
     precision_at_10 = recall_at_10 = 0.0
     RgrpActivity = RgrpGender = RgrpAge = 0.0
+    RgrpActivity_Losses = RgrpGender_Losses = RgrpAge_Losses = 0.0
     outputs = None
     target = None
     with torch.no_grad():

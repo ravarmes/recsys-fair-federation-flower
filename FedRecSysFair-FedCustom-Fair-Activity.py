@@ -182,10 +182,9 @@ def test(net, testloader, tolerance=0.7, server=False):
     rmse = torch.sqrt(torch.tensor(squared_error) / total)  # RMSE - Raiz do Erro Quadrático Médio
     accuracy = correct / total  # Cálculo da precisão considerando a tolerância
     if server == True:
-        #precision_at_10, recall_at_10 = calculate_f1_recall_at_k(outputs, target, k=10, threshold=3.5)
         precision_at_10, recall_at_10 = calculate_f1_recall_at_k(outputs, target, k=10, threshold=3.5)
-        RgrpActivity, RgrpGender, RgrpAge = calculate_Rgrp(net)
-    return loss, rmse.item(), accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge
+        RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = calculate_Rgrp(net)
+    return loss, rmse.item(), accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses
 
 
 def calculate_f1_recall_at_k(predictions, targets, k=10, threshold=3.5):
@@ -220,13 +219,18 @@ def calculate_Rgrp(net):
     G_AGE = {1: [14, 132, 194, 262, 273], 2: [8, 23, 26, 33, 48, 50, 61, 64, 70, 71, 76, 82, 86, 90, 92, 94, 96, 101, 107, 124, 126, 129, 134, 140, 149, 157, 158, 159, 163, 168, 171, 174, 175, 189, 191, 201, 207, 209, 215, 216, 222, 231, 237, 244, 246, 251, 255, 265, 270, 275, 282, 288, 290], 3: [3, 6, 7, 9, 10, 11, 15, 16, 21, 22, 24, 28, 29, 31, 32, 34, 35, 37, 39, 40, 41, 42, 43, 44, 45, 51, 53, 55, 56, 59, 60, 63, 65, 66, 69, 72, 73, 74, 75, 79, 80, 81, 85, 89, 93, 97, 102, 103, 104, 106, 108, 109, 110, 111, 116, 118, 119, 120, 122, 128, 130, 131, 133, 135, 136, 138, 139, 141, 142, 143, 145, 147, 151, 155, 161, 164, 169, 170, 173, 176, 179, 181, 183, 186, 187, 188, 190, 192, 193, 195, 196, 198, 200, 202, 203, 204, 205, 206, 211, 212, 213, 217, 219, 220, 223, 225, 226, 229, 230, 232, 233, 234, 236, 238, 240, 241, 249, 252, 253, 254, 258, 260, 261, 264, 267, 268, 269, 276, 277, 279, 280, 283, 285, 286, 287, 289, 291, 293, 294, 295, 296, 298], 4: [1, 2, 4, 5, 13, 17, 18, 25, 27, 36, 38, 49, 52, 57, 68, 77, 78, 84, 87, 88, 91, 95, 98, 99, 100, 105, 112, 117, 121, 127, 144, 146, 150, 152, 153, 156, 166, 172, 177, 182, 199, 208, 210, 214, 227, 228, 243, 245, 248, 250, 256, 263, 271, 272, 278, 292, 297, 299], 5: [19, 20, 30, 46, 47, 54, 58, 62, 67, 83, 113, 125, 137, 148, 160, 165, 167, 184, 197, 221, 235, 239, 242, 281], 6: [0, 114, 115, 123, 178, 180, 185, 224, 247, 257, 266, 274], 7: [12, 154, 162, 218, 259, 284]}
     glv = GroupLossVariance(avaliacoes_df, omega, G_ACTIVITY, 1) #axis = 1 (0 rows e 1 columns)
     RgrpActivity = glv.evaluate(recomendacoes_df)
+    RgrpActivity_Losses = glv.get_losses(recomendacoes_df)
     glv = GroupLossVariance(avaliacoes_df, omega, G_GENDER, 1) #axis = 1 (0 rows e 1 columns)
     RgrpGender = glv.evaluate(recomendacoes_df)
+    RgrpGender_Losses = glv.get_losses(recomendacoes_df)
     glv = GroupLossVariance(avaliacoes_df, omega, G_AGE, 1) #axis = 1 (0 rows e 1 columns)
     RgrpAge = glv.evaluate(recomendacoes_df)
+    RgrpAge_Losses = glv.get_losses(recomendacoes_df)
+    
     print("recomendacoes_df")
     print(recomendacoes_df)
-    return RgrpActivity, RgrpGender, RgrpAge
+
+    return RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses
 
 
 class FlowerClient(fl.client.NumPyClient):
@@ -267,7 +271,7 @@ class FlowerClient(fl.client.NumPyClient):
     def evaluate(self, parameters, config):
         print(f"[Cliente {self.cid}] evaluate, config: {config}")
         set_parameters(self.net, parameters)
-        loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge = test(self.net, self.valloader, server=False)
+        loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = test(self.net, self.valloader, server=False)
         return float(loss), len(self.valloader), {"rmse": float(rmse), "accuracy": float(accuracy)}
 
 
@@ -407,44 +411,6 @@ class FedCustom(Strategy):
         # Return the aggregated parameters and metrics
         return parameters_aggregated, metrics_aggregated
 
-    # # Agregando pela perda (loss) do cliente
-    # def aggregate_fit(
-    #     self,
-    #     server_round: int,
-    #     results: List[Tuple[ClientProxy, FitRes]],
-    #     failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]],
-    # ) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
-    #     """Aggregate training results using weighted average."""
-
-    #     # for _, fit_res in results:
-    #     #     loss = fit_res.metrics['loss']
-    #     #     print("Loss from client: ", loss)
-
-    #     # for client_index, (client, fit_res) in enumerate(results):
-    #     #     loss = fit_res.metrics['loss']
-
-    #     total_examples = sum(fit_res.num_examples for _, fit_res in results)
-    #     print(f"Número total de exemplos agregados: {total_examples}")
-        
-    #     total_loss = sum(fit_res.metrics.get('loss', 0) for _, fit_res in results)
-    #     print(f"Soma total de perdas (loss) agregadas: {total_loss}")
-    #     # Convert results to a list of arrays and associated weights (contributions)
-    #     weights_results = [
-    #         (parameters_to_ndarrays(fit_res.parameters), fit_res.metrics.get('loss', 0))
-    #         for _, fit_res in results
-    #     ]
-    #     # Calculate aggregated parameters using weighted average
-    #     parameters_aggregated = ndarrays_to_parameters(aggregate(weights_results))
-    #     # Dictionary for aggregated metrics (empty for now)
-    #     metrics_aggregated = {}
-    #     # Debugging: Iterate over the results to print the number of examples and weight for each client
-    #     for client_index, (client, fit_res) in enumerate(results):
-    #         loss = fit_res.metrics.get('loss', 0)
-    #         weight = loss / total_loss  # Calculating the weight based on loss
-    #         print(f"Cliente {client.cid}: Perda = {loss}, Peso = {weight}")
-    #     # Return the aggregated parameters and metrics
-    #     return parameters_aggregated, metrics_aggregated
-
 
     def configure_evaluate(
         self, server_round: int, parameters: Parameters, client_manager: ClientManager
@@ -481,30 +447,6 @@ class FedCustom(Strategy):
         if not results:  # Se não houver resultados, retorne nada
             return None, {}
         
-        # # # Calcular a perda média ponderada
-        # # loss_aggregated = weighted_loss_avg(
-        # #     [
-        # #         (evaluate_res.num_examples, evaluate_res.loss)
-        # #         for _, evaluate_res in results
-        # #     ]
-        # # )
-
-        # # Calcula a perda média ponderada e exibe o número de amostras de cada cliente
-        # examples_and_loss = [
-        #     (evaluate_res.num_examples, evaluate_res.loss)
-        #     for _, evaluate_res in results
-        # ]
-
-        # loss_aggregated = weighted_loss_avg(examples_and_loss)
-
-        # # Exibindo o número de amostras consideradas por cada cliente
-        # # Certifique-se de ter a lista de clientes e resultados para obter o ID do cliente corretamente
-        # for result, (num_samples, _) in zip(results, examples_and_loss):
-        #     client_proxy = result[0]  # O primeiro item da tupla deve ser o ClientProxy
-        #     client_id = client_proxy.cid  # Obter o ID do cliente real
-        #     print(f"Cliente {client_id}: Número de amostras consideradas = {num_samples}")
-
-        
         # Dicionário para métricas agregadas (vazio por enquanto)
         metrics_aggregated = {}
         loss_aggregated = None
@@ -516,11 +458,12 @@ class FedCustom(Strategy):
     def evaluate(self, server_round: int, parameters: Parameters) -> Optional[Tuple[float, Dict[str, Scalar]]]:
         net = Net(300, 1000).to(DEVICE)
         set_parameters(net, parameters_to_ndarrays(parameters))
-        loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge = test(net, testloader, server=True)
-        metrics = {"rmse": rmse, "accuracy": accuracy, "precision_at_10": precision_at_10, "recall_at_10": recall_at_10, "RgrpActivity": RgrpActivity, "RgrpGender": RgrpGender, "RgrpAge": RgrpAge }  # Agrupar RMSE e accuracy em um dicionário
+        loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = test(net, testloader, server=True)
+        metrics = {"rmse": rmse, "accuracy": accuracy, "precision_at_10": precision_at_10, "recall_at_10": recall_at_10, "RgrpActivity": RgrpActivity, "RgrpGender": RgrpGender, "RgrpAge": RgrpAge, "RgrpActivity_Losses": RgrpActivity_Losses, "RgrpGender_Losses": RgrpGender_Losses, "RgrpAge_Losses": RgrpAge_Losses}  # Agrupar RMSE e accuracy em um dicionário
         print(f"Server-side evaluation :: Round {server_round}")
         print(f"loss {loss} / RMSE {rmse} / accuracy {accuracy} / Precision@10 {precision_at_10} / Recall@10 {recall_at_10}")
         print(f"RgrpActivity {RgrpActivity} / RgrpGender {RgrpGender} / RgrpAge {RgrpAge}")
+        print(f"RgrpActivity_Losses {RgrpActivity_Losses} / RgrpGender_Losses {RgrpGender_Losses} / RgrpAge_Losses {RgrpAge_Losses}")
         return loss, metrics
     
         

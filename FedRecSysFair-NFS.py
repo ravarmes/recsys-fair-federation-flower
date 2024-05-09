@@ -12,6 +12,8 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader, random_split, TensorDataset
 from collections import OrderedDict
 from AlgorithmUserFairness import GroupLossVariance
+from torch.utils.data import ConcatDataset
+
 
 
 import flwr as fl
@@ -28,40 +30,52 @@ def load_datasets(num_clients: int, filename: str):
     dados = df.fillna(0).values
     X, y = np.nonzero(dados)
     ratings = dados[X, y]
+    
     # Criar dicionário para agrupar avaliações por usuário
     cliente_avaliacoes = {usuario: [] for usuario in np.unique(X)}
     for usuario, item, rating in zip(X, y, ratings):
         cliente_avaliacoes[usuario].append((usuario, item, rating))
+
     trainloaders = []
-    valloaders = []
     testloader_data = []
-    for cliente_id in sorted(cliente_avaliacoes.keys()):
-        dados_cliente = np.array(cliente_avaliacoes[cliente_id])
-        X_train = dados_cliente[:, :2]
-        y_train = dados_cliente[:, 2]
-        dataset = TensorDataset(torch.from_numpy(X_train).float(), torch.from_numpy(y_train).float())
-        len_val = len(dataset) // 10
-        len_train = len(dataset) - len_val
-        ds_train, ds_val = random_split(dataset, [len_train, len_val], torch.Generator().manual_seed(42))
 
-        batch_size = 32 if cliente_id <= 14 else 16 # Configurando o tamanho do lote de acordo com o nível de atividade dos usuários
-        train_loader = DataLoader(ds_train, batch_size=batch_size, shuffle=True)
-        val_loader = DataLoader(ds_val, batch_size=batch_size, shuffle=False)
+    for round_num in range(24):  # Iterar sobre os 24 rounds
+        round_train_loader = []
 
+        for cliente_id in range(num_clients):
+            if cliente_id <= 14:
+                num_avaliacoes = 32
+            else:
+                num_avaliacoes = 16
+
+            dados_cliente = np.array(cliente_avaliacoes[cliente_id])
+            np.random.shuffle(dados_cliente)  # Embaralhar as avaliações do cliente
+            X_train = dados_cliente[:num_avaliacoes, :2]
+            y_train = dados_cliente[:num_avaliacoes, 2]
+
+            dataset = TensorDataset(torch.from_numpy(X_train).float(), torch.from_numpy(y_train).float())
+            round_train_loader.append(dataset)
+
+            # Adicionar dados de teste do cliente à lista de testes
+            testloader_data.extend(dados_cliente)
+
+        concatenated_dataset = ConcatDataset(round_train_loader)
+        batch_size = 32*15 + 16*(num_clients - 15)  # Definir o batch_size conforme especificado
+
+        train_loader = DataLoader(concatenated_dataset, batch_size=batch_size, shuffle=True)
         trainloaders.append(train_loader)
-        valloaders.append(val_loader)
-        testloader_data.extend(dados_cliente) # Adicionar dados de teste do cliente à lista de testes
 
-    # Supondo que queiramos usar apenas 10% dos dados acumulados para o teste
+    # Construir o testloader com 10% dos dados acumulados
     num_test_samples = len(testloader_data)
-    test_data_sample = random.sample(testloader_data, num_test_samples // 8) # 10: deixei 8 para que o último lote tenha 30 exemplos para calcular recall e f1
-
-    X_test_all = np.array(test_data_sample)[:, :2]
-    y_test_all = np.array(test_data_sample)[:, 2]
+    num_test_samples_10_percent = int(0.1 * num_test_samples)
+    random.shuffle(testloader_data)
+    X_test_all = np.array([x[:2] for x in testloader_data[:num_test_samples_10_percent]])
+    y_test_all = np.array([x[2] for x in testloader_data[:num_test_samples_10_percent]])
     test_dataset = TensorDataset(torch.from_numpy(X_test_all).float(), torch.from_numpy(y_test_all).float())
-    testloader = DataLoader(test_dataset, batch_size=32, shuffle=True)
+    testloader = DataLoader(test_dataset, batch_size=(32*15 + 16*(num_clients - 15)), shuffle=True)
 
-    return df, trainloaders, valloaders, testloader
+
+    return df, trainloaders, [], testloader
 
 
 
@@ -211,22 +225,33 @@ def evaluate(net, testloader, tolerance=0.7, server=True):
 
 avaliacoes_df, trainloaders, valloaders, testloader = load_datasets(num_clients=300, filename="X.xlsx")
 results = []
+l_loss = l_rmse = l_accuracy = l_precision_at_10 = l_recall_at_10 = l_RgrpActivity = l_RgrpGender = l_RgrpAge = l_RgrpActivity_Losses = l_RgrpGender_Losses = l_RgrpAge_Losses = []
 net = Net(300, 1000).to(DEVICE)
-for round in range (1, 25):
+for round in range (0, 24):
     print(f"ROUND [{round}]")
-    for cid in range (300):
-        print(f"Processando dados do Cliente {cid}")
-        trainloader = trainloaders[int(cid)]
-        valloader = valloaders[int(cid)]
-        train(net=net, trainloader=trainloader, epochs=20, lotes_por_rodada=round, learning_rate=0.01)
+    trainloader = trainloaders[int(round)]
+    #valloader = valloaders[int(round)]
+    train(net=net, trainloader=trainloader, epochs=20, lotes_por_rodada=round, learning_rate=0.01)
 
     loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = evaluate(net=net, testloader=testloader, tolerance=0.7, server=True)
-    metrics = {"rmse": rmse, "accuracy": accuracy, "precision_at_10": precision_at_10, "recall_at_10": recall_at_10, "RgrpActivity": RgrpActivity, "RgrpGender": RgrpGender, "RgrpAge": RgrpAge, "RgrpActivity_Losses": RgrpActivity_Losses, "RgrpGender_Losses": RgrpGender_Losses, "RgrpAge_Losses": RgrpAge_Losses}
-    results.append((round, metrics))
+    l_loss.append((round, loss))
+    l_rmse.append((round, rmse))
+    l_accuracy.append((round, accuracy))
+    l_precision_at_10.append((round, precision_at_10))
+    l_recall_at_10.append((round, recall_at_10))
+    l_RgrpActivity.append((round, RgrpActivity))
+    l_RgrpGender.append((round, RgrpGender))
+    l_RgrpAge.append((round, RgrpAge))
+    l_RgrpActivity_Losses.append((round, RgrpActivity_Losses))
+    l_RgrpGender_Losses.append((round, RgrpGender_Losses))
+    l_RgrpAge_Losses.append((round, RgrpAge_Losses))
+
     print(f"Server-side evaluation :: Round {round}")
     print(f"loss {loss} / RMSE {rmse} / accuracy {accuracy} / Precision@10 {precision_at_10} / Recall@10 {recall_at_10}")
     print(f"RgrpActivity {RgrpActivity} / RgrpGender {RgrpGender} / RgrpAge {RgrpAge}")
     print(f"RgrpActivity_Losses {RgrpActivity_Losses} / RgrpGender_Losses {RgrpGender_Losses} / RgrpAge_Losses {RgrpAge_Losses}")
 
-print("\n\nRESUMO")
-print(results)
+metrics = {"rmse": l_rmse, "accuracy": l_accuracy, "precision_at_10": l_precision_at_10, "recall_at_10": l_recall_at_10, "RgrpActivity": l_RgrpActivity, "RgrpGender": l_RgrpGender, "RgrpAge": l_RgrpAge, "RgrpActivity_Losses": l_RgrpActivity_Losses, "RgrpGender_Losses": l_RgrpGender_Losses, "RgrpAge_Losses": l_RgrpAge_Losses}
+
+# print("\n\nRESUMO")
+# print(metrics)

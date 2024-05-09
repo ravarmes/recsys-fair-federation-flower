@@ -1,14 +1,20 @@
 # !pip install -q flwr[simulation] torch torchvision
 
-import flwr as fl
+from collections import OrderedDict
 import random
+from typing import Dict, List, Optional, Tuple
+
 import pandas as pd
 import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader, random_split, TensorDataset
+from collections import OrderedDict
 from AlgorithmUserFairness import GroupLossVariance
+
+
+import flwr as fl
 
 DEVICE = torch.device("cpu")  # Try "cuda" to train on GPU
 print(
@@ -94,37 +100,26 @@ class Net(nn.Module):
         return df
     
 
-def train(net, trainloaders, epochs: int, lotes_por_rodada: int, learning_rate : float):
+def train(net, trainloader, epochs: int, lotes_por_rodada: int, learning_rate : float):
     criterion = nn.MSELoss()  # Função de perda para prever avaliações
     optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
     net.train()
-
-    # Suponha que trainloaders seja uma lista de DataLoader
-    all_data = []  # Lista para armazenar todos os dados
-    all_targets = []  # Lista para armazenar todos os targets
-
-    for trainloader in trainloaders:
-        for data, target in trainloader:
-            all_data.append(data)  # Acumular dados
-            all_targets.append(target)  # Acumular targets
-
-    # Se você precisar de um tensor único para os dados e targets, use torch.cat para concatenar os dados
-    all_data_tensor = torch.cat(all_data, dim=0)  # Concatenar na dimensão dos lotes
-    all_targets_tensor = torch.cat(all_targets, dim=0)
-
-    epoch_loss = 0.0
-    num_batches = 0
-    num_examples = 0
     for epoch in range(epochs):
-        # num_batches += 1
-        # num_examples += len(data)
-        optimizer.zero_grad()  # Zerando gradientes
-        outputs = net(data)    # Previsão do modelo
-        target = torch.unsqueeze(target, 1)
-        loss = criterion(outputs, target) # Calcular a perda
-        loss.backward()   # Passo para trás
-        optimizer.step()  # Atualizar parâmetros do modelo
-        epoch_loss += loss.item()  # Acumular perda
+        epoch_loss = 0.0
+        num_batches = 0
+        num_examples = 0
+        for i, (data, target) in enumerate(trainloader):
+            if i >= lotes_por_rodada:
+                break  # Parar após atingir o número de lotes desejado
+            num_batches += 1
+            num_examples += len(data)
+            optimizer.zero_grad()  # Zerando gradientes
+            outputs = net(data)    # Previsão do modelo
+            target = torch.unsqueeze(target, 1)
+            loss = criterion(outputs, target) # Calcular a perda
+            loss.backward()   # Passo para trás
+            optimizer.step()  # Atualizar parâmetros do modelo
+            epoch_loss += loss.item()  # Acumular perda
         # print(f"[NFS] Número de lotes processados: {num_batches}")
         # print(f"[NFS] Número de exemplos processados: {num_examples}")
         # print(f"[NFS] Época {epoch + 1}: loss {epoch_loss}")
@@ -219,11 +214,11 @@ results = []
 net = Net(300, 1000).to(DEVICE)
 for round in range (1, 25):
     print(f"ROUND [{round}]")
-#     for cid in range (300):
-# print(f"Processando dados do Cliente {cid}")
-# trainloader = trainloaders[int(cid)]
-# valloader = valloaders[int(cid)]
-    train(net=net, trainloaders=trainloaders, epochs=20, lotes_por_rodada=round, learning_rate=0.01)
+    for cid in range (300):
+        print(f"Processando dados do Cliente {cid}")
+        trainloader = trainloaders[int(cid)]
+        valloader = valloaders[int(cid)]
+        train(net=net, trainloader=trainloader, epochs=20, lotes_por_rodada=round, learning_rate=0.01)
 
     loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = evaluate(net=net, testloader=testloader, tolerance=0.7, server=True)
     metrics = {"rmse": rmse, "accuracy": accuracy, "precision_at_10": precision_at_10, "recall_at_10": recall_at_10, "RgrpActivity": RgrpActivity, "RgrpGender": RgrpGender, "RgrpAge": RgrpAge, "RgrpActivity_Losses": RgrpActivity_Losses, "RgrpGender_Losses": RgrpGender_Losses, "RgrpAge_Losses": RgrpAge_Losses}

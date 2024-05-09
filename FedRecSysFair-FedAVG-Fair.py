@@ -311,27 +311,27 @@ def fit_config(server_round: int):
     return config
 
 
-# strategy = fl.server.strategy.FedAvg(
-#     fraction_fit=1, # 100% dos clientes serão selecionados para participar da etapa de treinamento em cada rodada
-#     fraction_evaluate=1, # 100% dos clientes serão usados para avaliação em cada rodada
-#     min_fit_clients=NUM_CLIENTS, # número mínimo de clientes que devem participar do treinamento em cada rodada
-#     min_evaluate_clients=NUM_CLIENTS, # número mínimo de clientes necessários para a avaliação em cada rodada
-#     min_available_clients=NUM_CLIENTS, # número mínimo de clientes que devem estar disponíveis para a simulação
-#     initial_parameters=fl.common.ndarrays_to_parameters(get_parameters(Net(300, 1000))), # parâmetros iniciais do modelo global antes de começar o aprendizado federado
-#     evaluate_fn=evaluate, # função personalizada para avaliação do modelo global
-#     on_fit_config_fn=fit_config,  # função personalizada para configurar os clientes antes do treinamento
-# )
-
 strategy = fl.server.strategy.FedAvg(
     fraction_fit=1, # 100% dos clientes serão selecionados para participar da etapa de treinamento em cada rodada
     fraction_evaluate=1, # 100% dos clientes serão usados para avaliação em cada rodada
-    min_fit_clients=2, # número mínimo de clientes que devem participar do treinamento em cada rodada
-    min_evaluate_clients=2, # número mínimo de clientes necessários para a avaliação em cada rodada
-    min_available_clients=2, # número mínimo de clientes que devem estar disponíveis para a simulação
+    min_fit_clients=NUM_CLIENTS, # número mínimo de clientes que devem participar do treinamento em cada rodada
+    min_evaluate_clients=NUM_CLIENTS, # número mínimo de clientes necessários para a avaliação em cada rodada
+    min_available_clients=NUM_CLIENTS, # número mínimo de clientes que devem estar disponíveis para a simulação
     initial_parameters=fl.common.ndarrays_to_parameters(get_parameters(Net(300, 1000))), # parâmetros iniciais do modelo global antes de começar o aprendizado federado
     evaluate_fn=evaluate, # função personalizada para avaliação do modelo global
     on_fit_config_fn=fit_config,  # função personalizada para configurar os clientes antes do treinamento
 )
+
+# strategy = fl.server.strategy.FedAvg(
+#     fraction_fit=1, # 100% dos clientes serão selecionados para participar da etapa de treinamento em cada rodada
+#     fraction_evaluate=1, # 100% dos clientes serão usados para avaliação em cada rodada
+#     min_fit_clients=2, # número mínimo de clientes que devem participar do treinamento em cada rodada
+#     min_evaluate_clients=2, # número mínimo de clientes necessários para a avaliação em cada rodada
+#     min_available_clients=2, # número mínimo de clientes que devem estar disponíveis para a simulação
+#     initial_parameters=fl.common.ndarrays_to_parameters(get_parameters(Net(300, 1000))), # parâmetros iniciais do modelo global antes de começar o aprendizado federado
+#     evaluate_fn=evaluate, # função personalizada para avaliação do modelo global
+#     on_fit_config_fn=fit_config,  # função personalizada para configurar os clientes antes do treinamento
+# )
 
 
 
@@ -343,7 +343,7 @@ if DEVICE.type == "cuda":
 fl.simulation.start_simulation(
     client_fn=client_fn,
     num_clients=NUM_CLIENTS,
-    config=fl.server.ServerConfig(num_rounds=1),  # Apenas três rodadas
+    config=fl.server.ServerConfig(num_rounds=24),  # Apenas três rodadas
     strategy=strategy,
     client_resources=client_resources,
 )

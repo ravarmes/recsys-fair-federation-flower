@@ -210,13 +210,24 @@ def evaluate(net, testloader, tolerance=0.7, server=True):
     return loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses
 
 avaliacoes_df, trainloaders, valloaders, testloader = load_datasets(num_clients=300, filename="X.xlsx")
-
+results = []
 net = Net(300, 1000).to(DEVICE)
 for round in range (1, 25):
+    print(f"ROUND [{round}]")
     for cid in range (300):
+        print(f"Cliente {cid}")
         trainloader = trainloaders[int(cid)]
         valloader = valloaders[int(cid)]
         print(f"\nProcessando dados do Cliente {cid}")
         train(net=net, trainloader=trainloader, epochs=20, lotes_por_rodada=round, learning_rate=0.01)
 
-loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = evaluate(net=net, testloader=testloader, tolerance=0.7, server=True)
+    loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = evaluate(net=net, testloader=testloader, tolerance=0.7, server=True)
+    metrics = {"rmse": rmse, "accuracy": accuracy, "precision_at_10": precision_at_10, "recall_at_10": recall_at_10, "RgrpActivity": RgrpActivity, "RgrpGender": RgrpGender, "RgrpAge": RgrpAge, "RgrpActivity_Losses": RgrpActivity_Losses, "RgrpGender_Losses": RgrpGender_Losses, "RgrpAge_Losses": RgrpAge_Losses}
+    results.append((round, metrics))
+    print(f"Server-side evaluation :: Round {round}")
+    print(f"loss {loss} / RMSE {rmse} / accuracy {accuracy} / Precision@10 {precision_at_10} / Recall@10 {recall_at_10}")
+    print(f"RgrpActivity {RgrpActivity} / RgrpGender {RgrpGender} / RgrpAge {RgrpAge}")
+    print(f"RgrpActivity_Losses {RgrpActivity_Losses} / RgrpGender_Losses {RgrpGender_Losses} / RgrpAge_Losses {RgrpAge_Losses}")
+
+print("\n\nRESUMO")
+print(results)

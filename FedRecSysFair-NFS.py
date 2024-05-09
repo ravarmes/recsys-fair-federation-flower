@@ -100,7 +100,7 @@ class Net(nn.Module):
         return df
     
 
-def train(net, trainloader, epochs: int, learning_rate : float):
+def train(net, trainloader, epochs: int, lotes_por_rodada: int, learning_rate : float):
     criterion = nn.MSELoss()  # Função de perda para prever avaliações
     optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
     net.train()
@@ -109,6 +109,8 @@ def train(net, trainloader, epochs: int, learning_rate : float):
         num_batches = 0
         num_examples = 0
         for i, (data, target) in enumerate(trainloader):
+            if i >= lotes_por_rodada:
+                break  # Parar após atingir o número de lotes desejado
             num_batches += 1
             num_examples += len(data)
             optimizer.zero_grad()  # Zerando gradientes
@@ -118,9 +120,9 @@ def train(net, trainloader, epochs: int, learning_rate : float):
             loss.backward()   # Passo para trás
             optimizer.step()  # Atualizar parâmetros do modelo
             epoch_loss += loss.item()  # Acumular perda
-        print(f"[NFS] Número de lotes processados: {num_batches}")
-        print(f"[NFS] Número de exemplos processados: {num_examples}")
-        print(f"[NFS] Época {epoch + 1}: loss {epoch_loss}")
+        # print(f"[NFS] Número de lotes processados: {num_batches}")
+        # print(f"[NFS] Número de exemplos processados: {num_examples}")
+        # print(f"[NFS] Época {epoch + 1}: loss {epoch_loss}")
     return num_examples, epoch_loss
 
 
@@ -208,12 +210,23 @@ def evaluate(net, testloader, tolerance=0.7, server=True):
     return loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses
 
 avaliacoes_df, trainloaders, valloaders, testloader = load_datasets(num_clients=300, filename="X.xlsx")
-
+results = []
 net = Net(300, 1000).to(DEVICE)
-for cid in range (300):
-    trainloader = trainloaders[int(cid)]
-    valloader = valloaders[int(cid)]
-    print(f"\nProcessando dados do Cliente {cid}")
-    train(net=net, trainloader=trainloader, epochs=20, learning_rate=0.01)
+for round in range (1, 25):
+    print(f"ROUND [{round}]")
+    for cid in range (300):
+        print(f"Processando dados do Cliente {cid}")
+        trainloader = trainloaders[int(cid)]
+        valloader = valloaders[int(cid)]
+        train(net=net, trainloader=trainloader, epochs=20, lotes_por_rodada=round, learning_rate=0.01)
 
-loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = evaluate(net=net, testloader=testloader, tolerance=0.7, server=True)
+    loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = evaluate(net=net, testloader=testloader, tolerance=0.7, server=True)
+    metrics = {"rmse": rmse, "accuracy": accuracy, "precision_at_10": precision_at_10, "recall_at_10": recall_at_10, "RgrpActivity": RgrpActivity, "RgrpGender": RgrpGender, "RgrpAge": RgrpAge, "RgrpActivity_Losses": RgrpActivity_Losses, "RgrpGender_Losses": RgrpGender_Losses, "RgrpAge_Losses": RgrpAge_Losses}
+    results.append((round, metrics))
+    print(f"Server-side evaluation :: Round {round}")
+    print(f"loss {loss} / RMSE {rmse} / accuracy {accuracy} / Precision@10 {precision_at_10} / Recall@10 {recall_at_10}")
+    print(f"RgrpActivity {RgrpActivity} / RgrpGender {RgrpGender} / RgrpAge {RgrpAge}")
+    print(f"RgrpActivity_Losses {RgrpActivity_Losses} / RgrpGender_Losses {RgrpGender_Losses} / RgrpAge_Losses {RgrpAge_Losses}")
+
+print("\n\nRESUMO")
+print(results)

@@ -385,34 +385,8 @@ class FedCustom(Strategy):
                 )
         return fit_configurations
 
-    # # Agregando pelo número de exemplos processados pelo cliente
-    # def aggregate_fit(
-    #     self,
-    #     server_round: int,
-    #     results: List[Tuple[ClientProxy, FitRes]],
-    #     failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]],
-    # ) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
-    #     """Aggregate training results using weighted average."""
-    #     total_examples = sum(fit_res.num_examples for _, fit_res in results)
-    #     print(f"Número total de exemplos agregados: {total_examples}")
-    #     # Convert results to a list of arrays and associated weights (contributions)
-    #     weights_results = [
-    #         (parameters_to_ndarrays(fit_res.parameters), fit_res.num_examples)
-    #         for _, fit_res in results
-    #     ]
-    #     # Calculate aggregated parameters using weighted average
-    #     parameters_aggregated = ndarrays_to_parameters(aggregate(weights_results))
-    #     # Dictionary for aggregated metrics (empty for now)
-    #     metrics_aggregated = {}
-    #     # Debugging: Iterate over the results to print the number of examples and weight for each client
-    #     for client_index, (client, fit_res) in enumerate(results):
-    #         num_examples = fit_res.num_examples
-    #         weight = num_examples / total_examples  # Calculating the weight based on number of examples
-    #         print(f"Cliente {client_index}: Número de exemplos = {num_examples}, Peso = {weight}")
-    #     # Return the aggregated parameters and metrics
-    #     return parameters_aggregated, metrics_aggregated
-
-    # Agregando pela perda (loss) do cliente
+    
+    # Agregando pela perda (loss) do grupo
     def aggregate_fit(
         self,
         server_round: int,

@@ -39,8 +39,6 @@ data_rgrp_gender_updated = {
 }
 df_rgrp_gender_updated = pd.DataFrame(data_rgrp_gender_updated)
 
-import pandas as pd
-
 # Continuação do script: Adicionando Métricas de Accuracy, Precision at 10, Recall at 10, e RMSE
 
 # Métricas de Accuracy

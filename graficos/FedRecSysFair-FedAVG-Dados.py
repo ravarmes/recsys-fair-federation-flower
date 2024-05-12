@@ -43,6 +43,45 @@ data_rgrp_activity = {
 }
 df_rgrp_activity = pd.DataFrame(data_rgrp_activity)
 
+
+import pandas as pd
+
+data_rgrp_age = {
+    "Round": list(range(0, 25)),
+    "RgrpAge": [
+        0.003396680190163166,
+        0.003883012178654958,
+        0.0032389046429972,
+        0.0033415192432913977,
+        0.003622837286258953,
+        0.004139421103580343,
+        0.004522999975863927,
+        0.004788569180378254,
+        0.004456227536866096,
+        0.004230801833006068,
+        0.0039457243582087425,
+        0.003498848430346345,
+        0.003322188539265435,
+        0.0033420332522783544,
+        0.0036406929257304195,
+        0.003894552862944088,
+        0.004579852897645133,
+        0.005006362570400268,
+        0.005874461016865226,
+        0.006780175495069189,
+        0.00815280980914856,
+        0.00949522482741473,
+        0.010576392752614999,
+        0.01133786831348063,
+        0.01261870780876268,
+    ]
+
+}
+
+df_rgrp_age = pd.DataFrame(data_rgrp_age)
+
+
+
 # Métricas por grupo de gênero
 data_rgrp_gender = {
     "Round": list(range(0, 25)),
@@ -55,6 +94,7 @@ data_rgrp_gender = {
     ]
 }
 df_rgrp_gender = pd.DataFrame(data_rgrp_gender)
+
 
 # Métricas de precisão e revocação (precision & recall) para top 10
 data_accuracy = {
@@ -85,6 +125,7 @@ print(df_centralized)
 
 print("DataFrames for Group Activity and Gender Metrics:")
 print(df_rgrp_activity)
+print(df_rgrp_age)
 print(df_rgrp_gender)
 print("\nDataFrames for Accuracy, Precision at 10, and Recall at 10:")
 print(df_accuracy_metrics)

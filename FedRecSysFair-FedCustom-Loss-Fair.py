@@ -1,9 +1,10 @@
 # !pip install -q flwr[simulation] torch torchvision
 
+import flwr as fl
+from flwr.server.strategy.aggregate import aggregate, weighted_loss_avg
 from collections import OrderedDict
-import random
 from typing import Dict, List, Optional, Tuple
-
+import random
 import pandas as pd
 import numpy as np
 import torch
@@ -11,10 +12,12 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader, random_split, TensorDataset
 from collections import OrderedDict
-from AlgorithmUserFairness import GroupLossVariance
+from AlgorithmUserFairness import GroupLossVariance, IndividualLossVariance
+from AlgorithmImpartiality import AlgorithmImpartiality
 
+from flwr.common import Parameters
+from io import BytesIO
 
-import flwr as fl
 
 DEVICE = torch.device("cpu")  # Try "cuda" to train on GPU
 print(
@@ -22,8 +25,27 @@ print(
 )
 
 NUM_CLIENTS = 300
+NUM_ITEMS = 1000
 
 datasets = None
+
+import numpy as np
+from io import BytesIO
+
+def extract_parameters(model: torch.nn.Module) -> Parameters:
+    """Extract parameters from a PyTorch model and convert them to Flower Parameters format."""
+    # Extraia os parâmetros como tensores, converta para CPU e NumPy arrays
+    np_params = [p.detach().cpu().numpy() for p in model.parameters()]
+    # Convertendo os arrays NumPy para representação de bytes corretamente
+    param_bytes = []
+    for arr in np_params:
+        buffer = BytesIO()
+        np.save(buffer, arr)
+        buffer.seek(0)
+        param_bytes.append(buffer.getvalue())
+    # Criar objeto Parameters do Flower usando os bytes
+    flwr_params = Parameters(tensors=param_bytes, tensor_type="numpy.ndarray")
+    return flwr_params
 
 # Função para imprimir o conteúdo de cada DataLoader
 def verificar_trainloaders(trainloaders):
@@ -142,6 +164,7 @@ def train(net, trainloader, cid, epochs: int, lotes_por_rodada: int, learning_ra
         epoch_loss = 0.0
         num_batches = 0
         num_examples = 0
+        soma_mean_usuario_especifico = 0
         for i, (data, target) in enumerate(trainloader):
             if i >= lotes_por_rodada:
                 break  # Parar após atingir o número de lotes desejado
@@ -154,10 +177,12 @@ def train(net, trainloader, cid, epochs: int, lotes_por_rodada: int, learning_ra
             loss.backward()   # Passo para trás
             optimizer.step()  # Atualizar parâmetros do modelo
             epoch_loss += loss.item()  # Acumular perda
+            soma_mean_usuario_especifico += torch.sum(outputs - target)
         print(f"[Cliente {cid}] Número de lotes processados: {num_batches}")
         print(f"[Cliente {cid}] Número de exemplos processados: {num_examples}")
         print(f"[Cliente {cid}] Época {epoch + 1}: loss {epoch_loss}")
-    return num_examples, epoch_loss
+        mean_usuario_especifico = float(soma_mean_usuario_especifico.item() / num_examples) if num_examples != 0 else 0.0
+    return num_examples, epoch_loss, mean_usuario_especifico
 
 
 def test(net, testloader, tolerance=0.7, server=False):
@@ -210,7 +235,7 @@ def calculate_f1_recall_at_k(predictions, targets, k=10, threshold=3.5):
 
 
 def calculate_Rgrp(net):
-    recomendacoes_df = net.predict_all(300, 1000)
+    recomendacoes_df = net.predict_all(NUM_CLIENTS, NUM_ITEMS)
     omega = ~avaliacoes_df.isnull()
     # Agrupamento por Atividade
     G_ACTIVITY = {1: list(range(0, 15)), 2: list(range(15, 300))}
@@ -228,8 +253,8 @@ def calculate_Rgrp(net):
     RgrpAge = glv.evaluate(recomendacoes_df)
     RgrpAge_Losses = glv.get_losses(recomendacoes_df)
     
-    print("recomendacoes_df")
-    print(recomendacoes_df)
+    # print("recomendacoes_df")
+    # print(recomendacoes_df)
 
     return RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses
 
@@ -252,17 +277,20 @@ class FlowerClient(fl.client.NumPyClient):
         local_epochs = config["local_epochs"]
         learning_rate = config["learning_rate"]
         lotes_por_rodada = config["lotes_por_rodada"]
+        mean_indv = 0
 
         # Use values provided by the config
         print(f"[Client {self.cid}] fit, config: {config}")
         set_parameters(self.net, parameters)
-        num_examples, loss = train(self.net, self.trainloader, self.cid, epochs=local_epochs, lotes_por_rodada=lotes_por_rodada, learning_rate=learning_rate)
+        num_examples, loss, mean_indv = train(self.net, self.trainloader, self.cid, epochs=local_epochs, lotes_por_rodada=lotes_por_rodada, learning_rate=learning_rate)
 
         # Adicionando dados de cálculos dos clientes
         metrics = {
             "group": 42,  # Id do Grupo
             "li": 3.14,   # Erro Individual
             "loss": loss, # Perda do cliente
+            "mean_indv": mean_indv,
+            "loss_indv": loss
         }
 
         # num_examples = len(self.trainloader.dataset)  # Certifique-se de que esta contagem é correta
@@ -277,7 +305,7 @@ class FlowerClient(fl.client.NumPyClient):
 
 
 def client_fn(cid) -> FlowerClient:
-    net = Net(300, 1000).to(DEVICE)
+    net = Net(NUM_CLIENTS, NUM_ITEMS).to(DEVICE)
     trainloader = trainloaders[int(cid)]
     print(f"\n\nTamanho do trainloader do Cliente {cid}: {len(trainloader)}\n\n")
 
@@ -306,7 +334,6 @@ from flwr.common import (
     parameters_to_ndarrays,
     ndarrays_to_parameters,
 )
-from flwr.server.strategy.aggregate import aggregate, weighted_loss_avg
 
 class FedCustom(Strategy):
     def __init__(
@@ -316,6 +343,8 @@ class FedCustom(Strategy):
         min_fit_clients: int = NUM_CLIENTS,
         min_evaluate_clients: int = NUM_CLIENTS,
         min_available_clients: int = NUM_CLIENTS,
+        modelos_locais_mean_indv: List[float] = [],
+        modelos_locais_loss_indv: List[float] = []
     ) -> None:
         super().__init__()
         self.fraction_fit = fraction_fit  # Fração de clientes para treinamento
@@ -323,6 +352,8 @@ class FedCustom(Strategy):
         self.min_fit_clients = min_fit_clients  # Mínimo de clientes para treinamento
         self.min_evaluate_clients = min_evaluate_clients  # Mínimo para avaliação
         self.min_available_clients = min_available_clients  # Mínimo de clientes disponíveis
+        self.modelos_locais_mean_indv = modelos_locais_mean_indv
+        self.modelos_locais_loss_indv = modelos_locais_loss_indv
 
     def __repr__(self) -> str:
         return "FedCustom"  # Representação da estratégia
@@ -332,7 +363,7 @@ class FedCustom(Strategy):
     ) -> Optional[Parameters]:
         """Inicializar os parâmetros do modelo global."""
         # Cria uma instância do modelo para obter os parâmetros iniciais
-        net = Net(300, 1000)
+        net = Net(NUM_CLIENTS, NUM_ITEMS)
         ndarrays = get_parameters(net)
         # Converte os parâmetros para o formato necessário pelo Flower
         return fl.common.ndarrays_to_parameters(ndarrays)
@@ -360,14 +391,14 @@ class FedCustom(Strategy):
 
         config_g1 = {
             "server_round": server_round,
-            "local_epochs": 20,
+            "local_epochs": 20, # 20
             "learning_rate": 0.01,
             "lotes_por_rodada": lotes_por_rodada
         }
 
         config_g2 = {
             "server_round": server_round,
-            "local_epochs": 20,
+            "local_epochs": 20, # 20
             "learning_rate": 0.01,
             "lotes_por_rodada": lotes_por_rodada,
         }
@@ -385,32 +416,6 @@ class FedCustom(Strategy):
                 )
         return fit_configurations
 
-    # # Agregando pelo número de exemplos processados pelo cliente
-    # def aggregate_fit(
-    #     self,
-    #     server_round: int,
-    #     results: List[Tuple[ClientProxy, FitRes]],
-    #     failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]],
-    # ) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
-    #     """Aggregate training results using weighted average."""
-    #     total_examples = sum(fit_res.num_examples for _, fit_res in results)
-    #     print(f"Número total de exemplos agregados: {total_examples}")
-    #     # Convert results to a list of arrays and associated weights (contributions)
-    #     weights_results = [
-    #         (parameters_to_ndarrays(fit_res.parameters), fit_res.num_examples)
-    #         for _, fit_res in results
-    #     ]
-    #     # Calculate aggregated parameters using weighted average
-    #     parameters_aggregated = ndarrays_to_parameters(aggregate(weights_results))
-    #     # Dictionary for aggregated metrics (empty for now)
-    #     metrics_aggregated = {}
-    #     # Debugging: Iterate over the results to print the number of examples and weight for each client
-    #     for client_index, (client, fit_res) in enumerate(results):
-    #         num_examples = fit_res.num_examples
-    #         weight = num_examples / total_examples  # Calculating the weight based on number of examples
-    #         print(f"Cliente {client_index}: Número de exemplos = {num_examples}, Peso = {weight}")
-    #     # Return the aggregated parameters and metrics
-    #     return parameters_aggregated, metrics_aggregated
 
     # Agregando pela perda (loss) do cliente
     def aggregate_fit(
@@ -420,13 +425,6 @@ class FedCustom(Strategy):
         failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]],
     ) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
         """Aggregate training results using weighted average."""
-
-        # for _, fit_res in results:
-        #     loss = fit_res.metrics['loss']
-        #     print("Loss from client: ", loss)
-
-        # for client_index, (client, fit_res) in enumerate(results):
-        #     loss = fit_res.metrics['loss']
 
         total_examples = sum(fit_res.num_examples for _, fit_res in results)
         print(f"Número total de exemplos agregados: {total_examples}")
@@ -440,14 +438,54 @@ class FedCustom(Strategy):
         ]
         # Calculate aggregated parameters using weighted average
         parameters_aggregated = ndarrays_to_parameters(aggregate(weights_results))
+        # parameters_aggregated = [ndarrays_to_parameters(aggregate(weights_results))]
+
+        # print("[Depois de chamar def aggregate(weights_results) :: agregação padrão] parameters_aggregated")
+        # print(type(parameters_aggregated))
+
+        # #--------------------------------------------------------------------------
+        #print("\n\n[Antes] self.modelos_locais_loss_indv = [fit_res.metrics.get('loss_indv', 0) for _, fit_res in results]")
+        self.modelos_locais_loss_indv = [fit_res.metrics.get('loss_indv', 0) for _, fit_res in results]       
+        self.modelos_locais_mean_indv = [fit_res.metrics.get('mean_indv', 0) for _, fit_res in results]       
+        #print("\n\n[Depois] self.modelos_locais_loss_indv = [fit_res.metrics.get('loss_indv', 0) for _, fit_res in results]")
+
+
+        # Chamando o algoritmo de imparcialidade (ou seja, depois de FedAVG)
+        # Agrupamento por Atividade
+        G_ACTIVITY = {1: list(range(0, 15)), 2: list(range(15, 300))}
+        net = Net(NUM_CLIENTS, NUM_ITEMS)
+        set_parameters(net, parameters_to_ndarrays(parameters_aggregated))
+        #print("\n\n[Antes] self.aplicar_algoritmo_imparcialidade_na_agregacao_ao_modelo_global")
+        self.aplicar_algoritmo_imparcialidade_na_agregacao_ao_modelo_global(net, G_ACTIVITY)
+        #print("\n\n[Depois] self.aplicar_algoritmo_imparcialidade_na_agregacao_ao_modelo_global")
+        #parameters_aggregated = get_parameters(net) # Obtendo os parâmetros do modelo global treinado à partir das recomendações justas
+        #--------------------------------------------------------------------------
+        #--------------------------------------------------------------------------
+        net = Net(NUM_CLIENTS, NUM_ITEMS)
+        #print("\n\n[Antes] parameters_aggregated = get_parameters(net)")
+        #set_parameters(net, parameters_to_ndarrays(parameters_aggregated))
+        parameters_aggregated = get_parameters(net) # Obtendo os parâmetros do modelo global treinado à partir das recomendações justas
+        #print("\n\n[Depois] parameters_aggregated = get_parameters(net)")
+        #--------------------------------------------------------------------------
+
         # Dictionary for aggregated metrics (empty for now)
         metrics_aggregated = {}
         # Debugging: Iterate over the results to print the number of examples and weight for each client
-        for client_index, (client, fit_res) in enumerate(results):
-            loss = fit_res.metrics.get('loss', 0)
-            weight = loss / total_loss  # Calculating the weight based on loss
-            print(f"Cliente {client.cid}: Perda = {loss}, Peso = {weight}")
-        # Return the aggregated parameters and metrics
+        # for client_index, (client, fit_res) in enumerate(results):
+        #     loss = fit_res.metrics.get('loss', 0)
+        #     loss_indv = fit_res.metrics.get('loss_indv', 0)
+        #     mean_indv = fit_res.metrics.get('mean_indv', 0)
+        #     weight = loss / total_loss  # Calculating the weight based on loss
+        #     print(f"Cliente {client.cid}: Loss Indv = {loss_indv}, Média Indv = {mean_indv}, Peso = {weight}")
+        
+        # print("[Depois de chamar def imparcialidade] parameters_aggregated")
+        # print(type(parameters_aggregated))
+
+        parameters_aggregated = extract_parameters(net)
+
+        # print("[Depois de chamar def imparcialidade :: Depois de converter] parameters_aggregated")
+        # print(type(parameters_aggregated))
+
         return parameters_aggregated, metrics_aggregated
 
 
@@ -455,15 +493,12 @@ class FedCustom(Strategy):
         self, server_round: int, parameters: Parameters, client_manager: ClientManager
     ) -> List[Tuple[ClientProxy, EvaluateIns]]:
         """Configurar a próxima rodada de avaliação."""
-        
         # Se a fração de avaliação for zero, não há avaliação
         if self.fraction_evaluate == 0.0:
             return []
-        
         # Cria configuração de avaliação
         config = {}
         evaluate_ins = EvaluateIns(parameters, config)
-
         # Selecionar clientes para avaliação
         sample_size, min_num_clients = self.num_evaluation_clients(
             client_manager.num_available()
@@ -471,9 +506,9 @@ class FedCustom(Strategy):
         clients = client_manager.sample(
             num_clients=sample_size, min_num_clients=min_num_clients
         )
-
         # Retorna pares cliente/configuração para avaliação
         return [(client, evaluate_ins) for client in clients]
+
 
     def aggregate_evaluate(
         self,
@@ -481,46 +516,19 @@ class FedCustom(Strategy):
         results: List[Tuple[ClientProxy, EvaluateRes]],
         failures: List[Union[Tuple[ClientProxy, EvaluateRes], BaseException]],
     ) -> Tuple[Optional[float], Dict[str, Scalar]]:
-        
-        
         if not results:  # Se não houver resultados, retorne nada
             return None, {}
-        
-        # # # Calcular a perda média ponderada
-        # # loss_aggregated = weighted_loss_avg(
-        # #     [
-        # #         (evaluate_res.num_examples, evaluate_res.loss)
-        # #         for _, evaluate_res in results
-        # #     ]
-        # # )
-
-        # # Calcula a perda média ponderada e exibe o número de amostras de cada cliente
-        # examples_and_loss = [
-        #     (evaluate_res.num_examples, evaluate_res.loss)
-        #     for _, evaluate_res in results
-        # ]
-
-        # loss_aggregated = weighted_loss_avg(examples_and_loss)
-
-        # # Exibindo o número de amostras consideradas por cada cliente
-        # # Certifique-se de ter a lista de clientes e resultados para obter o ID do cliente corretamente
-        # for result, (num_samples, _) in zip(results, examples_and_loss):
-        #     client_proxy = result[0]  # O primeiro item da tupla deve ser o ClientProxy
-        #     client_id = client_proxy.cid  # Obter o ID do cliente real
-        #     print(f"Cliente {client_id}: Número de amostras consideradas = {num_samples}")
-
-        
         # Dicionário para métricas agregadas (vazio por enquanto)
         metrics_aggregated = {}
         loss_aggregated = None
-        
         # Retorna a perda agregada e métricas
         return loss_aggregated, metrics_aggregated
 
 
     def evaluate(self, server_round: int, parameters: Parameters) -> Optional[Tuple[float, Dict[str, Scalar]]]:
-        net = Net(300, 1000).to(DEVICE)
+        net = Net(NUM_CLIENTS, NUM_ITEMS).to(DEVICE)
         set_parameters(net, parameters_to_ndarrays(parameters))
+        #set_parameters(net, parameters)
         loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = test(net, testloader, server=True)
         metrics = {"rmse": rmse, "accuracy": accuracy, "precision_at_10": precision_at_10, "recall_at_10": recall_at_10, "RgrpActivity": RgrpActivity, "RgrpGender": RgrpGender, "RgrpAge": RgrpAge, "RgrpActivity_Losses": RgrpActivity_Losses, "RgrpGender_Losses": RgrpGender_Losses, "RgrpAge_Losses": RgrpAge_Losses}  # Agrupar RMSE e accuracy em um dicionário
         print(f"Server-side evaluation :: Round {server_round}")
@@ -541,7 +549,43 @@ class FedCustom(Strategy):
         
         num_clients = int(num_available_clients * self.fraction_evaluate)
         return max(num_clients, self.min_evaluate_clients), self.min_available_clients
+    
 
+    def aplicar_algoritmo_imparcialidade_na_agregacao_ao_modelo_global(self, net, G):
+        recomendacoes = net.predict_all(NUM_CLIENTS, NUM_ITEMS)
+        omega = ~recomendacoes.isnull() 
+
+        print("recomendacoes")
+        print(recomendacoes)
+
+        algorithmImpartiality = AlgorithmImpartiality(recomendacoes, omega, 1)
+        list_X_est = algorithmImpartiality.evaluate_federated(recomendacoes, self.modelos_locais_mean_indv, self.modelos_locais_loss_indv, 5) # calculates a list of h estimated matrices => h = 5
+
+        ilv = IndividualLossVariance(recomendacoes, omega, 1)
+        list_losses = []
+        for X_est in list_X_est:
+            losses = ilv.get_losses(X_est)
+            list_losses.append(losses)
+
+        Z = AlgorithmImpartiality.losses_to_Z(list_losses)
+        list_Zs = AlgorithmImpartiality.matrices_Zs(Z, G)
+        recomendacoes_fairness = AlgorithmImpartiality.make_matrix_X_gurobi(list_X_est, G, list_Zs) 
+
+        print("recomendacoes_fairness")
+        print(recomendacoes_fairness)
+        
+        recomendacoes_fairness = AlgorithmImpartiality.make_matrix_X_gurobi(list_X_est, G, list_Zs) 
+
+        dados = recomendacoes_fairness.fillna(0).values
+        X, y = np.nonzero(dados)
+        ratings = dados[X, y]  
+        user_indices_tensor = torch.tensor(X).long()  # Índices do usuário
+        item_indices_tensor = torch.tensor(y).long()  # Índices do item
+        ratings_tensor = torch.tensor(ratings).float()  # Converter para tensor de ponto flutuante
+        combined_indices = torch.stack((user_indices_tensor, item_indices_tensor), dim=1)
+        dataset = TensorDataset(combined_indices, ratings_tensor)
+        trainloader = DataLoader(dataset, batch_size=32, shuffle=True)
+        train(net=net, trainloader=trainloader, cid=0, epochs=20, lotes_por_rodada=1, learning_rate=0.01)
 
 #-----------------------------------------------------------------
 

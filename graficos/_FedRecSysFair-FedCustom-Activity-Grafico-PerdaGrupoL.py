@@ -94,7 +94,7 @@ axs[0].plot(df_rgrp_activity_losses['Round'], df_rgrp_activity_losses['Favorecid
 axs[0].plot(df_rgrp_activity_losses['Round'], df_rgrp_activity_losses['Desfavorecidos'], marker='o', label='Desfavorecidos', color='green')
 axs[0].set_title('Nível de Atividade')
 axs[0].set_xlabel('Round')
-axs[0].set_ylabel('Injustiça do Grupo')
+axs[0].set_ylabel('Perda do Grupo (L)')
 axs[0].legend()
 
 # Plotar dados para "Desfavorecidos"
@@ -107,7 +107,7 @@ axs[1].plot(df_rgrp_activity_losses['Round'], df_rgrp_age_losses['50-55'], marke
 axs[1].plot(df_rgrp_activity_losses['Round'], df_rgrp_age_losses['56-99'], marker='o', label='56-99', color='purple')
 axs[1].set_title('Idade')
 axs[1].set_xlabel('Round')
-axs[1].set_ylabel('Injustiça do Grupo')
+axs[1].set_ylabel('Perda do Grupo (L)')
 axs[1].legend()
 
 # Plotar dados para "Masculino" e "Feminino"
@@ -115,7 +115,7 @@ axs[2].plot(df_rgrp_gender_losses['Round'], df_rgrp_gender_losses['Masculino'], 
 axs[2].plot(df_rgrp_gender_losses['Round'], df_rgrp_gender_losses['Feminino'], marker='o', label='Feminino', color='green')
 axs[2].set_title('Gênero')
 axs[2].set_xlabel('Round')
-axs[2].set_ylabel('Injustiça do Grupo')
+axs[2].set_ylabel('Perda do Grupo (L)')
 axs[2].legend()
 
 plt.subplots_adjust(wspace=0.1)  # Reduz o espaço entre os gráficos

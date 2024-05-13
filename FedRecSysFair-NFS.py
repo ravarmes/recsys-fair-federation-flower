@@ -209,8 +209,8 @@ def calculate_Rgrp(net):
     RgrpAge = glv.evaluate(recomendacoes_df)
     RgrpAge_Losses = glv.get_losses(recomendacoes_df)
     
-    print("recomendacoes_df")
-    print(recomendacoes_df)
+    # print("recomendacoes_df")
+    # print(recomendacoes_df)
 
     return RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses
 

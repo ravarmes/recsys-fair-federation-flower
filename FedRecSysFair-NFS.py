@@ -227,7 +227,7 @@ avaliacoes_df, trainloaders, valloaders, testloader = load_datasets(num_clients=
 results = []
 l_loss = l_rmse = l_accuracy = l_precision_at_10 = l_recall_at_10 = l_RgrpActivity = l_RgrpGender = l_RgrpAge = l_RgrpActivity_Losses = l_RgrpGender_Losses = l_RgrpAge_Losses = []
 net = Net(300, 1000).to(DEVICE)
-for round in range (0, 24):
+for round in range (0, 25):
     print(f"ROUND [{round}]")
     trainloader = trainloaders[int(round)]
     #valloader = valloaders[int(round)]

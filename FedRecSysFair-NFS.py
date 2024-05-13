@@ -39,7 +39,7 @@ def load_datasets(num_clients: int, filename: str):
     trainloaders = []
     testloader_data = []
 
-    for round_num in range(24):  # Iterar sobre os 24 rounds
+    for round_num in range(25):  # Iterar sobre os 24 rounds (de zero até 24 ... o primeiro a o round 0)
         round_train_loader = []
 
         for cliente_id in range(num_clients):
@@ -124,6 +124,12 @@ def train(net, trainloader, epochs: int, lotes_por_rodada: int, learning_rate : 
         num_examples = 0
         for i, (data, target) in enumerate(trainloader):
             if i >= lotes_por_rodada:
+                # print("len(trainloader)")
+                # print(len(trainloader))
+                # print("len(data)")
+                # print(len(data))
+                # print(len(target))
+                # print("len(target)")
                 break  # Parar após atingir o número de lotes desejado
             num_batches += 1
             num_examples += len(data)
@@ -134,9 +140,9 @@ def train(net, trainloader, epochs: int, lotes_por_rodada: int, learning_rate : 
             loss.backward()   # Passo para trás
             optimizer.step()  # Atualizar parâmetros do modelo
             epoch_loss += loss.item()  # Acumular perda
-        # print(f"[NFS] Número de lotes processados: {num_batches}")
-        # print(f"[NFS] Número de exemplos processados: {num_examples}")
-        # print(f"[NFS] Época {epoch + 1}: loss {epoch_loss}")
+        print(f"[NFS] Número de lotes processados: {num_batches}")
+        print(f"[NFS] Número de exemplos processados: {num_examples}")
+        print(f"[NFS] Época {epoch + 1}: loss {epoch_loss}")
     return num_examples, epoch_loss
 
 
@@ -163,7 +169,6 @@ def test(net, testloader, tolerance=0.7, server=False):
     rmse = torch.sqrt(torch.tensor(squared_error) / total)  # RMSE - Raiz do Erro Quadrático Médio
     accuracy = correct / total  # Cálculo da precisão considerando a tolerância
     if server == True:
-        #precision_at_10, recall_at_10 = calculate_f1_recall_at_k(outputs, target, k=10, threshold=3.5)
         precision_at_10, recall_at_10 = calculate_f1_recall_at_k(outputs, target, k=10, threshold=3.5)
         RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = calculate_Rgrp(net)
     return loss, rmse.item(), accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses
@@ -231,7 +236,7 @@ for round in range (0, 25):
     print(f"ROUND [{round}]")
     trainloader = trainloaders[int(round)]
     #valloader = valloaders[int(round)]
-    train(net=net, trainloader=trainloader, epochs=20, lotes_por_rodada=round, learning_rate=0.01)
+    train(net=net, trainloader=trainloader, epochs=50, lotes_por_rodada=round, learning_rate=0.01)
 
     loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = evaluate(net=net, testloader=testloader, tolerance=0.7, server=True)
     l_loss.append((round, loss))

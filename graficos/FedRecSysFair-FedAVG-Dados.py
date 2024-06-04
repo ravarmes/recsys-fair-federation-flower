@@ -44,8 +44,6 @@ data_rgrp_activity = {
 df_rgrp_activity = pd.DataFrame(data_rgrp_activity)
 
 
-import pandas as pd
-
 data_rgrp_age = {
     "Round": list(range(0, 25)),
     "RgrpAge": [
@@ -116,6 +114,29 @@ data_accuracy = {
 }
 df_accuracy_metrics = pd.DataFrame(data_accuracy)
 
+
+import pandas as pd
+
+# Dados fornecidos
+data_rmse = {
+    "Round": list(range(0, 25)),
+    "rmse": [
+        1.1645201444625854, 1.0938423871994019, 1.1099498271942139,
+        1.0983784198760986, 1.0669233798980713, 1.030524730682373,
+        1.0076098442077637, 0.993777871131897, 0.9872936010360718,
+        0.9874579310417175, 0.9897322654724121, 0.9946486353874207,
+        1.0001062154769897, 1.0043343305587769, 1.0080845355987549,
+        1.008457064628601, 1.0085766315460205, 1.007082462310791,
+        1.0062311887741089, 1.0068706274032593, 1.0067862272262573,
+        1.0087419748306274, 1.0141522884368896, 1.0159159898757935,
+        1.0210365056991577
+    ]
+}
+
+# Criando o dataframe
+df_rmse = pd.DataFrame(data_rmse)
+
+
 # Imprimindo os DataFrames para visualização
 
 print("Distributed Training Loss History:")
@@ -129,3 +150,6 @@ print(df_rgrp_age)
 print(df_rgrp_gender)
 print("\nDataFrames for Accuracy, Precision at 10, and Recall at 10:")
 print(df_accuracy_metrics)
+
+# Exibindo o dataframe
+print(df_rmse)

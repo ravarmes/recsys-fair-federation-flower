@@ -39,7 +39,7 @@ def load_datasets(num_clients: int, filename: str):
     trainloaders = []
     testloader_data = []
 
-    for round_num in range(25):  # Iterar sobre os 24 rounds (de zero até 24 ... o primeiro a o round 0)
+    for round_num in range(26):  # Iterar sobre os 24 rounds (de zero até 24 ... o primeiro a o round 0)
         round_train_loader = []
 
         for cliente_id in range(num_clients):
@@ -232,7 +232,7 @@ avaliacoes_df, trainloaders, valloaders, testloader = load_datasets(num_clients=
 results = []
 l_loss = l_rmse = l_accuracy = l_precision_at_10 = l_recall_at_10 = l_RgrpActivity = l_RgrpGender = l_RgrpAge = l_RgrpActivity_Losses = l_RgrpGender_Losses = l_RgrpAge_Losses = []
 net = Net(300, 1000).to(DEVICE)
-for round in range (0, 25):
+for round in range (0, 26):
     print(f"ROUND [{round}]")
     trainloader = trainloaders[int(round)]
     #valloader = valloaders[int(round)]

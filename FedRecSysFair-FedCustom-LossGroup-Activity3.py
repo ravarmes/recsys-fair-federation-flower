@@ -2,7 +2,7 @@
 # Além disso, os grupos recebem parâmetros de taxa de aprendizagem e épocas de acordo com as Perdas dos Grupos
 # Grupos favorecidos tem menores taxas de aprendizado e épocas
 # Grupos desfavorecidos tem maiores taxas de aprendizado e épocas
-# As configurações de taxas de aprendizado e épocas para cada grupo são FIXAS
+# As configurações de taxas de aprendizado e épocas para cada grupo são DINÂMICAS
 # A configuração de grupo considerada é a Atividade (Activity)
 
 # !pip install -q flwr[simulation] torch torchvision
@@ -330,6 +330,7 @@ class FedCustom(Strategy):
         self.min_fit_clients = min_fit_clients  # Mínimo de clientes para treinamento
         self.min_evaluate_clients = min_evaluate_clients  # Mínimo para avaliação
         self.min_available_clients = min_available_clients  # Mínimo de clientes disponíveis
+        self.last_metrics = {}  # Inicializa o dicionário para armazenar métricas da última rodada
 
     def __repr__(self) -> str:
         return "FedCustom"  # Representação da estratégia
@@ -357,25 +358,36 @@ class FedCustom(Strategy):
             num_clients=sample_size, min_num_clients=min_num_clients
         )  # Amostra de clientes para a rodada
 
+        # Obter perdas médias dos grupos
+        loss_avg_per_group = self.last_metrics.get("loss_avg_per_group", {1: 1, 2: 1})
+
         # Criar configurações personalizadas para treinamento
         n_clients = len(clients)
-        # half_clients = n_clients // 2  # Divide os clientes em duas metades
         favorecidos = 15
         desfavorecidos = 285
 
         lotes_por_rodada = server_round
 
+        # Configurações padrão de treinamento
+        config = {
+            "server_round": server_round,
+            "local_epochs": 20,
+            "learning_rate": 0.01,
+            "lotes_por_rodada": lotes_por_rodada,
+        }
+
+        # Ajustar configurações com base nas perdas médias dos grupos
         config_g1 = {
             "server_round": server_round,
-            "local_epochs": 10,
-            "learning_rate": 0.10,
-            "lotes_por_rodada": lotes_por_rodada
+            "local_epochs": int(20 * loss_avg_per_group[1]),
+            "learning_rate": 0.01 * (1 / loss_avg_per_group[1]),
+            "lotes_por_rodada": lotes_por_rodada,
         }
 
         config_g2 = {
             "server_round": server_round,
-            "local_epochs": 20,
-            "learning_rate": 0.01,
+            "local_epochs": int(20 * loss_avg_per_group[2]),
+            "learning_rate": 0.01 * (1 / loss_avg_per_group[2]),
             "lotes_por_rodada": lotes_por_rodada,
         }
 
@@ -383,17 +395,14 @@ class FedCustom(Strategy):
         fit_configurations = []
         for idx, client in enumerate(clients):
             if idx < favorecidos:
-                # Primeira metade usa a configuração padrão
                 fit_configurations.append((client, FitIns(parameters, config_g1)))
             else:
-                # Segunda metade usa a configuração com taxa de aprendizado maior
-                fit_configurations.append(
-                    (client, FitIns(parameters, config_g2))
-                )
+                fit_configurations.append((client, FitIns(parameters, config_g2)))
+
         return fit_configurations
 
+
     
-    # Agregando pela perda (loss) do grupo
     def aggregate_fit(
         self,
         server_round: int,
@@ -402,15 +411,12 @@ class FedCustom(Strategy):
     ) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
         """Aggregate training results using weighted average."""
 
-        # ---------------------------------------------------------------------------
-        # Agregando pelo Grupo
         # Agrupamento por Atividade
         G_ACTIVITY = {1: list(range(0, 15)), 2: list(range(15, 300))}
 
         # Calcular a perda média de todos os clientes
-        # Assegurar que temos as perdas totais e médias calculadas
         total_loss = sum(fit_res.metrics.get('loss', 0) for _, fit_res in results)
-        total_loss_avg = total_loss / total_loss if total_loss != 0 else 1
+        total_loss_avg = total_loss / len(results) if total_loss != 0 else 1
 
         # Calcular perda média por grupo
         group_losses = {}
@@ -440,16 +446,15 @@ class FedCustom(Strategy):
         # Agregar parâmetros usando a média ponderada
         parameters_aggregated = ndarrays_to_parameters(aggregate(weights_results))
 
-        # # Resultados adicionais se necessários
-        # metrics_aggregated = {
-        #     "average_loss": total_loss_avg,
-        #     "loss_deviation": {group: abs(loss_avg_per_group[group] - total_loss_avg) for group in G_GENDER}
-        # }
-
-        # Dictionary for aggregated metrics (empty for now)
-        metrics_aggregated = {}
+        # Dictionary for aggregated metrics
+        metrics_aggregated = {
+            "loss_avg_per_group": loss_avg_per_group
+        }
 
         print(f"loss_avg_per_group: {loss_avg_per_group}")
+
+        # Atualiza last_metrics com as novas métricas agregadas
+        self.last_metrics = metrics_aggregated
         
         # Debugging: Iterate over the results to print the number of examples and weight for each client
         for client_index, (client, fit_res) in enumerate(results):

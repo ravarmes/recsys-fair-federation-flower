@@ -39,6 +39,19 @@ data_rgrp_activity_FedCustom_LossIndv_2 = {
     ]
 }
 
+data_rgrp_activity_FedCustom_LossIndv_3 = {
+    "Round": list(range(0, 25)),
+    "RgrpActivity": [
+        0.002167651895229057, 0.0002787951373491965, 0.0006015741137675295, 0.00039179114827841673,
+        0.00033965975781321276, 0.0003336726746315684, 0.00021996303906815794, 0.00011262280840721679,
+        5.672360560229467e-06, 1.7394110656305508e-06, 3.157148258756649e-05, 0.00028582427806137867,
+        0.0023965973037202784, 0.004919343887605995, 0.007594745482623536, 0.01011508851180434,
+        0.010738733616295315, 0.010775602018742666, 0.011263658192535895, 0.011428675936094423,
+        0.012005869056688812, 0.011802848174764385, 0.01240270087520488, 0.012240262146899517,
+        0.011931908618576206
+    ]
+}
+
 data_rgrp_activity_FedCustom_LossGroup_Activity_1 = {
     "Round": list(range(0, 25)),
     "RgrpActivity": [
@@ -115,6 +128,7 @@ plt.figure(figsize=(10, 6))
 plt.plot(data_rgrp_activity_FedAvg["Round"], data_rgrp_activity_FedAvg["RgrpActivity"], label="FedAvg", linestyle='-')
 plt.plot(data_rgrp_activity_FedCustom_LossIndv_1["Round"], data_rgrp_activity_FedCustom_LossIndv_1["RgrpActivity"], label="FedLossIndv1", linestyle='--')
 plt.plot(data_rgrp_activity_FedCustom_LossIndv_2["Round"], data_rgrp_activity_FedCustom_LossIndv_2["RgrpActivity"], label="FedLossIndv2", linestyle='--')
+plt.plot(data_rgrp_activity_FedCustom_LossIndv_3["Round"], data_rgrp_activity_FedCustom_LossIndv_3["RgrpActivity"], label="FedLossIndv3", linestyle='--')
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_1["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_1["RgrpActivity"], label="FedLossGroupActivity1", linestyle='-.')
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_2["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_2["RgrpActivity"], label="FedLossGroupActivity2", linestyle='-.')
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_3["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_3["RgrpActivity"], label="FedLossGroupActivity3", linestyle='-.')

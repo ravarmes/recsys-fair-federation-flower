@@ -2,7 +2,7 @@
 # Além disso, os grupos recebem parâmetros de taxa de aprendizagem e épocas de acordo com as Perdas dos Grupos
 # Grupos favorecidos tem menores taxas de aprendizado e épocas
 # Grupos desfavorecidos tem maiores taxas de aprendizado e épocas
-# As configurações de taxas de aprendizado e épocas para cada grupo são FIXAS
+# As configurações de taxas de aprendizado e épocas para cada grupo são DINÂMICAS
 
 # !pip install -q flwr[simulation] torch torchvision
 
@@ -347,7 +347,7 @@ class FedCustom(Strategy):
         self, server_round: int, parameters: Parameters, client_manager: ClientManager
     ) -> List[Tuple[ClientProxy, FitIns]]:
         """Configurar a próxima rodada de treinamento."""
-
+        
         # Selecionar clientes
         sample_size, min_num_clients = self.num_fit_clients(
             client_manager.num_available()
@@ -356,40 +356,37 @@ class FedCustom(Strategy):
             num_clients=sample_size, min_num_clients=min_num_clients
         )  # Amostra de clientes para a rodada
 
-        # Criar configurações personalizadas para treinamento
-        n_clients = len(clients)
-        # half_clients = n_clients // 2  # Divide os clientes em duas metades
-        favorecidos = 15
-        desfavorecidos = 285
+        # Obtendo as perdas individuais dos clientes
+        client_losses = [fit_res.metrics.get('loss', 0) for _, fit_res in clients]
 
         lotes_por_rodada = server_round
 
-        config_g1 = {
-            "server_round": server_round,
-            "local_epochs": 10,
-            "learning_rate": 0.10,
-            "lotes_por_rodada": lotes_por_rodada
-        }
-
-        config_g2 = {
+        # Configurações padrão de treinamento
+        config = {
             "server_round": server_round,
             "local_epochs": 20,
             "learning_rate": 0.01,
             "lotes_por_rodada": lotes_por_rodada,
         }
 
-        # Define configurações de treinamento para cada cliente
+        # Ajustar configurações com base nas perdas individuais dos clientes
         fit_configurations = []
-        for idx, client in enumerate(clients):
-            if idx < favorecidos:
-                # Primeira metade usa a configuração padrão
-                fit_configurations.append((client, FitIns(parameters, config_g1)))
-            else:
-                # Segunda metade usa a configuração com taxa de aprendizado maior
-                fit_configurations.append(
-                    (client, FitIns(parameters, config_g2))
-                )
+        for client, loss in zip(clients, client_losses):
+            # Ajustar local_epochs com base na perda individual
+            local_epochs = min(20, int(20 * loss))  # Limite superior de 20 epochs
+            # Ajustar learning_rate com base na perda individual
+            learning_rate = max(0.01, 0.01 / (loss + 1))  # Limite inferior de 0.01
+            # Criar configuração personalizada para o cliente
+            client_config = {
+                "server_round": server_round,
+                "local_epochs": local_epochs,
+                "learning_rate": learning_rate,
+                "lotes_por_rodada": lotes_por_rodada,
+            }
+            fit_configurations.append((client, FitIns(parameters, client_config)))
+
         return fit_configurations
+
 
     # # Agregando pelo número de exemplos processados pelo cliente
     # def aggregate_fit(

@@ -1,3 +1,5 @@
+# Neste script a estratégia de agregação é ponderar os pesos na proporção das Perdas Individuais
+
 # !pip install -q flwr[simulation] torch torchvision
 
 from collections import OrderedDict

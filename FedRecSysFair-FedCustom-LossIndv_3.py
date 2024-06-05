@@ -376,6 +376,9 @@ class FedCustom(Strategy):
         min_learning_rate = 0.01
         max_learning_rate = 0.1
 
+        # Calcula o total das perdas (loss)
+        total_loss = sum(self.all_losses)
+
         # Iterar sobre os clientes para criar configurações individuais
         for client in clients:
             client_config = config.copy()

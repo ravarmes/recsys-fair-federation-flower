@@ -9,6 +9,8 @@
 from collections import OrderedDict
 import random
 from typing import Dict, List, Optional, Tuple
+import math
+
 
 import pandas as pd
 import numpy as np
@@ -329,6 +331,8 @@ class FedCustom(Strategy):
         self.min_fit_clients = min_fit_clients  # Mínimo de clientes para treinamento
         self.min_evaluate_clients = min_evaluate_clients  # Mínimo para avaliação
         self.min_available_clients = min_available_clients  # Mínimo de clientes disponíveis
+        self.all_losses = []  # Lista para armazenar todas as perdas
+        self.all_weights = []  # Lista para armazenar todos os pesos
 
     def __repr__(self) -> str:
         return "FedCustom"  # Representação da estratégia
@@ -342,6 +346,7 @@ class FedCustom(Strategy):
         ndarrays = get_parameters(net)
         # Converte os parâmetros para o formato necessário pelo Flower
         return fl.common.ndarrays_to_parameters(ndarrays)
+    
 
     def configure_fit(
         self, server_round: int, parameters: Parameters, client_manager: ClientManager
@@ -349,15 +354,8 @@ class FedCustom(Strategy):
         """Configurar a próxima rodada de treinamento."""
         
         # Selecionar clientes
-        sample_size, min_num_clients = self.num_fit_clients(
-            client_manager.num_available()
-        )  # Define quantos clientes participarão do treinamento
-        clients = client_manager.sample(
-            num_clients=sample_size, min_num_clients=min_num_clients
-        )  # Amostra de clientes para a rodada
-
-        # Obtendo as perdas individuais dos clientes
-        client_losses = [fit_res.metrics.get('loss', 0) for _, fit_res in clients]
+        sample_size, min_num_clients = self.num_fit_clients(client_manager.num_available())
+        clients = client_manager.sample(num_clients=sample_size, min_num_clients=min_num_clients)
 
         lotes_por_rodada = server_round
 
@@ -369,53 +367,56 @@ class FedCustom(Strategy):
             "lotes_por_rodada": lotes_por_rodada,
         }
 
-        # Ajustar configurações com base nas perdas individuais dos clientes
+        # Cria a lista de instruções de ajuste
         fit_configurations = []
-        for client, loss in zip(clients, client_losses):
-            # Ajustar local_epochs com base na perda individual
-            local_epochs = min(20, int(20 * loss))  # Limite superior de 20 epochs
-            # Ajustar learning_rate com base na perda individual
-            learning_rate = max(0.01, 0.01 / (loss + 1))  # Limite inferior de 0.01
-            # Criar configuração personalizada para o cliente
-            client_config = {
-                "server_round": server_round,
-                "local_epochs": local_epochs,
-                "learning_rate": learning_rate,
-                "lotes_por_rodada": lotes_por_rodada,
-            }
-            fit_configurations.append((client, FitIns(parameters, client_config)))
 
+        # # Parâmetros de ajuste
+        # min_local_epochs = 10
+        # max_local_epochs = 20
+        # min_learning_rate = 0.01
+        # max_learning_rate = 0.1
+
+        # # Calcula o total das perdas (loss)
+        # total_loss = sum(self.all_losses)
+
+        # # Iterar sobre os clientes para criar configurações individuais
+        # for client in clients:
+        #     client_config = config.copy()
+            
+        #     # Obter a perda do cliente atual
+        #     client_loss = self.all_losses[int(client.cid)] if int(client.cid) < len(self.all_losses) else 0
+            
+        #     # Ajustar local_epochs com base na perda do cliente
+        #     local_epochs = math.ceil(max(min_local_epochs, min(max_local_epochs, min_local_epochs + (max_local_epochs - min_local_epochs) * (client_loss / total_loss))))
+            
+        #     # Ajustar learning_rate com base na perda do cliente
+        #     learning_rate = max(min_learning_rate, min(max_learning_rate, min_learning_rate + (max_learning_rate - min_learning_rate) * (client_loss / total_loss)))
+            
+        #     # Configurar os parâmetros ajustados para o cliente
+        #     client_config["local_epochs"] = local_epochs
+        #     client_config["learning_rate"] = learning_rate
+            
+        #     # Adicionar configurações ajustadas à lista de configurações
+        #     fit_configurations.append((client, FitIns(parameters, client_config)))
+
+        # return fit_configurations
+
+        # Iterar sobre os clientes para criar configurações individuais
+        for client in clients:
+            client_config = config.copy()
+            # Obter a perda do cliente atual
+            client_loss = self.all_losses[int(client.cid)] if int(client.cid) < len(self.all_losses) else 0
+            # Ajustar local_epochs com base na perda do cliente
+            # local_epochs = max(1, min(20, int(20 * (client_loss + 0.5))))  # Ajusta local_epochs, garantindo um mínimo de 1 e um máximo de 20
+            local_epochs = max(15, min(20, int(20 * math.log(client_loss + 1))))
+            client_config["local_epochs"] = local_epochs
+            # Ajustar learning_rate com base na perda do cliente
+            learning_rate = max(0.01, min(0.01 * (client_loss + 1), 0.1))  # Ajusta a taxa de aprendizado para ser no mínimo 0.01 e no máximo 0.1
+            client_config["learning_rate"] = learning_rate
+            fit_configurations.append((client, FitIns(parameters, client_config)))
         return fit_configurations
 
 
-    # # Agregando pelo número de exemplos processados pelo cliente
-    # def aggregate_fit(
-    #     self,
-    #     server_round: int,
-    #     results: List[Tuple[ClientProxy, FitRes]],
-    #     failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]],
-    # ) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
-    #     """Aggregate training results using weighted average."""
-    #     total_examples = sum(fit_res.num_examples for _, fit_res in results)
-    #     print(f"Número total de exemplos agregados: {total_examples}")
-    #     # Convert results to a list of arrays and associated weights (contributions)
-    #     weights_results = [
-    #         (parameters_to_ndarrays(fit_res.parameters), fit_res.num_examples)
-    #         for _, fit_res in results
-    #     ]
-    #     # Calculate aggregated parameters using weighted average
-    #     parameters_aggregated = ndarrays_to_parameters(aggregate(weights_results))
-    #     # Dictionary for aggregated metrics (empty for now)
-    #     metrics_aggregated = {}
-    #     # Debugging: Iterate over the results to print the number of examples and weight for each client
-    #     for client_index, (client, fit_res) in enumerate(results):
-    #         num_examples = fit_res.num_examples
-    #         weight = num_examples / total_examples  # Calculating the weight based on number of examples
-    #         print(f"Cliente {client_index}: Número de exemplos = {num_examples}, Peso = {weight}")
-    #     # Return the aggregated parameters and metrics
-    #     return parameters_aggregated, metrics_aggregated
-
-    # Agregando pela perda (loss) do cliente
     def aggregate_fit(
         self,
         server_round: int,
@@ -423,13 +424,6 @@ class FedCustom(Strategy):
         failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]],
     ) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
         """Aggregate training results using weighted average."""
-
-        # for _, fit_res in results:
-        #     loss = fit_res.metrics['loss']
-        #     print("Loss from client: ", loss)
-
-        # for client_index, (client, fit_res) in enumerate(results):
-        #     loss = fit_res.metrics['loss']
 
         total_examples = sum(fit_res.num_examples for _, fit_res in results)
         print(f"Número total de exemplos agregados: {total_examples}")
@@ -450,6 +444,8 @@ class FedCustom(Strategy):
             loss = fit_res.metrics.get('loss', 0)
             weight = loss / total_loss  # Calculating the weight based on loss
             print(f"Cliente {client.cid}: Perda = {loss}, Peso = {weight}")
+            self.all_losses.append(loss)  # Armazenar a perda na lista
+            self.all_weights.append(weight)  # Armazenar o peso na lista
         # Return the aggregated parameters and metrics
         return parameters_aggregated, metrics_aggregated
 
@@ -489,37 +485,12 @@ class FedCustom(Strategy):
         if not results:  # Se não houver resultados, retorne nada
             return None, {}
         
-        # # # Calcular a perda média ponderada
-        # # loss_aggregated = weighted_loss_avg(
-        # #     [
-        # #         (evaluate_res.num_examples, evaluate_res.loss)
-        # #         for _, evaluate_res in results
-        # #     ]
-        # # )
-
-        # # Calcula a perda média ponderada e exibe o número de amostras de cada cliente
-        # examples_and_loss = [
-        #     (evaluate_res.num_examples, evaluate_res.loss)
-        #     for _, evaluate_res in results
-        # ]
-
-        # loss_aggregated = weighted_loss_avg(examples_and_loss)
-
-        # # Exibindo o número de amostras consideradas por cada cliente
-        # # Certifique-se de ter a lista de clientes e resultados para obter o ID do cliente corretamente
-        # for result, (num_samples, _) in zip(results, examples_and_loss):
-        #     client_proxy = result[0]  # O primeiro item da tupla deve ser o ClientProxy
-        #     client_id = client_proxy.cid  # Obter o ID do cliente real
-        #     print(f"Cliente {client_id}: Número de amostras consideradas = {num_samples}")
-
-        
         # Dicionário para métricas agregadas (vazio por enquanto)
         metrics_aggregated = {}
         loss_aggregated = None
         
         # Retorna a perda agregada e métricas
         return loss_aggregated, metrics_aggregated
-
 
     def evaluate(self, server_round: int, parameters: Parameters) -> Optional[Tuple[float, Dict[str, Scalar]]]:
         net = Net(300, 1000).to(DEVICE)
@@ -544,6 +515,7 @@ class FedCustom(Strategy):
         
         num_clients = int(num_available_clients * self.fraction_evaluate)
         return max(num_clients, self.min_evaluate_clients), self.min_available_clients
+
 
 
 #-----------------------------------------------------------------

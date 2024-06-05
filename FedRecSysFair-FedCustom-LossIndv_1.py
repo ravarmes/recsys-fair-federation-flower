@@ -423,13 +423,6 @@ class FedCustom(Strategy):
     ) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
         """Aggregate training results using weighted average."""
 
-        # for _, fit_res in results:
-        #     loss = fit_res.metrics['loss']
-        #     print("Loss from client: ", loss)
-
-        # for client_index, (client, fit_res) in enumerate(results):
-        #     loss = fit_res.metrics['loss']
-
         total_examples = sum(fit_res.num_examples for _, fit_res in results)
         print(f"Número total de exemplos agregados: {total_examples}")
         

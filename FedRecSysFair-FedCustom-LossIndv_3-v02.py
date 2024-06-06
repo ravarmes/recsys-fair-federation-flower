@@ -370,50 +370,42 @@ class FedCustom(Strategy):
         # Cria a lista de instruções de ajuste
         fit_configurations = []
 
-        # # Parâmetros de ajuste
-        # min_local_epochs = 10
-        # max_local_epochs = 20
-        # min_learning_rate = 0.01
-        # max_learning_rate = 0.1
+        # Definir os intervalos para local_epochs e learning_rate
+        min_local_epochs = 10
+        max_local_epochs = 20
+        min_learning_rate = 0.01
+        max_learning_rate = 0.1
 
-        # # Calcula o total das perdas (loss)
-        # total_loss = sum(self.all_losses)
-
-        # # Iterar sobre os clientes para criar configurações individuais
-        # for client in clients:
-        #     client_config = config.copy()
-            
-        #     # Obter a perda do cliente atual
-        #     client_loss = self.all_losses[int(client.cid)] if int(client.cid) < len(self.all_losses) else 0
-            
-        #     # Ajustar local_epochs com base na perda do cliente
-        #     local_epochs = math.ceil(max(min_local_epochs, min(max_local_epochs, min_local_epochs + (max_local_epochs - min_local_epochs) * (client_loss / total_loss))))
-            
-        #     # Ajustar learning_rate com base na perda do cliente
-        #     learning_rate = max(min_learning_rate, min(max_learning_rate, min_learning_rate + (max_learning_rate - min_learning_rate) * (client_loss / total_loss)))
-            
-        #     # Configurar os parâmetros ajustados para o cliente
-        #     client_config["local_epochs"] = local_epochs
-        #     client_config["learning_rate"] = learning_rate
-            
-        #     # Adicionar configurações ajustadas à lista de configurações
-        #     fit_configurations.append((client, FitIns(parameters, client_config)))
-
-        # return fit_configurations
+        # Normalizar as perdas
+        if self.all_losses:
+            max_loss = max(self.all_losses)
+            min_loss = min(self.all_losses)
+            normalized_losses = [(loss - min_loss) / (max_loss - min_loss) for loss in self.all_losses]
+        else:
+            normalized_losses = [0] * len(clients)
 
         # Iterar sobre os clientes para criar configurações individuais
         for client in clients:
             client_config = config.copy()
-            # Obter a perda do cliente atual
-            client_loss = self.all_losses[int(client.cid)] if int(client.cid) < len(self.all_losses) else 0
-            # Ajustar local_epochs com base na perda do cliente
-            # local_epochs = max(1, min(20, int(20 * (client_loss + 0.5))))  # Ajusta local_epochs, garantindo um mínimo de 1 e um máximo de 20
-            local_epochs = max(15, min(20, int(20 * math.log(client_loss + 1))))
+            
+            # Obter a perda normalizada do cliente atual
+            client_loss = normalized_losses[int(client.cid)] if int(client.cid) < len(normalized_losses) else 0
+            
+            # Ajustar local_epochs com base na perda normalizada do cliente
+            local_epochs = int(max_local_epochs - client_loss * (max_local_epochs - min_local_epochs))
+            local_epochs = max(min_local_epochs, min(max_local_epochs, local_epochs))
+            
+            # Ajustar learning_rate com base na perda normalizada do cliente
+            learning_rate = min_learning_rate + (1 - client_loss) * (max_learning_rate - min_learning_rate)
+            learning_rate = max(min_learning_rate, min(max_learning_rate, learning_rate))
+            
+            # Configurar os parâmetros ajustados para o cliente
             client_config["local_epochs"] = local_epochs
-            # Ajustar learning_rate com base na perda do cliente
-            learning_rate = max(0.01, min(0.01 * (client_loss + 1), 0.1))  # Ajusta a taxa de aprendizado para ser no mínimo 0.01 e no máximo 0.1
             client_config["learning_rate"] = learning_rate
+            
+            # Adicionar configurações ajustadas à lista de configurações
             fit_configurations.append((client, FitIns(parameters, client_config)))
+
         return fit_configurations
 
 

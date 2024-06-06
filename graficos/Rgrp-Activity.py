@@ -132,7 +132,7 @@ plt.plot(data_rgrp_activity_FedCustom_LossIndv_3["Round"], data_rgrp_activity_Fe
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_1["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_1["RgrpActivity"], label="FedLossGroupActivity1", linestyle='-.')
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_2["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_2["RgrpActivity"], label="FedLossGroupActivity2", linestyle='-.')
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_3["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_3["RgrpActivity"], label="FedLossGroupActivity3", linestyle='-.')
-plt.plot(data_rgrp_activity_FedCustom_LossFair["Round"], data_rgrp_activity_FedCustom_LossFair["RgrpActivity"], label="FedLossFair", linestyle=':')
+# plt.plot(data_rgrp_activity_FedCustom_LossFair["Round"], data_rgrp_activity_FedCustom_LossFair["RgrpActivity"], label="FedLossFair", linestyle=':')
 plt.plot(data_rgrp_activity_NFS["Round"], data_rgrp_activity_NFS["RgrpActivity"], label="NFS", linestyle='-')
 
 plt.xlabel("Round")

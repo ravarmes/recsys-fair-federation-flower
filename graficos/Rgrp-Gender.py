@@ -3,26 +3,31 @@ import matplotlib.pyplot as plt
 data_rgrp_gender_FedAvg = {
     "Round": list(range(0, 25)),
     "RgrpGender": [
-        0.000981994, 0.000238225, 0.000504384, 0.000430394, 0.000188408, 3.596e-06, 
-        0.000134395, 0.000476567, 0.000709533, 0.000955670, 0.001092158, 0.001086757, 
-        0.001186913, 0.001348532, 0.001563960, 0.001856400, 0.002241598, 0.002600655, 
-        0.003121024, 0.003715837, 0.004516703, 0.005286370, 0.006090524, 0.006575472, 
-        0.007342683
+        9.397063480712154e-06, 0.00011157218949126447, 9.237918987625983e-05,
+        0.00014352278971081062, 0.0003522343985122164, 0.0009535613011653596,
+        0.0019080660155489262, 0.002795715597991636, 0.0032714259606517037,
+        0.003623772023767946, 0.0038196499454164674, 0.003894675006253828,
+        0.004022432153619671, 0.0041265755501611896, 0.004310232896247013,
+        0.004463462327632563, 0.004678649806906887, 0.004812439461045543,
+        0.005033356209199691, 0.005271751011226215, 0.005487030656152258,
+        0.005711045445990997, 0.00594851243309673, 0.006055974434200194,
+        0.006204165879392306
     ]
 }
+
 
 data_rgrp_gender_FedCustom_LossIndv_1 = {
     "Round": list(range(0, 25)),
     "RgrpGender": [
-        0.0016356382578873905, 0.0017249613550145916, 0.0017286211250760104,
-        0.0016044869801017738, 0.0012112235941859938, 0.0005279278584971693,
-        0.00021560146791855202, 0.00017832166265044366, 4.178871710939217e-05,
-        4.748567723854913e-05, 2.686444312848685e-05, 3.512322373829519e-05,
-        4.750571693005884e-05, 6.38090770340627e-05, 1.5551567052938724e-05,
-        4.135850978016217e-06, 6.315970813073151e-07, 3.745729694280893e-05,
-        9.808080795952576e-05, 8.4311190886974e-05, 0.0002293715044070116,
-        0.00036929552938618745, 0.000670087350173751, 0.0014239569247444066,
-        0.001865173403885588
+        9.379715163030382e-06, 4.80735097218402e-05, 4.722096979865945e-05,
+        7.435464102556095e-05, 0.00021966063227566124, 0.0008924789434912164,
+        0.0018649135488270341, 0.0022660411038324, 0.0028732753732115123,
+        0.0032385711138256676, 0.0034319377178354256, 0.0036528537066311314,
+        0.003611003477846913, 0.003498409091087321, 0.0035325778445956897,
+        0.0037574635505543234, 0.004058287894685731, 0.003934752448776122,
+        0.003878967567181804, 0.003841218346301913, 0.004184753338860744,
+        0.004428878017536386, 0.004490553184333916, 0.004824125743883935,
+        0.004715836581076021
     ]
 }
 
@@ -41,7 +46,7 @@ data_rgrp_gender_FedCustom_LossIndv_2 = {
     ]
 }
 
-data_rgrp_gender_FedCustom_LossGroup_Gender_1 = {
+data_rgrp_gender_FedCustom_LossGroup_Activity_1_Gender = {
     "Round": list(range(0, 25)),
     "RgrpGender": [
         3.499081143629114e-05, 7.64462356871916e-05, 7.319319122875739e-05,
@@ -56,7 +61,7 @@ data_rgrp_gender_FedCustom_LossGroup_Gender_1 = {
     ]
 }
 
-data_rgrp_gender_FedCustom_LossGroup_Gender_2 = {
+data_rgrp_gender_FedCustom_LossGroup_Activity_2_Gender = {
     "Round": list(range(0, 25)),
     "RgrpGender": [
         1.3194003420070614e-05, 0.00032982243819023205, 0.00015139685988646158,
@@ -70,6 +75,22 @@ data_rgrp_gender_FedCustom_LossGroup_Gender_2 = {
         0.0048715180418665805
     ]
 }
+
+data_rgrp_gender_FedCustom_LossGroup_Gender_2 = {
+    "Round": list(range(0, 25)),
+    "RgrpGender": [
+        2.8333164305582364e-06, 0.00015461038375158526, 6.538443412652554e-05,
+        0.00017899031658526432, 0.0002504154026334911, 0.0007743834077486564,
+        0.00181515368887655, 0.0012063892054220895, 0.002782993688647571,
+        0.0034995086007265485, 0.0028798615455707093, 0.0036267715974681045,
+        0.004118598067058875, 0.006081261691803056, 0.004012344047404796,
+        0.0038228170221351497, 0.003958069961581865, 0.0055127682759984155,
+        0.009314166768203212, 0.00633852721572083, 0.0066392033611570155,
+        0.006227229852705402, 0.005719442772633826, 0.00824544427771072,
+        0.007334661843584402
+    ]
+}
+
 
 
 # data_rgrp_gender_FedCustom_LossFair = {
@@ -107,7 +128,8 @@ plt.figure(figsize=(10, 6))
 plt.plot(data_rgrp_gender_FedAvg["Round"], data_rgrp_gender_FedAvg["RgrpGender"], label="FedAvg", linestyle='-')
 plt.plot(data_rgrp_gender_FedCustom_LossIndv_1["Round"], data_rgrp_gender_FedCustom_LossIndv_1["RgrpGender"], label="FedLossIndv1", linestyle='--')
 plt.plot(data_rgrp_gender_FedCustom_LossIndv_2["Round"], data_rgrp_gender_FedCustom_LossIndv_2["RgrpGender"], label="FedLossIndv2", linestyle='--')
-plt.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_1["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_1["RgrpGender"], label="FedLossGroupGender1", linestyle='-.')
+plt.plot(data_rgrp_gender_FedCustom_LossGroup_Activity_1_Gender["Round"], data_rgrp_gender_FedCustom_LossGroup_Activity_1_Gender["RgrpGender"], label="FedLossGroupActivity-Gender1", linestyle='-.')
+plt.plot(data_rgrp_gender_FedCustom_LossGroup_Activity_2_Gender["Round"], data_rgrp_gender_FedCustom_LossGroup_Activity_2_Gender["RgrpGender"], label="FedLossGroupActivity-Gender2", linestyle='-.')
 plt.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_2["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_2["RgrpGender"], label="FedLossGroupGender2", linestyle='-.')
 # plt.plot(data_rgrp_gender_FedCustom_LossFair["Round"], data_rgrp_gender_FedCustom_LossFair["RgrpGender"], label="FedLossFair", linestyle=':')
 plt.plot(data_rgrp_gender_NFS["Round"], data_rgrp_gender_NFS["RgrpGender"], label="NFS", linestyle='-')

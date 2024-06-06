@@ -236,7 +236,8 @@ for round in range (0, 26):
     print(f"ROUND [{round}]")
     trainloader = trainloaders[int(round)]
     #valloader = valloaders[int(round)]
-    train(net=net, trainloader=trainloader, epochs=50, lotes_por_rodada=round, learning_rate=0.01)
+    # train(net=net, trainloader=trainloader, epochs=50, lotes_por_rodada=round, learning_rate=0.01)
+    train(net=net, trainloader=trainloader, epochs=20, lotes_por_rodada=round, learning_rate=0.01)
 
     loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = evaluate(net=net, testloader=testloader, tolerance=0.7, server=True)
     l_loss.append((round, loss))

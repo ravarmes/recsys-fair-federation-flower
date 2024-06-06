@@ -1,5 +1,6 @@
 # Neste script a estratégia de agregação é ponderar os pesos na proporção das Perdas Individuais
 # Além disso, os grupos recebem parâmetros de taxa de aprendizagem e épocas de acordo com as Perdas dos Grupos
+# Com normalização dos dados de perdas
 # Grupos favorecidos tem menores taxas de aprendizado e épocas
 # Grupos desfavorecidos tem maiores taxas de aprendizado e épocas
 # As configurações de taxas de aprendizado e épocas para cada grupo são DINÂMICAS

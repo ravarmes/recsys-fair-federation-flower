@@ -55,16 +55,29 @@ data_rmse_FedCustom_LossIndv_3_v01 = {
     ]
 }
 
+# data_rmse_FedCustom_LossIndv_3_v02 = {
+#     "Round": list(range(0, 25)),
+#     "rmse": [
+#         1.2450007200241089, 1.8180878162384033, 1.8180878162384033, 1.8180816173553467,
+#         1.135272741317749, 1.078262209892273, 1.078150749206543, 1.0784238576889038,
+#         1.0781103372573853, 1.0780608654022217, 1.0782853364944458, 1.0782281160354614,
+#         1.0781477689743042, 1.0783462524414062, 1.0781127214431763, 1.0782712697982788,
+#         1.0781322717666626, 1.0780868530273438, 1.078065037727356, 1.0780922174453735,
+#         1.0783213376998901, 1.0781177282333374, 1.0781689882278442, 1.0781612396240234,
+#         1.0781546831130981
+#     ]
+# }
+
 data_rmse_FedCustom_LossIndv_3_v02 = {
     "Round": list(range(0, 25)),
     "rmse": [
-        1.2450007200241089, 1.8180878162384033, 1.8180878162384033, 1.8180816173553467,
-        1.135272741317749, 1.078262209892273, 1.078150749206543, 1.0784238576889038,
-        1.0781103372573853, 1.0780608654022217, 1.0782853364944458, 1.0782281160354614,
-        1.0781477689743042, 1.0783462524414062, 1.0781127214431763, 1.0782712697982788,
-        1.0781322717666626, 1.0780868530273438, 1.078065037727356, 1.0780922174453735,
-        1.0783213376998901, 1.0781177282333374, 1.0781689882278442, 1.0781612396240234,
-        1.0781546831130981
+        1.1557276248931885, 1.1557276248931885, 1.1059750318527222, 1.080317735671997,
+        1.08043372631073, 1.080596923828125, 1.080572247505188, 1.0806105136871338,
+        1.0805102586746216, 1.0805190801620483, 1.0804544687271118, 1.0805957317352295,
+        1.0804710388183594, 1.0803744792938232, 1.0802041292190552, 1.0803933143615723,
+        1.0804377794265747, 1.0803836584091187, 1.0802154541015625, 1.0803492069244385,
+        1.0804730653762817, 1.0803707838058472, 1.080618143081665, 1.0805541276931763,
+        1.0803251266479492
     ]
 }
 
@@ -120,16 +133,47 @@ data_rmse_FedCustom_LossFair = {
     ]
 }
 
+# data_rmse_NFS = {
+#     "Round": list(range(0, 25)),
+#     "rmse": [
+#         1.0046489238739014, 1.0375078916549683, 1.056209683418274, 1.0456256866455078,
+#         1.0480787754058838, 1.033650279045105, 1.0133249759674072, 1.0319265127182007,
+#         1.0321930646896362, 1.0317941904067993, 1.020953893661499, 1.0141791105270386,
+#         1.0102025270462036, 1.021692156791687, 1.0250550508499146, 1.012597680091858,
+#         1.008651852607727, 1.0099784135818481, 1.0165176391601562, 1.0122159719467163,
+#         1.0139278173446655, 1.0060794353485107, 1.012513518333435, 1.012513518333435,
+#         1.012513518333435
+#     ]
+# }
+
 data_rmse_NFS = {
     "Round": list(range(0, 25)),
     "rmse": [
-        1.0046489238739014, 1.0375078916549683, 1.056209683418274, 1.0456256866455078,
-        1.0480787754058838, 1.033650279045105, 1.0133249759674072, 1.0319265127182007,
-        1.0321930646896362, 1.0317941904067993, 1.020953893661499, 1.0141791105270386,
-        1.0102025270462036, 1.021692156791687, 1.0250550508499146, 1.012597680091858,
-        1.008651852607727, 1.0099784135818481, 1.0165176391601562, 1.0122159719467163,
-        1.0139278173446655, 1.0060794353485107, 1.012513518333435, 1.012513518333435,
-        1.012513518333435
+        1.006636619567871, 
+        1.0619267225265503, 
+        1.0529340505599976, 
+        1.0268242359161377, 
+        1.0569813251495361, 
+        1.0233474969863892, 
+        1.0261889696121216, 
+        1.030324101448059, 
+        1.009857177734375, 
+        1.0233843326568604, 
+        1.0195589065551758, 
+        1.0317342281341553, 
+        1.0229377746582031, 
+        1.0117340087890625, 
+        1.0056110620498657, 
+        1.0175724029541016, 
+        1.026750922203064, 
+        1.0174815654754639, 
+        1.0253814458847046, 
+        1.0180188417434692, 
+        1.0149362087249756, 
+        1.01173734664917, 
+        1.0001131296157837, 
+        1.0017517805099487, 
+        0.9944083094596863
     ]
 }
 
@@ -138,13 +182,13 @@ plt.figure(figsize=(10, 6))
 
 plt.plot(data_rmse_FedAvg["Round"], data_rmse_FedAvg["rmse"], label="FedAvg", linestyle='-')
 plt.plot(data_rmse_FedCustom_LossIndv_1["Round"], data_rmse_FedCustom_LossIndv_1["rmse"], label="FedLossIndv1", linestyle='--')
-plt.plot(data_rmse_FedCustom_LossIndv_2["Round"], data_rmse_FedCustom_LossIndv_2["rmse"], label="FedLossIndv2", linestyle='--')
-plt.plot(data_rmse_FedCustom_LossIndv_3_v01["Round"], data_rmse_FedCustom_LossIndv_3_v01["rmse"], label="FedLossIndv3-v01", linestyle='--')
+# plt.plot(data_rmse_FedCustom_LossIndv_2["Round"], data_rmse_FedCustom_LossIndv_2["rmse"], label="FedLossIndv2", linestyle='--')
+# plt.plot(data_rmse_FedCustom_LossIndv_3_v01["Round"], data_rmse_FedCustom_LossIndv_3_v01["rmse"], label="FedLossIndv3-v01", linestyle='--')
 plt.plot(data_rmse_FedCustom_LossIndv_3_v02["Round"], data_rmse_FedCustom_LossIndv_3_v02["rmse"], label="FedLossIndv3-v02", linestyle='--')
-plt.plot(data_rmse_FedCustom_LossGroup_Activity_1_v01["Round"], data_rmse_FedCustom_LossGroup_Activity_1_v01["rmse"], label="FedLossGroupActivity1-v01", linestyle='-.')
-plt.plot(data_rmse_FedCustom_LossGroup_Activity_2["Round"], data_rmse_FedCustom_LossGroup_Activity_2["rmse"], label="FedLossGroupActivity2", linestyle='-.')
-plt.plot(data_rmse_FedCustom_LossGroup_Activity_3["Round"], data_rmse_FedCustom_LossGroup_Activity_3["rmse"], label="FedLossGroupActivity3", linestyle='-.')
-plt.plot(data_rmse_FedCustom_LossFair["Round"], data_rmse_FedCustom_LossFair["rmse"], label="FedLossFair", linestyle=':')
+# plt.plot(data_rmse_FedCustom_LossGroup_Activity_1_v01["Round"], data_rmse_FedCustom_LossGroup_Activity_1_v01["rmse"], label="FedLossGroupActivity1-v01", linestyle='-.')
+# plt.plot(data_rmse_FedCustom_LossGroup_Activity_2["Round"], data_rmse_FedCustom_LossGroup_Activity_2["rmse"], label="FedLossGroupActivity2", linestyle='-.')
+# plt.plot(data_rmse_FedCustom_LossGroup_Activity_3["Round"], data_rmse_FedCustom_LossGroup_Activity_3["rmse"], label="FedLossGroupActivity3", linestyle='-.')
+# plt.plot(data_rmse_FedCustom_LossFair["Round"], data_rmse_FedCustom_LossFair["rmse"], label="FedLossFair", linestyle=':')
 plt.plot(data_rmse_NFS["Round"], data_rmse_NFS["rmse"], label="NFS", linestyle='-')
 
 plt.xlabel("Round")

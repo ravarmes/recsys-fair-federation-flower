@@ -349,6 +349,67 @@ class FedCustom(Strategy):
         return fl.common.ndarrays_to_parameters(ndarrays)
     
 
+    # def configure_fit(
+    #     self, server_round: int, parameters: Parameters, client_manager: ClientManager
+    # ) -> List[Tuple[ClientProxy, FitIns]]:
+    #     """Configurar a próxima rodada de treinamento."""
+        
+    #     # Selecionar clientes
+    #     sample_size, min_num_clients = self.num_fit_clients(client_manager.num_available())
+    #     clients = client_manager.sample(num_clients=sample_size, min_num_clients=min_num_clients)
+
+    #     lotes_por_rodada = server_round
+
+    #     # Configurações padrão de treinamento
+    #     config = {
+    #         "server_round": server_round,
+    #         "local_epochs": 20,
+    #         "learning_rate": 0.01,
+    #         "lotes_por_rodada": lotes_por_rodada,
+    #     }
+
+    #     # Cria a lista de instruções de ajuste
+    #     fit_configurations = []
+
+    #     # Definir os intervalos para local_epochs e learning_rate
+    #     min_local_epochs = 10
+    #     max_local_epochs = 20
+    #     min_learning_rate = 0.01
+    #     max_learning_rate = 0.1
+
+    #     # Normalizar as perdas
+    #     if self.all_losses:
+    #         max_loss = max(self.all_losses)
+    #         min_loss = min(self.all_losses)
+    #         normalized_losses = [(loss - min_loss) / (max_loss - min_loss) for loss in self.all_losses]
+    #     else:
+    #         normalized_losses = [0] * len(clients)
+
+    #     # Iterar sobre os clientes para criar configurações individuais
+    #     for client in clients:
+    #         client_config = config.copy()
+            
+    #         # Obter a perda normalizada do cliente atual
+    #         client_loss = normalized_losses[int(client.cid)] if int(client.cid) < len(normalized_losses) else 0
+            
+    #         # Ajustar local_epochs com base na perda normalizada do cliente
+    #         local_epochs = int(max_local_epochs - client_loss * (max_local_epochs - min_local_epochs))
+    #         local_epochs = max(min_local_epochs, min(max_local_epochs, local_epochs))
+            
+    #         # Ajustar learning_rate com base na perda normalizada do cliente
+    #         learning_rate = min_learning_rate + (1 - client_loss) * (max_learning_rate - min_learning_rate)
+    #         learning_rate = max(min_learning_rate, min(max_learning_rate, learning_rate))
+            
+    #         # Configurar os parâmetros ajustados para o cliente
+    #         client_config["local_epochs"] = local_epochs
+    #         client_config["learning_rate"] = learning_rate
+            
+    #         # Adicionar configurações ajustadas à lista de configurações
+    #         fit_configurations.append((client, FitIns(parameters, client_config)))
+
+    #     return fit_configurations
+
+
     def configure_fit(
         self, server_round: int, parameters: Parameters, client_manager: ClientManager
     ) -> List[Tuple[ClientProxy, FitIns]]:
@@ -377,11 +438,25 @@ class FedCustom(Strategy):
         min_learning_rate = 0.01
         max_learning_rate = 0.1
 
-        # Normalizar as perdas
+        # Normalizar as perdas, excluindo outliers
         if self.all_losses:
             max_loss = max(self.all_losses)
             min_loss = min(self.all_losses)
             normalized_losses = [(loss - min_loss) / (max_loss - min_loss) for loss in self.all_losses]
+            
+            # Excluir perdas extremas para normalização mais estável
+            q1, q3 = np.percentile(self.all_losses, [25, 75])
+            iqr = q3 - q1
+            lower_bound = q1 - 1.5 * iqr
+            upper_bound = q3 + 1.5 * iqr
+            filtered_losses = [loss for loss in self.all_losses if lower_bound <= loss <= upper_bound]
+            
+            if filtered_losses:
+                max_loss = max(filtered_losses)
+                min_loss = min(filtered_losses)
+                normalized_losses = [(loss - min_loss) / (max_loss - min_loss) for loss in filtered_losses]
+            else:
+                normalized_losses = [0] * len(clients)
         else:
             normalized_losses = [0] * len(clients)
 
@@ -408,6 +483,7 @@ class FedCustom(Strategy):
             fit_configurations.append((client, FitIns(parameters, client_config)))
 
         return fit_configurations
+
 
 
     def aggregate_fit(

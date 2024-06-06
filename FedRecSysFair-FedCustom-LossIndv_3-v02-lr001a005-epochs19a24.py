@@ -375,7 +375,7 @@ class FedCustom(Strategy):
         min_local_epochs = 19
         max_local_epochs = 24
         min_learning_rate = 0.01
-        max_learning_rate = 0.05
+        max_learning_rate = 0.02
 
         # Normalizar as perdas
         if self.all_losses:

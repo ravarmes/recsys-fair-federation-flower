@@ -372,10 +372,10 @@ class FedCustom(Strategy):
         fit_configurations = []
 
         # Definir os intervalos para local_epochs e learning_rate
-        min_local_epochs = 5
-        max_local_epochs = 20
+        min_local_epochs = 19
+        max_local_epochs = 24
         min_learning_rate = 0.01
-        max_learning_rate = 0.1
+        max_learning_rate = 0.05
 
         # Normalizar as perdas
         if self.all_losses:
@@ -391,15 +391,15 @@ class FedCustom(Strategy):
             
             # Obter a perda normalizada do cliente atual
             client_loss = normalized_losses[int(client.cid)] if int(client.cid) < len(normalized_losses) else 0
-            
+
             # Ajustar local_epochs com base na perda normalizada do cliente
-            local_epochs = int(max_local_epochs - client_loss * (max_local_epochs - min_local_epochs))
+            local_epochs = int(min_local_epochs + client_loss * (max_local_epochs - min_local_epochs))
             local_epochs = max(min_local_epochs, min(max_local_epochs, local_epochs))
             
             # Ajustar learning_rate com base na perda normalizada do cliente
-            learning_rate = min_learning_rate + (1 - client_loss) * (max_learning_rate - min_learning_rate)
+            learning_rate = max_learning_rate - (client_loss * (max_learning_rate - min_learning_rate))
             learning_rate = max(min_learning_rate, min(max_learning_rate, learning_rate))
-            
+           
             # Configurar os parâmetros ajustados para o cliente
             client_config["local_epochs"] = local_epochs
             # client_config["learning_rate"] = learning_rate

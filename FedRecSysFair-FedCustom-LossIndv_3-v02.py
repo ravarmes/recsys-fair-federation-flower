@@ -402,7 +402,8 @@ class FedCustom(Strategy):
             
             # Configurar os parâmetros ajustados para o cliente
             client_config["local_epochs"] = local_epochs
-            client_config["learning_rate"] = learning_rate
+            # client_config["learning_rate"] = learning_rate
+            client_config["learning_rate"] = 0.01
             
             # Adicionar configurações ajustadas à lista de configurações
             fit_configurations.append((client, FitIns(parameters, client_config)))

@@ -259,5 +259,5 @@ for round in range (0, 26):
 
 metrics = {"rmse": l_rmse, "accuracy": l_accuracy, "precision_at_10": l_precision_at_10, "recall_at_10": l_recall_at_10, "RgrpActivity": l_RgrpActivity, "RgrpGender": l_RgrpGender, "RgrpAge": l_RgrpAge, "RgrpActivity_Losses": l_RgrpActivity_Losses, "RgrpGender_Losses": l_RgrpGender_Losses, "RgrpAge_Losses": l_RgrpAge_Losses}
 
-# print("\n\nRESUMO")
-# print(metrics)
+print("\n\nRESUMO")
+print(metrics)

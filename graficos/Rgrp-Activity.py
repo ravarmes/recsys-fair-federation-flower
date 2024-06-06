@@ -39,7 +39,7 @@ data_rgrp_activity_FedCustom_LossIndv_2 = {
     ]
 }
 
-data_rgrp_activity_FedCustom_LossIndv_3 = {
+data_rgrp_activity_FedCustom_LossIndv_3_v01 = {
     "Round": list(range(0, 25)),
     "RgrpActivity": [
         0.002167651895229057, 0.0002787951373491965, 0.0006015741137675295, 0.00039179114827841673,
@@ -52,7 +52,7 @@ data_rgrp_activity_FedCustom_LossIndv_3 = {
     ]
 }
 
-data_rgrp_activity_FedCustom_LossGroup_Activity_1 = {
+data_rgrp_activity_FedCustom_LossGroup_Activity_1_v01 = {
     "Round": list(range(0, 25)),
     "RgrpActivity": [
         0.0009916494409340129, 0.00012513038437607707, 0.0007124408152582294,
@@ -128,8 +128,8 @@ plt.figure(figsize=(10, 6))
 plt.plot(data_rgrp_activity_FedAvg["Round"], data_rgrp_activity_FedAvg["RgrpActivity"], label="FedAvg", linestyle='-')
 plt.plot(data_rgrp_activity_FedCustom_LossIndv_1["Round"], data_rgrp_activity_FedCustom_LossIndv_1["RgrpActivity"], label="FedLossIndv1", linestyle='--')
 plt.plot(data_rgrp_activity_FedCustom_LossIndv_2["Round"], data_rgrp_activity_FedCustom_LossIndv_2["RgrpActivity"], label="FedLossIndv2", linestyle='--')
-plt.plot(data_rgrp_activity_FedCustom_LossIndv_3["Round"], data_rgrp_activity_FedCustom_LossIndv_3["RgrpActivity"], label="FedLossIndv3", linestyle='--')
-plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_1["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_1["RgrpActivity"], label="FedLossGroupActivity1", linestyle='-.')
+plt.plot(data_rgrp_activity_FedCustom_LossIndv_3_v01["Round"], data_rgrp_activity_FedCustom_LossIndv_3_v01["RgrpActivity"], label="FedLossIndv3-v01", linestyle='--')
+plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_1_v01["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_1_v01["RgrpActivity"], label="FedLossGroupActivity1-v01", linestyle='-.')
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_2["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_2["RgrpActivity"], label="FedLossGroupActivity2", linestyle='-.')
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_3["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_3["RgrpActivity"], label="FedLossGroupActivity3", linestyle='-.')
 # plt.plot(data_rgrp_activity_FedCustom_LossFair["Round"], data_rgrp_activity_FedCustom_LossFair["RgrpActivity"], label="FedLossFair", linestyle=':')

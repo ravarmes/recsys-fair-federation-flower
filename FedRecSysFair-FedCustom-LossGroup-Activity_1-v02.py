@@ -1,5 +1,6 @@
 # Neste script a estratégia de agregação é ponderar os pesos na proporção das Perdas dos Grupos
-# A configuração de grupo considerada é Gênero (Gender)
+# A configuração de grupo considerada é a Atividade (Activity)
+# A configuração de treinamento é igual para todos os grupos
 
 # !pip install -q flwr[simulation] torch torchvision
 
@@ -398,34 +399,41 @@ class FedCustom(Strategy):
     ) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
         """Aggregate training results using weighted average."""
 
-        # ---------------------------------------------------------------------------
-        # Agregando pelo Grupo
-        # Agrupamento por Gênero
-        G_GENDER = {1: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 30, 32, 33, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 64, 65, 66, 67, 68, 69, 70, 71, 72, 74, 75, 76, 77, 78, 79, 80, 82, 83, 84, 85, 86, 87, 88, 89, 90, 93, 94, 95, 96, 99, 100, 102, 103, 105, 107, 108, 109, 110, 111, 112, 115, 117, 118, 120, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 146, 147, 148, 149, 151, 152, 153, 154, 156, 159, 160, 161, 162, 164, 165, 166, 168, 169, 170, 172, 174, 175, 176, 177, 178, 181, 182, 183, 184, 186, 187, 188, 189, 191, 194, 196, 198, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 218, 219, 220, 222, 223, 224, 226, 227, 229, 230, 231, 232, 233, 234, 237, 238, 239, 240, 245, 246, 247, 248, 249, 250, 251, 252, 255, 256, 257, 258, 259, 260, 261, 262, 263, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 293, 294, 295, 296, 297, 298, 299], 2: [14, 25, 31, 34, 35, 42, 63, 73, 81, 91, 92, 97, 98, 101, 104, 106, 113, 114, 116, 119, 121, 122, 133, 144, 145, 150, 155, 157, 158, 163, 167, 171, 173, 179, 180, 185, 190, 192, 193, 195, 197, 199, 213, 214, 215, 216, 217, 221, 225, 228, 235, 236, 241, 242, 243, 244, 253, 254, 264, 290]}
+        # Agrupamento por Atividade
+        G_ACTIVITY = {1: list(range(0, 15)), 2: list(range(15, 300))}
 
-        # Calcular a perda média de todos os clientes
-        # Assegurar que temos as perdas totais e médias calculadas
+        # Calcular a perda total de todos os clientes
         total_loss = sum(fit_res.metrics.get('loss', 0) for _, fit_res in results)
-        total_loss_avg = total_loss / total_loss if total_loss != 0 else 1
-
+        
         # Calcular perda média por grupo
         group_losses = {}
         group_counts = {}
-        for group, client_indexes in G_GENDER.items():
+        for group, client_indexes in G_ACTIVITY.items():
             group_loss = sum(fit_res.metrics.get('loss', 0) for index, (client, fit_res) in enumerate(results) if index in client_indexes)
             group_count = sum(1 for index in client_indexes if index < len(results))
             group_losses[group] = group_loss
             group_counts[group] = group_count
 
-        loss_avg_per_group = {group: (group_losses[group] / group_counts[group] if group_counts[group] != 0 else 0) for group in G_GENDER}
+        loss_avg_per_group = {group: (group_losses[group] / group_counts[group] if group_counts[group] != 0 else 0) for group in G_ACTIVITY}
 
-        # Calcular peso de contribuição para cada cliente baseado na diferença de perdas
+        # Calcular o inverso da perda média do grupo
+        inverse_group_loss_avg = {group: (1 / loss_avg if loss_avg != 0 else 0) for group, loss_avg in loss_avg_per_group.items()}
+        
+        # Normalizar os pesos
+        total_inverse_group_loss_avg = sum(inverse_group_loss_avg.values())
+        weight_per_group = {group: inverse_loss_avg / total_inverse_group_loss_avg for group, inverse_loss_avg in inverse_group_loss_avg.items()}
+
+        # Atribuir pesos aos clientes
         client_weights = []
         for client_index, (client, fit_res) in enumerate(results):
-            group = next((group for group, clients in G_GENDER.items() if client_index in clients), None)
-            group_loss_avg = loss_avg_per_group[group]
-            weight = (1 - abs(group_loss_avg - total_loss_avg) / total_loss_avg) if total_loss_avg != 0 else 0
+            group = next((group for group, clients in G_ACTIVITY.items() if client_index in clients), None)
+            weight = weight_per_group.get(group, 0)
             client_weights.append(weight)
+        
+        # Normalizar os pesos dos clientes para que a soma seja 1
+        total_weight = sum(client_weights)
+        if total_weight != 0:
+            client_weights = [weight / total_weight for weight in client_weights]
 
         # Criar a lista weights_results
         weights_results = [
@@ -436,24 +444,17 @@ class FedCustom(Strategy):
         # Agregar parâmetros usando a média ponderada
         parameters_aggregated = ndarrays_to_parameters(aggregate(weights_results))
 
-        # # Resultados adicionais se necessários
-        # metrics_aggregated = {
-        #     "average_loss": total_loss_avg,
-        #     "loss_deviation": {group: abs(loss_avg_per_group[group] - total_loss_avg) for group in G_GENDER}
-        # }
-
         # Dictionary for aggregated metrics (empty for now)
         metrics_aggregated = {}
 
-        print(f"loss_avg_per_group: {loss_avg_per_group}")
-        
         # Debugging: Iterate over the results to print the number of examples and weight for each client
         for client_index, (client, fit_res) in enumerate(results):
             loss = fit_res.metrics.get('loss', 0)
             peso = client_weights[client_index]
             print(f"Cliente {client.cid}: Perda = {loss}, Peso = {peso}")
-        # Return the aggregated parameters and metrics
+
         return parameters_aggregated, metrics_aggregated
+
 
 
     def configure_evaluate(

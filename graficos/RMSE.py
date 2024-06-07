@@ -182,7 +182,7 @@ data_rmse_FedCustom_LossGroup_Activity_3 = {
     ]
 }
 
-data_rmse_FedCustom_LossGroup_Activity_4 = {
+data_rmse_FedCustom_LossGroup_Activity_4_v02_050 = {
     "Round": list(range(0, 25)),
     "rmse": [
         1.2257493734359741,
@@ -210,6 +210,37 @@ data_rmse_FedCustom_LossGroup_Activity_4 = {
         1.0586211681365967,
         1.045343041419983,
         1.0415645837783813
+    ]
+}
+
+data_rmse_FedCustom_LossGroup_Activity_4_v03_033 = {
+    "Round": list(range(0, 25)),
+    "rmse": [
+        1.326347827911377,
+        1.1618635654449463,
+        1.20675528049469,
+        1.1775318384170532,
+        1.1465458869934082,
+        1.0918967723846436,
+        1.0514200925827026,
+        1.033831000328064,
+        1.0325618982315063,
+        1.0320860147476196,
+        1.0435289144515991,
+        1.0466443300247192,
+        1.050273060798645,
+        1.054416537284851,
+        1.0527263879776,
+        1.0514845848083496,
+        1.0445507764816284,
+        1.0465980768203735,
+        1.0384854078292847,
+        1.0369704961776733,
+        1.041204571723938,
+        1.0424909591674805,
+        1.0370800495147705,
+        1.0386804342269897,
+        1.035523772239685
     ]
 }
 
@@ -283,7 +314,8 @@ plt.plot(data_rmse_FedCustom_LossIndv_3_v02_lr001a005_epochs19a24["Round"], data
 # plt.plot(data_rmse_FedCustom_LossGroup_Activity_1_v01["Round"], data_rmse_FedCustom_LossGroup_Activity_1_v01["rmse"], label="FedLossGroupActivity1-v01", linestyle='-.')
 # plt.plot(data_rmse_FedCustom_LossGroup_Activity_2["Round"], data_rmse_FedCustom_LossGroup_Activity_2["rmse"], label="FedLossGroupActivity2", linestyle='-.')
 # plt.plot(data_rmse_FedCustom_LossGroup_Activity_3["Round"], data_rmse_FedCustom_LossGroup_Activity_3["rmse"], label="FedLossGroupActivity3", linestyle='-.')
-plt.plot(data_rmse_FedCustom_LossGroup_Activity_4["Round"], data_rmse_FedCustom_LossGroup_Activity_4["rmse"], label="FedLossGroupActivity4", linestyle='-.')
+plt.plot(data_rmse_FedCustom_LossGroup_Activity_4_v02_050["Round"], data_rmse_FedCustom_LossGroup_Activity_4_v02_050["rmse"], label="FedLossGroupActivity4-v02-050", linestyle='-.')
+plt.plot(data_rmse_FedCustom_LossGroup_Activity_4_v03_033["Round"], data_rmse_FedCustom_LossGroup_Activity_4_v03_033["rmse"], label="FedLossGroupActivity4-v03-033", linestyle='-.')
 # plt.plot(data_rmse_FedCustom_LossFair["Round"], data_rmse_FedCustom_LossFair["rmse"], label="FedLossFair", linestyle=':')
 plt.plot(data_rmse_NFS["Round"], data_rmse_NFS["rmse"], label="NFS", linestyle='-')
 

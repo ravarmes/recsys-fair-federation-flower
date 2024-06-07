@@ -333,7 +333,7 @@ data_rgrp_activity_NFS = {
 # Plotando os dados
 plt.figure(figsize=(10, 6))
 
-# plt.plot(data_rgrp_activity_FedAvg["Round"], data_rgrp_activity_FedAvg["RgrpActivity"], label="FedAvg", linestyle='-')
+plt.plot(data_rgrp_activity_FedAvg["Round"], data_rgrp_activity_FedAvg["RgrpActivity"], label="FedAvg", linestyle='-')
 plt.plot(data_rgrp_activity_FedCustom_LossIndv_1["Round"], data_rgrp_activity_FedCustom_LossIndv_1["RgrpActivity"], label="FedLossIndv1", linestyle='--')
 # plt.plot(data_rgrp_activity_FedCustom_LossIndv_2["Round"], data_rgrp_activity_FedCustom_LossIndv_2["RgrpActivity"], label="FedLossIndv2", linestyle='--')
 # plt.plot(data_rgrp_activity_FedCustom_LossIndv_3_v01["Round"], data_rgrp_activity_FedCustom_LossIndv_3_v01["RgrpActivity"], label="FedLossIndv3-v01", linestyle='--')

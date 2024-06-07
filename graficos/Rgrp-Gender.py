@@ -131,6 +131,69 @@ data_rgrp_gender_FedCustom_LossGroup_Gender_2 = {
     ]
 }
 
+data_rgrp_gender_FedCustom_LossGroup_Gender_4_v03_033 = {
+    "Round": list(range(0, 25)),
+    "RgrpGender": [
+        6.334902162624899e-05,
+        5.247838111089894e-05,
+        6.529201237378078e-05,
+        8.145662840998914e-05,
+        0.00015822272929050325,
+        0.00048667048356698564,
+        0.0012259024075527555,
+        0.002182257773935542,
+        0.003004667664402287,
+        0.003074553155117667,
+        0.003199638066706126,
+        0.0036635837040710864,
+        0.004002597414835245,
+        0.004434057489483067,
+        0.004216950431417229,
+        0.0040407396918115245,
+        0.004467023178128381,
+        0.003754098930946167,
+        0.004815106859711086,
+        0.00521094831270575,
+        0.005484020350535555,
+        0.005533938198706851,
+        0.005816045959610528,
+        0.0038913512233541563,
+        0.0013375773193238399
+    ]
+}
+
+data_rgrp_gender_FedCustom_LossGroup_Gender_4_v02_050 = {
+    "Round": list(range(0, 25)),
+    "RgrpGender": [
+        0.00023991561380508857,
+        2.4408985669163125e-05,
+        6.13660119495563e-05,
+        6.238579884864775e-05,
+        0.00011919536264199487,
+        0.0003781738432170806,
+        0.0008008482535988826,
+        0.0017596340723217288,
+        0.0017644629207971203,
+        0.0013736569735970045,
+        0.0017393917426028471,
+        0.0018990820781605339,
+        0.001733142317671646,
+        0.001953577584711541,
+        0.00277160248653472,
+        0.002500406504337703,
+        0.003355676771701074,
+        0.0036677803585813303,
+        0.0033156722025824217,
+        0.0031979048514129233,
+        0.003102998615238614,
+        0.003845123815177082,
+        0.003740814770708152,
+        0.003730582533847217,
+        0.0040098718204447485
+    ]
+}
+
+
 
 
 # data_rgrp_gender_FedCustom_LossFair = {
@@ -200,10 +263,12 @@ plt.plot(data_rgrp_gender_FedAvg["Round"], data_rgrp_gender_FedAvg["RgrpGender"]
 plt.plot(data_rgrp_gender_FedCustom_LossIndv_1["Round"], data_rgrp_gender_FedCustom_LossIndv_1["RgrpGender"], label="FedLossIndv1", linestyle='--')
 # plt.plot(data_rgrp_gender_FedCustom_LossIndv_2["Round"], data_rgrp_gender_FedCustom_LossIndv_2["RgrpGender"], label="FedLossIndv2", linestyle='--')
 # plt.plot(data_rgrp_gender_FedCustom_LossIndv_3_v01["Round"], data_rgrp_gender_FedCustom_LossIndv_3_v01["RgrpGender"], label="FedLossIndv3-v01", linestyle='--')
-plt.plot(data_rgrp_gender_FedCustom_LossIndv_3_v02["Round"], data_rgrp_gender_FedCustom_LossIndv_3_v02["RgrpGender"], label="FedLossIndv3-v02", linestyle='--')
+# plt.plot(data_rgrp_gender_FedCustom_LossIndv_3_v02["Round"], data_rgrp_gender_FedCustom_LossIndv_3_v02["RgrpGender"], label="FedLossIndv3-v02", linestyle='--')
 # plt.plot(data_rgrp_gender_FedCustom_LossGroup_Activity_1_Gender["Round"], data_rgrp_gender_FedCustom_LossGroup_Activity_1_Gender["RgrpGender"], label="FedLossGroupActivity-Gender1", linestyle='-.')
 # plt.plot(data_rgrp_gender_FedCustom_LossGroup_Activity_2_Gender["Round"], data_rgrp_gender_FedCustom_LossGroup_Activity_2_Gender["RgrpGender"], label="FedLossGroupActivity-Gender2", linestyle='-.')
 # plt.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_2["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_2["RgrpGender"], label="FedLossGroupGender2", linestyle='-.')
+plt.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_4_v02_050["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_4_v02_050["RgrpGender"], label="FedLossGroupGender4-v02-050", linestyle='-.')
+plt.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_4_v03_033["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_4_v03_033["RgrpGender"], label="FedLossGroupGender4-v03-033", linestyle='-.')
 # plt.plot(data_rgrp_gender_FedCustom_LossFair["Round"], data_rgrp_gender_FedCustom_LossFair["RgrpGender"], label="FedLossFair", linestyle=':')
 # plt.plot(data_rgrp_gender_NFS["Round"], data_rgrp_gender_NFS["RgrpGender"], label="NFS", linestyle='-')
 

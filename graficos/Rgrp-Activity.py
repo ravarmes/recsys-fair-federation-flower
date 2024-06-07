@@ -11,18 +11,35 @@ data_rgrp_activity_FedAvg = {
     ]
 }
 
+# Experimento 1
+# data_rgrp_activity_FedCustom_LossIndv_1 = {
+#     "Round": list(range(0, 25)),
+#     "RgrpActivity": [
+#         0.0016356382578873905, 0.0017249613550145916, 0.0017286211250760104,
+#         0.0016044869801017738, 0.0012112235941859938, 0.0005279278584971693,
+#         0.00021560146791855202, 0.00017832166265044366, 4.178871710939217e-05,
+#         4.748567723854913e-05, 2.686444312848685e-05, 3.512322373829519e-05,
+#         4.750571693005884e-05, 6.38090770340627e-05, 1.5551567052938724e-05,
+#         4.135850978016217e-06, 6.315970813073151e-07, 3.745729694280893e-05,
+#         9.808080795952576e-05, 8.4311190886974e-05, 0.0002293715044070116,
+#         0.00036929552938618745, 0.000670087350173751, 0.0014239569247444066,
+#         0.001865173403885588
+#     ]
+# }
+
+# Experimento 2
 data_rgrp_activity_FedCustom_LossIndv_1 = {
     "Round": list(range(0, 25)),
     "RgrpActivity": [
-        0.0016356382578873905, 0.0017249613550145916, 0.0017286211250760104,
-        0.0016044869801017738, 0.0012112235941859938, 0.0005279278584971693,
-        0.00021560146791855202, 0.00017832166265044366, 4.178871710939217e-05,
-        4.748567723854913e-05, 2.686444312848685e-05, 3.512322373829519e-05,
-        4.750571693005884e-05, 6.38090770340627e-05, 1.5551567052938724e-05,
-        4.135850978016217e-06, 6.315970813073151e-07, 3.745729694280893e-05,
-        9.808080795952576e-05, 8.4311190886974e-05, 0.0002293715044070116,
-        0.00036929552938618745, 0.000670087350173751, 0.0014239569247444066,
-        0.001865173403885588
+        0.0011698991734045998, 0.0005148917765061605, 0.0008186685802843363,
+        0.0008232555993309331, 0.000697459790088156, 0.00039425271286045534,
+        0.00021460111504884686, 3.485715398428136e-05, 9.011617013778512e-08,
+        2.198202586376329e-05, 3.6594912445861085e-05, 6.858713430245251e-05,
+        0.000146783525227718, 0.0002486074247271209, 0.0003151238640723636,
+        0.00044570138544323186, 0.000808403325889475, 0.0010276921959405428,
+        0.001358176176970163, 0.0018058796217794285, 0.002475675182856839,
+        0.00273576612073415, 0.003048124009399346, 0.0038082490531917493,
+        0.0033469727573896876
     ]
 }
 
@@ -208,6 +225,37 @@ data_rgrp_activity_FedCustom_LossGroup_Activity_3 = {
     ]
 }
 
+data_rgrp_activity_FedCustom_LossGroup_Activity_4_v01_100 = {
+    "Round": list(range(0, 25)),
+    "RgrpActivity": [
+        0.0017745112963868995,
+        0.0010632364054131821,
+        0.001501971939168858,
+        0.0013777530921576762,
+        0.0009199587916927743,
+        0.000260776182073252,
+        0.00011118291913767995,
+        4.095656488033067e-06,
+        8.49176850203295e-05,
+        0.00023489001694928312,
+        0.0002939839164259565,
+        0.000462987607389844,
+        0.0002169948145287166,
+        0.00016989552093402304,
+        0.00022460303162709702,
+        0.0005572699585446002,
+        0.0005671095840439683,
+        0.0006684476393350868,
+        0.001424177594354695,
+        0.0007620714425317205,
+        0.00046448976013437765,
+        0.0006132714976105405,
+        0.0018816233030715468,
+        0.003081277556383881,
+        0.0027262332820267316
+    ]
+}
+
 data_rgrp_activity_FedCustom_LossGroup_Activity_4_v02_050 = {
     "Round": list(range(0, 25)),
     "RgrpActivity": [
@@ -345,6 +393,7 @@ plt.plot(data_rgrp_activity_FedCustom_LossIndv_1["Round"], data_rgrp_activity_Fe
 # plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_2_v01["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_2_v01["RgrpActivity"], label="FedLossGroupActivity2-v01", linestyle='-.')
 # plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_2_v02["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_2_v02["RgrpActivity"], label="FedLossGroupActivity2-v02", linestyle='-.')
 # plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_3["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_3["RgrpActivity"], label="FedLossGroupActivity3", linestyle='-.')
+plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_4_v01_100["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_4_v01_100["RgrpActivity"], label="FedLossGroupActivity4-v01-100", linestyle='-.')
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_4_v02_050["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_4_v02_050["RgrpActivity"], label="FedLossGroupActivity4-v02-050", linestyle='-.')
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_4_v03_033["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_4_v03_033["RgrpActivity"], label="FedLossGroupActivity4-v03-033", linestyle='-.')
 # plt.plot(data_rgrp_activity_FedCustom_LossFair["Round"], data_rgrp_activity_FedCustom_LossFair["RgrpActivity"], label="FedLossFair", linestyle=':')

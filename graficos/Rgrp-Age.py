@@ -155,6 +155,99 @@ data_rgrp_age_FedCustom_LossIndv_3_v02 = {
 #     ]
 # }
 
+data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda01 = {
+    "Round": list(range(0, 25)),
+    "RgrpAge": [
+        0.004344908290697441,
+        0.003338207087086479,
+        0.0029242084746605003,
+        0.002915739077528207,
+        0.003233849084092269,
+        0.003962880474931491,
+        0.004657138374927626,
+        0.0051879662684335675,
+        0.005552539639157106,
+        0.004932353173876789,
+        0.00443406536593879,
+        0.004701133482339327,
+        0.004823493242586372,
+        0.0035132142373231388,
+        0.004738852083409017,
+        0.005467418029222103,
+        0.005262717078939833,
+        0.006627805380528165,
+        0.007567935933343382,
+        0.008461877756669579,
+        0.010052451731461843,
+        0.01140262366500386,
+        0.012901202118743195,
+        0.013738982485048276,
+        0.015208999484266088
+    ]
+}
+
+data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda02 = {
+    "Round": list(range(0, 25)),
+    "RgrpAge": [
+        0.004245411894199857,
+        0.002502799214744281,
+        0.0029845596381934915,
+        0.0029040536609826573,
+        0.0027257210989271234,
+        0.002630767257923075,
+        0.0033095879738464944,
+        0.0040372035839028675,
+        0.004688056242681889,
+        0.0037596376619430196,
+        0.004075237823670301,
+        0.004082877498831664,
+        0.004111117701364277,
+        0.004135550029341696,
+        0.0035082333872658994,
+        0.004155788758769481,
+        0.004191753075360118,
+        0.004857095694633438,
+        0.0056149084428358765,
+        0.006366470976245311,
+        0.007355584888614275,
+        0.008576241443833727,
+        0.009627630649395485,
+        0.01047701872634354,
+        0.011711504375956755
+    ]
+}
+
+data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda03 = {
+    "Round": list(range(0, 25)),
+    "RgrpAge": [
+        0.003947735841365656,
+        0.003009242276263153,
+        0.0030689804651528245,
+        0.003082975347183188,
+        0.0029785025685206815,
+        0.0029166919055249652,
+        0.003278337066968615,
+        0.003916851418594098,
+        0.0038988681075038706,
+        0.003923614747446272,
+        0.0036658989773073803,
+        0.0037271043620978506,
+        0.0035391285172472068,
+        0.0038201795600083708,
+        0.004108899094082839,
+        0.003631731129231674,
+        0.0041200277993356845,
+        0.00493130131880173,
+        0.0051757679280980675,
+        0.006110117291362983,
+        0.0059341673492020386,
+        0.0062945495640899475,
+        0.007528036190622472,
+        0.008605864619696117,
+        0.010387661782940882
+    ]
+}
+
 data_rgrp_age_NFS = {
     "Round": list(range(0, 25)),
     "RgrpAge": [
@@ -194,10 +287,14 @@ plt.plot(data_rgrp_age_FedAvg["Round"], data_rgrp_age_FedAvg["RgrpAge"], label="
 plt.plot(data_rgrp_age_FedCustom_LossIndv_1["Round"], data_rgrp_age_FedCustom_LossIndv_1["RgrpAge"], label="FedLossIndv1", linestyle='--')
 # plt.plot(data_rgrp_age_FedCustom_LossIndv_2["Round"], data_rgrp_age_FedCustom_LossIndv_2["RgrpAge"], label="FedLossIndv2", linestyle='--')
 # plt.plot(data_rgrp_age_FedCustom_LossIndv_3_v01["Round"], data_rgrp_age_FedCustom_LossIndv_3_v01["RgrpAge"], label="FedLossIndv3-v01", linestyle='--')
-plt.plot(data_rgrp_age_FedCustom_LossIndv_3_v02["Round"], data_rgrp_age_FedCustom_LossIndv_3_v02["RgrpAge"], label="FedLossIndv3-v02", linestyle='--')
+# plt.plot(data_rgrp_age_FedCustom_LossIndv_3_v02["Round"], data_rgrp_age_FedCustom_LossIndv_3_v02["RgrpAge"], label="FedLossIndv3-v02", linestyle='--')
 # plt.plot(data_rgrp_age_FedCustom_LossGroup_Activity_1_Age["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_1_Age["RgrpAge"], label="FedLossGroupActivity-Age1", linestyle='-.')
 # plt.plot(data_rgrp_age_FedCustom_LossGroup_Activity_2_Age["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_2_Age["RgrpAge"], label="FedLossGroupActivity-Age2", linestyle='-.')
 # plt.plot(data_rgrp_age_FedCustom_LossGroup_Age_2["Round"], data_rgrp_age_FedCustom_LossGroup_Age_2["RgrpAge"], label="FedLossGroupAge2", linestyle='-.')
+plt.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda01["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda01["RgrpAge"], label="FedLossGroupAge5-lambda01", linestyle='--')
+plt.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda02["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda02["RgrpAge"], label="FedLossGroupAge5-lambda02", linestyle='--')
+plt.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda03["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda03["RgrpAge"], label="FedLossGroupAge5-lambda03", linestyle='--')
+
 # plt.plot(data_rgrp_age_FedCustom_LossFair["Round"], data_rgrp_age_FedCustom_LossFair["RgrpAge"], label="FedLossFair", linestyle=':')
 # plt.plot(data_rgrp_age_NFS["Round"], data_rgrp_age_NFS["RgrpAge"], label="NFS", linestyle='-')
 

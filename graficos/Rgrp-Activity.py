@@ -318,6 +318,19 @@ data_rgrp_activity_FedCustom_LossGroup_Activity_4_v03_033 = {
     ]
 }
 
+data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda01 = {
+    "Round": list(range(0, 25)),
+    "RgrpActivity": [
+        0.0016914166004399357, 0.000670974766454609, 0.0010061972420575926, 0.0008421761808672277,
+        0.00046216508742923915, 0.0001300277533936641, 1.215000613534687e-05, 5.454255978664408e-06,
+        7.792440684129876e-05, 0.00011884666216394802, 0.00018093211706376468, 0.00025450841508221174,
+        0.00032699223588913913, 2.2731176622653548e-05, 0.00018255614269743214, 0.00036201981252372614,
+        0.0005920114201330721, 0.0008949764399372529, 0.0011190092410172353, 0.001424379729146154,
+        0.0019639911226511375, 0.0023674230822831608, 0.002651361741102965, 0.0029434967336792617,
+        0.003136066409191191
+    ]
+}
+
 data_rgrp_activity_FedCustom_LossFair = {
     "Round": list(range(0, 25)),
     "RgrpActivity": [
@@ -396,6 +409,7 @@ plt.plot(data_rgrp_activity_FedCustom_LossIndv_1["Round"], data_rgrp_activity_Fe
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_4_v01_100["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_4_v01_100["RgrpActivity"], label="FedLossGroupActivity4-v01-100", linestyle='-.')
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_4_v02_050["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_4_v02_050["RgrpActivity"], label="FedLossGroupActivity4-v02-050", linestyle='-.')
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_4_v03_033["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_4_v03_033["RgrpActivity"], label="FedLossGroupActivity4-v03-033", linestyle='-.')
+plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda01["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda01["RgrpActivity"], label="FedLossGroupActivity5-lambda01", linestyle='-.')
 # plt.plot(data_rgrp_activity_FedCustom_LossFair["Round"], data_rgrp_activity_FedCustom_LossFair["RgrpActivity"], label="FedLossFair", linestyle=':')
 # plt.plot(data_rgrp_activity_NFS["Round"], data_rgrp_activity_NFS["RgrpActivity"], label="NFS", linestyle='-')
 

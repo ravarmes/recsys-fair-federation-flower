@@ -349,7 +349,7 @@ class FedCustom(Strategy):
         # Converte os parâmetros para o formato necessário pelo Flower
         return fl.common.ndarrays_to_parameters(ndarrays)
 
-# Função de taxa de aprendizado adaptativa
+    # Função de taxa de aprendizado adaptativa
     def adaptive_learning_rate(self, initial_lr, decay_factor, round_num):
         return initial_lr / (1 + decay_factor * round_num)
 
@@ -406,7 +406,7 @@ class FedCustom(Strategy):
         fairness_losses = []
         for client, fit_res in results:
             local_loss = fit_res.metrics.get('loss', 0)
-            fairness_loss = self.fairness_regularization(local_loss, list(self.loss_avg_per_group.values()), lambda_fairness=0.1)
+            fairness_loss = self.fairness_regularization(local_loss, list(self.loss_avg_per_group.values()), lambda_fairness=0.2)
             fairness_losses.append((parameters_to_ndarrays(fit_res.parameters), fairness_loss))
 
         # Agregar parâmetros usando média ponderada inversa da perda

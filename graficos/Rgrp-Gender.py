@@ -364,6 +364,37 @@ data_rgrp_gender_FedCustom_LossGroup_Activity_5_lambda04 = {
     ]
 }
 
+data_rgrp_gender_FedCustom_LossGroup_Activity_5_lambda05 = {
+    "Round": list(range(0, 25)),
+    "RgrpGender": [
+        0.00020216453095042844,
+        0.00011840772429756772,
+        0.00011181718045920013,
+        0.00013836818989840154,
+        0.00022902853904493566,
+        0.0006788120747820583,
+        0.001399268850420484,
+        0.002011368494697198,
+        0.00258508359633466,
+        0.0030605340639398098,
+        0.003390062294949222,
+        0.003493441465294406,
+        0.00361096162384295,
+        0.003831287712898231,
+        0.004150728423054141,
+        0.004261033326878123,
+        0.004335985163206215,
+        0.004394220685329781,
+        0.00462199429289536,
+        0.004537120532596124,
+        0.0048022637076329125,
+        0.004741398969468991,
+        0.004567848475535025,
+        0.0047059089114861626,
+        0.004839855668969746
+    ]
+}
+
 # data_rgrp_gender_FedCustom_LossFair = {
 #     "Round": list(range(0, 25)),
 #     "RgrpGender": [
@@ -442,6 +473,7 @@ plt.plot(data_rgrp_gender_FedCustom_LossGroup_Activity_5_lambda01["Round"], data
 plt.plot(data_rgrp_gender_FedCustom_LossGroup_Activity_5_lambda02["Round"], data_rgrp_gender_FedCustom_LossGroup_Activity_5_lambda02["RgrpGender"], label="FedLossGroupGender5-lambda02", linestyle='-.')
 plt.plot(data_rgrp_gender_FedCustom_LossGroup_Activity_5_lambda03["Round"], data_rgrp_gender_FedCustom_LossGroup_Activity_5_lambda03["RgrpGender"], label="FedLossGroupGender5-lambda03", linestyle='-.')
 plt.plot(data_rgrp_gender_FedCustom_LossGroup_Activity_5_lambda04["Round"], data_rgrp_gender_FedCustom_LossGroup_Activity_5_lambda04["RgrpGender"], label="FedLossGroupGender5-lambda04", linestyle='-.')
+plt.plot(data_rgrp_gender_FedCustom_LossGroup_Activity_5_lambda05["Round"], data_rgrp_gender_FedCustom_LossGroup_Activity_5_lambda05["RgrpGender"], label="FedLossGroupGender5-lambda05", linestyle='-.')
 # plt.plot(data_rgrp_gender_FedCustom_LossFair["Round"], data_rgrp_gender_FedCustom_LossFair["RgrpGender"], label="FedLossFair", linestyle=':')
 # plt.plot(data_rgrp_gender_NFS["Round"], data_rgrp_gender_NFS["RgrpGender"], label="NFS", linestyle='-')
 

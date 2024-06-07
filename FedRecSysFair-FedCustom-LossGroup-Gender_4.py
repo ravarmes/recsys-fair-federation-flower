@@ -1,9 +1,11 @@
-# Neste script a estratégia de agregação é ponderar os pesos na proporção das Perdas dos Grupos
-# Além disso, os grupos recebem parâmetros de taxa de aprendizagem e épocas de acordo com as Perdas dos Grupos
+# Neste script a estratégia de agregação é ponderar os pesos na proporção das Perdas Individuais
+# Além disso, os grupos recebem parâmetros de taxa de aprendizagem e épocas de acordo com as Perdas Individuais dentro do Grupo
 # Grupos favorecidos tem menores taxas de aprendizado e épocas
 # Grupos desfavorecidos tem maiores taxas de aprendizado e épocas
-# As configurações de taxas de aprendizado e épocas para cada grupo são FIXAS
-# A configuração de grupo considerada é a Atividade (Activity)
+# As configurações de taxas de aprendizado e épocas são FIXAS (3 configurações)
+# A configuração de grupo considerada é o Gênero (Gender)
+# Dentro de cada grupo, os usuários são ordenados em ordem de perda (50%-50%) // 2
+# As distribuição de configurações de grupo levam em consideração essa ordem
 
 # !pip install -q flwr[simulation] torch torchvision
 

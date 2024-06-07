@@ -279,6 +279,37 @@ data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda04 = {
     ]
 }
 
+data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda05 = {
+    "Round": list(range(0, 25)),
+    "RgrpAge": [
+        0.0038549053510313486,
+        0.0030409795871780177,
+        0.00292505613556869,
+        0.0028228916876661724,
+        0.002506434480736139,
+        0.002279371386701903,
+        0.002617539047256562,
+        0.0030885085388435173,
+        0.003336664549836137,
+        0.003493436758966559,
+        0.003810183314629342,
+        0.003633456364436069,
+        0.0037724518549473104,
+        0.0036932098394725846,
+        0.004006681785849164,
+        0.0044846629065428,
+        0.004643405336438858,
+        0.005157869144976666,
+        0.005468560836118823,
+        0.0057580538630604,
+        0.0065313760697899926,
+        0.0076520886020541735,
+        0.00776088777455221,
+        0.009431938607689327,
+        0.010968181659605903
+    ]
+}
+
 data_rgrp_age_NFS = {
     "Round": list(range(0, 25)),
     "RgrpAge": [
@@ -326,6 +357,7 @@ plt.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda01["Round"], data_rg
 plt.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda02["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda02["RgrpAge"], label="FedLossGroupAge5-lambda02", linestyle='--')
 plt.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda03["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda03["RgrpAge"], label="FedLossGroupAge5-lambda03", linestyle='--')
 plt.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda04["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda04["RgrpAge"], label="FedLossGroupAge5-lambda04", linestyle='--')
+plt.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda05["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda05["RgrpAge"], label="FedLossGroupAge5-lambda05", linestyle='--')
 
 # plt.plot(data_rgrp_age_FedCustom_LossFair["Round"], data_rgrp_age_FedCustom_LossFair["RgrpAge"], label="FedLossFair", linestyle=':')
 # plt.plot(data_rgrp_age_NFS["Round"], data_rgrp_age_NFS["RgrpAge"], label="NFS", linestyle='-')

@@ -1,7 +1,4 @@
-from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import make_scorer
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error
 from sklearn.metrics import precision_score, recall_score, f1_score
 
 import torch
@@ -51,19 +48,12 @@ param_grid = {
     'module__num_items': [1000],
     'embedding_dim': [128],
     'lr': [0.0001, 0.001, 0.01, 0.1],
-    'num_epochs': [10, 15, 20, 30]  # Adicionando opções para o número de épocas
+    'num_epochs': [16, 18, 20, 22, 24, 26]  # Adicionando opções para o número de épocas
 }
 
-# param_grid = {
-#     'module__num_users': [300],
-#     'module__num_items': [1000],
-#     'embedding_dim': [128],
-#     'lr': [0.1],
-#     'num_epochs': [20]  # Adicionando opções para o número de épocas
-# }
-
 # Realizar Grid Search para encontrar os melhores hiperparâmetros, incluindo o número de épocas
-best_score = np.inf
+best_configs = []
+
 for users in param_grid['module__num_users']:
     for items in param_grid['module__num_items']:
         for emb_dim in param_grid['embedding_dim']:
@@ -81,23 +71,27 @@ for users in param_grid['module__num_users']:
                         loss.backward()
                         optimizer.step()
 
-                        # Avaliar o desempenho com os hiperparâmetros atuais
-                        model.eval()
-                        with torch.no_grad():
-                            test_output = model(torch.tensor(X_test).float())
-                            test_loss = criterion(test_output.flatten(), torch.tensor(y_test).float()).item()
+                    # Avaliar o desempenho com os hiperparâmetros atuais
+                    model.eval()
+                    with torch.no_grad():
+                        test_output = model(torch.tensor(X_test).float())
+                        test_loss = criterion(test_output.flatten(), torch.tensor(y_test).float()).item()
 
-                        # Atualizar melhores hiperparâmetros se o desempenho atual for melhor
-                        if test_loss < best_score:
-                            best_score = test_loss
-                            best_params = {'num_users': users, 'num_items': items, 'embedding_dim': emb_dim, 'lr': lr, 'num_epochs': epochs}
+                    # Armazenar as melhores configurações de hiperparâmetros
+                    if len(best_configs) < 5:
+                        best_configs.append({'params': {'num_users': users, 'num_items': items, 'embedding_dim': emb_dim, 'lr': lr, 'num_epochs': epochs}, 'score': test_loss})
+                        best_configs = sorted(best_configs, key=lambda x: x['score'])
+                    elif test_loss < best_configs[-1]['score']:
+                        best_configs[-1] = {'params': {'num_users': users, 'num_items': items, 'embedding_dim': emb_dim, 'lr': lr, 'num_epochs': epochs}, 'score': test_loss}
+                        best_configs = sorted(best_configs, key=lambda x: x['score'])
 
-print("Melhores hiperparâmetros:", best_params)
-print("Melhor pontuação (RMSE) encontrada:", best_score)
+print("Cinco melhores configurações de hiperparâmetros:")
+for config in best_configs:
+    print("Configuração:", config['params'])
+    print("Pontuação (RMSE):", config['score'])
 
-# ------------------------------------------------------
-
-# Avaliar o modelo com melhores hiperparâmetros
+# Avaliar o modelo com a melhor configuração de hiperparâmetros
+best_params = best_configs[0]['params']
 model = Net(best_params['num_users'], best_params['num_items'], best_params['embedding_dim'])
 optimizer = optim.Adam(model.parameters(), lr=best_params['lr'])
 criterion = custom_loss
@@ -111,24 +105,12 @@ loss.backward()
 optimizer.step()
 
 # Avaliar a acurácia do modelo nos dados de teste
-# model.eval()
-# with torch.no_grad():
-#     test_output = model(torch.tensor(np.column_stack((X_test, y_test))).float())
-#     predicted_ratings = test_output.flatten().numpy()
-#     accuracy = np.mean(np.abs(predicted_ratings - y_test) <= 0.5)  # Calculando a acurácia
-
-# print("Melhores hiperparâmetros:", best_params)
-# print("Melhor pontuação (RMSE) encontrada:", best_score)
-# print("Acurácia do modelo nos dados de teste:", accuracy)
-
 model.eval()
 with torch.no_grad():
     test_output = model(torch.tensor(np.column_stack((X_test, y_test))).float())
     predicted_ratings = test_output.flatten().numpy()
 
-    # threshold = 0.5 # Definir um limiar para binarizar as previsões
-    threshold = 1 # Definir um limiar para binarizar as previsões
-
+    threshold = 1  # Definir um limiar para binarizar as previsões
     accuracy = np.mean(np.abs(predicted_ratings - y_test) <= threshold)  # Calculando a acurácia
 
     predicted_classes = (predicted_ratings > threshold).astype(int)  # Discretizar as previsões em classes
@@ -138,48 +120,42 @@ with torch.no_grad():
     recall = recall_score(y_test, predicted_classes, average='weighted')
     f1 = f1_score(y_test, predicted_classes, average='weighted')
 
-
 print("Melhores hiperparâmetros:", best_params)
-print("Melhor pontuação (RMSE) encontrada:", best_score)
+print("Melhor pontuação (RMSE) encontrada:", best_configs[0]['score'])
 print("Acurácia do modelo nos dados de teste:", accuracy)
 print("Precision:", precision)
 print("Recall:", recall)
 print("F1-Score:", f1)
 
-# -----------------------------
-
+# Calcular Precision@10 e Recall@10
 top_k = 10  # Definir o número de principais itens recomendados
 top_indices = np.argsort(predicted_ratings)[::-1][:top_k]  # Índices dos top_k itens recomendados
 
-# Considerar apenas os top_k itens recomendados
 top_predicted_ratings = predicted_ratings[top_indices]
 top_y_test = y_test[top_indices]
 
-# Identificar os top_k itens relevantes e recomendados
 relevant_indices = np.where(top_y_test >= 3.5)[0]  # Índices dos itens relevantes
 recommended_indices = np.where(top_predicted_ratings >= 3.5)[0]  # Índices dos itens recomendados
 
-# Calcular os itens relevantes e recomendados em comum
 relevant_recommended_indices = np.intersect1d(relevant_indices, recommended_indices)
 
-# Contar o número de itens relevantes e recomendados em comum, bem como o total de itens relevantes
 num_relevant_recommended = len(relevant_recommended_indices)
 num_relevant = len(relevant_indices)
 
-# Calcular Precision@10 e Recall@10
 precision_at_10 = num_relevant_recommended / top_k if top_k > 0 else 0.0  # Precision@10
 recall_at_10 = num_relevant_recommended / num_relevant if num_relevant > 0 else 0.0  # Recall@10
 
 print("Precision@10:", precision_at_10)
 print("Recall@10:", recall_at_10)
 
-
-
-
-# Melhores hiperparâmetros: {'num_users': 300, 'num_items': 1000, 'embedding_dim': 128, 'lr': 0.01, 'num_epochs': 20}
-# Melhor pontuação (RMSE) encontrada: 0.915046215057373
-
-#Melhores hiperparâmetros: {'num_users': 300, 'num_items': 1000, 'embedding_dim': 128, 'lr': 0.01, 'num_epochs': 20}
-# Melhor pontuação (RMSE) encontrada: 0.9019684791564941
-
-
+# Cinco melhores configurações de hiperparâmetros:
+# Configuração: {'num_users': 300, 'num_items': 1000, 'embedding_dim': 128, 'lr': 0.01, 'num_epochs': 26}
+# Pontuação (RMSE): 0.8852731585502625
+# Configuração: {'num_users': 300, 'num_items': 1000, 'embedding_dim': 128, 'lr': 0.01, 'num_epochs': 24}
+# Pontuação (RMSE): 0.8864839673042297
+# Configuração: {'num_users': 300, 'num_items': 1000, 'embedding_dim': 128, 'lr': 0.01, 'num_epochs': 20}
+# Pontuação (RMSE): 0.9019408226013184
+# Configuração: {'num_users': 300, 'num_items': 1000, 'embedding_dim': 128, 'lr': 0.01, 'num_epochs': 22}
+# Pontuação (RMSE): 0.9033520817756653
+# Configuração: {'num_users': 300, 'num_items': 1000, 'embedding_dim': 128, 'lr': 0.01, 'num_epochs': 16}
+# Pontuação (RMSE): 0.9038823246955872

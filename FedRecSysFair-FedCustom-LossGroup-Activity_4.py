@@ -361,7 +361,7 @@ class FedCustom(Strategy):
 
         config_g1 = {
             "server_round": server_round,
-            "local_epochs": 18,
+            "local_epochs": 16,
             "learning_rate": 0.01,
             "lotes_por_rodada": lotes_por_rodada,
         }
@@ -375,8 +375,8 @@ class FedCustom(Strategy):
 
         config_g3 = {
             "server_round": server_round,
-            "local_epochs": 50,
-            "learning_rate": 0.001,
+            "local_epochs": 26,
+            "learning_rate": 0.01,
             "lotes_por_rodada": lotes_por_rodada,
         }
 

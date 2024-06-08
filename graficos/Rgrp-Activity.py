@@ -676,31 +676,62 @@ data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda04 = {
 data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda05 = {
     "Round": list(range(0, 25)),
     "RgrpActivity": [
-        0.0029104041118691885,
-        0.0016786344794314557,
-        0.002224570594324117,
-        0.0017683213699183544,
-        0.0011866903730847062,
-        0.0005980039964294274,
-        0.00013540365165747427,
-        1.235508028208028e-05,
-        1.836092555668533e-05,
-        2.429624913462212e-05,
-        5.212733270040379e-05,
-        6.95941543702419e-05,
-        2.2838734905887637e-05,
-        2.3777430969101612e-05,
-        3.1185113994696834e-05,
-        3.911910189391585e-05,
-        9.955864458740775e-05,
-        0.0001933500577932386,
-        0.00023051517409734858,
-        0.0004274335499150483,
-        0.00046033537769648864,
-        0.0005878599953294276,
-        0.0011314655821623469,
-        0.0015790702777448871,
-        0.0019807443067018623
+        0.003147292949156337,
+        0.0013203780827201873,
+        0.002099850596246432,
+        0.0014831493441206812,
+        0.0007689603512684575,
+        0.00027568663412273525,
+        1.848122504239485e-05,
+        3.98127410864265e-06,
+        7.375415763321772e-05,
+        8.288656262619698e-05,
+        0.00011742833085325597,
+        0.000200113699360484,
+        0.0001248326940876422,
+        5.3469714983391386e-05,
+        8.023327470162072e-06,
+        3.045396651573553e-06,
+        5.067201924497569e-06,
+        1.751001724914203e-05,
+        5.746414092760763e-05,
+        0.00025624585664866715,
+        0.00041237494784663453,
+        0.0005773194985827422,
+        4.926369716381427e-07,
+        0.00011468082509425574,
+        0.000537609631025893
+    ]
+}
+
+data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda06 = {
+    "Round": list(range(0, 25)),
+    "RgrpActivity": [
+        0.0006473820026011792,
+        0.0007250384879783965,
+        0.0011530147384208817,
+        0.0009778236228822057,
+        0.0007394233989478103,
+        0.00031139703219935694,
+        0.00016749740502365195,
+        1.8517283636747562e-05,
+        7.216325600941157e-06,
+        3.506796538097559e-06,
+        6.940371851167935e-06,
+        3.890424017244381e-06,
+        4.006143196813325e-07,
+        2.0679513801231256e-05,
+        1.503143250076451e-06,
+        3.1170406734918e-05,
+        0.00012611341414943132,
+        0.0002408354925238965,
+        0.00032985312678357297,
+        0.00038328610721157,
+        0.0006444683798636293,
+        0.0009515131754982997,
+        0.00116544120416833,
+        0.0014718905851514759,
+        0.001631452876931395
     ]
 }
 
@@ -783,19 +814,38 @@ plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_4_v01_100["Round"], dat
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_4_v02_050["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_4_v02_050["RgrpActivity"], label="FedLossGroupActivity4-v02-050", linestyle='-.')
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_4_v03_033["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_4_v03_033["RgrpActivity"], label="FedLossGroupActivity4-v03-033", linestyle='-.')
 
-plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda01["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda01["RgrpActivity"], label="FedLossGroupActivity5-lambda01", linestyle='-.')
-plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda02["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda02["RgrpActivity"], label="FedLossGroupActivity5-lambda02", linestyle='-.')
-plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda03["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda03["RgrpActivity"], label="FedLossGroupActivity5-lambda03", linestyle='-.')
-plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda04["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda04["RgrpActivity"], label="FedLossGroupActivity5-lambda04", linestyle='-.')
-plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda05["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda05["RgrpActivity"], label="FedLossGroupActivity5-lambda05", linestyle='-.')
-plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda06["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda06["RgrpActivity"], label="FedLossGroupActivity5-lambda06", linestyle='-.')
+# plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda01["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda01["RgrpActivity"], label="FedLossGroupActivity5-lambda01", linestyle='-.')
+# plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda02["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda02["RgrpActivity"], label="FedLossGroupActivity5-lambda02", linestyle='-.')
+# plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda03["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda03["RgrpActivity"], label="FedLossGroupActivity5-lambda03", linestyle='-.')
+# plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda04["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda04["RgrpActivity"], label="FedLossGroupActivity5-lambda04", linestyle='-.')
+# plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda05["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda05["RgrpActivity"], label="FedLossGroupActivity5-lambda05", linestyle='-.')
+# plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda06["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda06["RgrpActivity"], label="FedLossGroupActivity5-lambda06", linestyle='-.')
 
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda01["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda01["RgrpActivity"], label="FedLossGroupActivity6-lambda01", linestyle='-.')
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda02["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda02["RgrpActivity"], label="FedLossGroupActivity6-lambda02", linestyle='-.')
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda03["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda03["RgrpActivity"], label="FedLossGroupActivity6-lambda03", linestyle='-.')
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda04["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda04["RgrpActivity"], label="FedLossGroupActivity6-lambda04", linestyle='-.')
+plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda05["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda05["RgrpActivity"], label="FedLossGroupActivity6-lambda05", linestyle='-.')
+plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda06["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda06["RgrpActivity"], label="FedLossGroupActivity6-lambda06", linestyle='-.')
 # plt.plot(data_rgrp_activity_FedCustom_LossFair["Round"], data_rgrp_activity_FedCustom_LossFair["RgrpActivity"], label="FedLossFair", linestyle=':')
 # plt.plot(data_rgrp_activity_NFS["Round"], data_rgrp_activity_NFS["RgrpActivity"], label="NFS", linestyle='-')
+
+
+#---------------------------------------------
+# plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda01["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda01["RgrpActivity"], label="FedLossGroupActivity5-lambda01", linestyle='-.', color = 'red')
+# plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda02["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda02["RgrpActivity"], label="FedLossGroupActivity5-lambda02", linestyle='-.', color = 'red')
+# plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda03["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda03["RgrpActivity"], label="FedLossGroupActivity5-lambda03", linestyle='-.', color = 'red')
+# plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda04["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda04["RgrpActivity"], label="FedLossGroupActivity5-lambda04", linestyle='-.', color = 'red')
+# plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda05["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda05["RgrpActivity"], label="FedLossGroupActivity5-lambda05", linestyle='-.', color = 'red')
+# plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda06["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda06["RgrpActivity"], label="FedLossGroupActivity5-lambda06", linestyle='-.', color = 'red')
+
+# plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda01["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda01["RgrpActivity"], label="FedLossGroupActivity6-lambda01", linestyle='-.', color = 'blue')
+# plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda02["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda02["RgrpActivity"], label="FedLossGroupActivity6-lambda02", linestyle='-.', color = 'blue')
+# plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda03["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda03["RgrpActivity"], label="FedLossGroupActivity6-lambda03", linestyle='-.', color = 'blue')
+# plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda04["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda04["RgrpActivity"], label="FedLossGroupActivity6-lambda04", linestyle='-.', color = 'blue')
+# plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda05["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda05["RgrpActivity"], label="FedLossGroupActivity6-lambda05", linestyle='-.', color = 'blue')
+# plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda06["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda06["RgrpActivity"], label="FedLossGroupActivity6-lambda06", linestyle='-.', color = 'blue')
+#---------------------------------------------
 
 plt.xlabel("Round")
 plt.ylabel(r"$R_{grp}$ Activity")

@@ -374,7 +374,7 @@ class FedCustom(Strategy):
 
         # Inicializar loss_avg_per_group se estiver vazio
         if not hasattr(self, 'loss_avg_per_group'):
-            self.loss_avg_per_group = {group: 0 for group in G_GENDER.keys()}
+            self.loss_avg_per_group = {group: 0 for group in G_AGE.keys()}
 
         # Ordenar grupos por ordem crescente de perdas médias
         sorted_groups = sorted(self.loss_avg_per_group.items(), key=lambda x: x[1])

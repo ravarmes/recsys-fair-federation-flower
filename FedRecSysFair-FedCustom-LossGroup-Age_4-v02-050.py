@@ -4,7 +4,7 @@
 # Grupos desfavorecidos tem maiores taxas de aprendizado e épocas
 # As configurações de taxas de aprendizado e épocas são FIXAS (3 configurações)
 # A configuração de grupo considerada é o Idade (Age)
-# Dentro de cada grupo, os usuários são ordenados em ordem de perda (67%-33%) // 3
+# Dentro de cada grupo, os usuários são ordenados em ordem de perda (50%-50%) // 2
 # As distribuição de configurações de grupo levam em consideração essa ordem
 
 # !pip install -q flwr[simulation] torch torchvision
@@ -397,7 +397,7 @@ class FedCustom(Strategy):
             if group in G_AGE:
                 group_clients = [client for client in clients if int(client.cid) in G_AGE[group]]
                 group_clients_sorted_by_loss = sorted(group_clients, key=get_client_loss)
-                mid_index = len(group_clients_sorted_by_loss) // 3
+                mid_index = len(group_clients_sorted_by_loss) // 2
 
                 # Proporção de 50% para configuração
                 high_config = configurations[min(i + 2, 7)]

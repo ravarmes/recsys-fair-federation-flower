@@ -337,6 +337,7 @@ class FedCustom(Strategy):
         self.loss_avg_per_group = {}
         self.all_losses = []
         self.all_weights = []
+        self.global_groups_variance = 1
 
     def __repr__(self) -> str:
         return "FedCustom"
@@ -349,8 +350,11 @@ class FedCustom(Strategy):
         return fl.common.ndarrays_to_parameters(ndarrays)
 
     def adaptive_learning_rate(self, initial_lr, decay_factor, round_num, global_groups_variance):
-        # Ajustar a taxa de aprendizado com base na global_groups_variance
-        return initial_lr / (1 + decay_factor * round_num * global_groups_variance)
+        if global_groups_variance == 1:
+            return initial_lr / (1 + decay_factor * round_num)
+        else:
+            # Ajustar a taxa de aprendizado com base na global_groups_variance
+            return initial_lr / (1 + decay_factor * round_num * global_groups_variance)
 
     def fairness_regularization(self, local_loss, group_loss, lambda_fairness):
         fairness_penalty = (lambda_fairness * group_loss)
@@ -361,10 +365,16 @@ class FedCustom(Strategy):
     ) -> List[Tuple[ClientProxy, FitIns]]:
         sample_size, min_num_clients = self.num_fit_clients(client_manager.num_available())
         clients = client_manager.sample(num_clients=sample_size, min_num_clients=min_num_clients)
+        print("---------------------------------------------------")
+        print("CONFIGURE")
+        print("---------------------------------------------------")
         
-        # Calcular a taxa de aprendizado adaptativa com base na global_groups_variance
-        global_groups_variance = np.var(list(self.loss_avg_per_group.values()))
-        learning_rate = self.adaptive_learning_rate(0.01, 0.01, server_round, global_groups_variance)
+        if self.loss_avg_per_group != {} :
+            self.global_groups_variance = np.var(list(self.loss_avg_per_group.values()))
+            print(f'self.loss_avg_per_group: {self.loss_avg_per_group}')
+            print(f'global_groups_variance: {self.global_groups_variance}')
+
+        learning_rate = self.adaptive_learning_rate(0.01, 0.01, server_round, self.global_groups_variance)
         
         config = {
             "server_round": server_round,
@@ -382,6 +392,9 @@ class FedCustom(Strategy):
         results: List[Tuple[ClientProxy, FitRes]],
         failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]],
     ) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
+        print("---------------------------------------------------")
+        print("AGGREGATE")
+
         G_ACTIVITY = {1: list(range(0, 15)), 2: list(range(15, 300))}
         total_loss = sum(fit_res.metrics.get('loss', 0) for _, fit_res in results)
 

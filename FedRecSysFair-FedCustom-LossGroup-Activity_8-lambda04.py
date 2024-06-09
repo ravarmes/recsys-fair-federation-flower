@@ -337,6 +337,7 @@ class FedCustom(Strategy):
         self.loss_avg_per_group = {}
         self.all_losses = []
         self.all_weights = []
+        self.global_groups_variance = 1
 
     def __repr__(self) -> str:
         return "FedCustom"
@@ -348,12 +349,16 @@ class FedCustom(Strategy):
         ndarrays = get_parameters(net)
         return fl.common.ndarrays_to_parameters(ndarrays)
 
-    def adaptive_learning_rate(self, initial_lr, decay_factor, round_num):
-        return initial_lr / (1 + decay_factor * round_num)
+    def adaptive_learning_rate(self, initial_lr, decay_factor, round_num, global_groups_variance, min_lr=0.005, max_lr=0.02, scale_factor=1.0):
+        if global_groups_variance == 1:
+            return initial_lr
+        else:
+            adjusted_lr = initial_lr / (1 + decay_factor * round_num) * (1 + scale_factor * global_groups_variance)
+            return min(max_lr, max(min_lr, adjusted_lr))
 
-    def fairness_regularization(self, loss, global_mean_loss, group_variance, lambda_fairness):
+    def fairness_regularization(self, loss, global_mean_loss, lambda_fairness):
         diff_loss_global_mean = loss - global_mean_loss
-        fairness_penalty = (lambda_fairness * diff_loss_global_mean) / group_variance
+        fairness_penalty = (lambda_fairness * diff_loss_global_mean)
         return loss + fairness_penalty
 
     def configure_fit(
@@ -361,11 +366,18 @@ class FedCustom(Strategy):
     ) -> List[Tuple[ClientProxy, FitIns]]:
         sample_size, min_num_clients = self.num_fit_clients(client_manager.num_available())
         clients = client_manager.sample(num_clients=sample_size, min_num_clients=min_num_clients)
+
+        if self.loss_avg_per_group != {} :
+            self.global_groups_variance = np.var(list(self.loss_avg_per_group.values()))
+            print(f'self.loss_avg_per_group: {self.loss_avg_per_group}')
+            print(f'global_groups_variance: {self.global_groups_variance}')
+
+        learning_rate = self.adaptive_learning_rate(0.01, 0.01, server_round, self.global_groups_variance)
         
         config = {
             "server_round": server_round,
             "local_epochs": 20,
-            "learning_rate": self.adaptive_learning_rate(0.01, 0.01, server_round),
+            "learning_rate": learning_rate,
             "lotes_por_rodada": server_round,
         }
 
@@ -400,7 +412,7 @@ class FedCustom(Strategy):
         fairness_losses = []
         for client_index, (client, fit_res) in enumerate(results):
             local_loss = fit_res.metrics.get('loss', 0)
-            fairness_loss = self.fairness_regularization(local_loss, global_mean_loss, group_variance, lambda_fairness=0.4)
+            fairness_loss = self.fairness_regularization(local_loss, global_mean_loss, lambda_fairness=0.4)
             fairness_losses.append((parameters_to_ndarrays(fit_res.parameters), fairness_loss))
 
         def aggregate(weights):

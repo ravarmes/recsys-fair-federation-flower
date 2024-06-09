@@ -349,20 +349,17 @@ class FedCustom(Strategy):
         net = Net(300, 1000)
         ndarrays = get_parameters(net)
         return fl.common.ndarrays_to_parameters(ndarrays)
-
-    def adaptive_learning_rate(initial_lr, decay_factor, round_num, global_groups_variance, min_lr=0.005, max_lr=0.02, scale_factor=1.0):
-        if global_groups_variance == 1:
-            return initial_lr / (1 + decay_factor * round_num)
-        else:
-            # Ajustar a taxa de aprendizado com base na global_groups_variance
-            adjusted_lr = initial_lr / (1 + decay_factor * round_num) * (1 + scale_factor * global_groups_variance)
-            # Limitar a taxa de aprendizado entre min_lr e max_lr
-            return min(max_lr, max(min_lr, adjusted_lr))
-
-
+    
     def fairness_regularization(self, local_loss, group_loss, lambda_fairness):
         fairness_penalty = (lambda_fairness * group_loss)
         return local_loss + fairness_penalty
+
+    def adaptive_learning_rate(self, initial_lr, decay_factor, round_num, global_groups_variance, min_lr=0.005, max_lr=0.02, scale_factor=1.0):
+        if global_groups_variance == 1:
+            return initial_lr
+        else:
+            adjusted_lr = initial_lr / (1 + decay_factor * round_num) * (1 + scale_factor * global_groups_variance)
+            return min(max_lr, max(min_lr, adjusted_lr))
 
     def configure_fit(
         self, server_round: int, parameters: Parameters, client_manager: ClientManager
@@ -378,8 +375,8 @@ class FedCustom(Strategy):
             print(f'self.loss_avg_per_group: {self.loss_avg_per_group}')
             print(f'global_groups_variance: {self.global_groups_variance}')
 
-        learning_rate = self.adaptive_learning_rate(0.01, server_round, self.global_groups_variance)
-        
+        learning_rate = self.adaptive_learning_rate(0.01, 0.01, server_round, self.global_groups_variance)
+
         config = {
             "server_round": server_round,
             "local_epochs": 20,
@@ -391,29 +388,35 @@ class FedCustom(Strategy):
 
 
     def aggregate_fit(
-    self,
-    server_round: int,
-    results: List[Tuple[ClientProxy, FitRes]],
-    failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]],
+        self,
+        server_round: int,
+        results: List[Tuple[ClientProxy, FitRes]],
+        failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]],
     ) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
         
+        print("---------------------------------------------------")
+        print("AGGREGATE")
+        print("---------------------------------------------------")
+
         G_ACTIVITY = {1: list(range(0, 15)), 2: list(range(15, 300))}
-
-        # Calcular as perdas individuais dos clientes
         total_loss = sum(fit_res.metrics.get('loss', 0) for _, fit_res in results)
-        global_mean_loss = np.mean(list(group_losses.values()))
 
-        # Calcular as perdas médias por grupo
-        group_losses = {group: sum(fit_res.metrics.get('loss', 0) for index, (client, fit_res) in enumerate(results) if index in client_indexes) / len(client_indexes) for group, client_indexes in G_ACTIVITY.items()}
-        
-        self.loss_avg_per_group = group_losses
+        group_losses = {}
+        group_counts = {}
+        for group, client_indexes in G_ACTIVITY.items():
+            group_loss = sum(fit_res.metrics.get('loss', 0) for index, (client, fit_res) in enumerate(results) if index in client_indexes)
+            group_count = sum(1 for index in client_indexes if index < len(results))
+            group_losses[group] = group_loss
+            group_counts[group] = group_count
+
+        self.loss_avg_per_group = {group: (group_losses[group] / group_counts[group] if group_counts[group] != 0 else 0) for group in G_ACTIVITY}
         print(f"Perda Média por Grupo: {self.loss_avg_per_group}")
 
         total_examples = sum(fit_res.num_examples for _, fit_res in results)
         print(f"Número total de exemplos agregados: {total_examples}")
 
-        # Calcular a diferença nas perdas médias entre os grupos
-        group_loss_diffs = {group: group_losses[group] - global_mean_loss for group in G_ACTIVITY.keys()}
+        group_variance = np.var(list(self.loss_avg_per_group.values()))
+        global_mean_loss = np.mean(list(self.loss_avg_per_group.values()))
 
         lambda_fairness = 0.4
 
@@ -426,7 +429,7 @@ class FedCustom(Strategy):
             group_loss = group_losses[client_group]
             
             # Aplicar a penalidade de justiça aos pesos individuais dos clientes
-            fairness_penalty = group_loss_diffs[client_group]
+            fairness_penalty = self.loss_avg_per_group[client_group]
             fairness_weight = 1.0 + lambda_fairness * fairness_penalty
             
             # Calcular a perda justa do cliente

@@ -406,7 +406,7 @@ class FedCustom(Strategy):
         total_examples = sum(fit_res.num_examples for _, fit_res in results)
         print(f"Número total de exemplos agregados: {total_examples}")
 
-        group_variance = np.var(list(self.loss_avg_per_group.values()))
+        # group_variance = np.var(list(self.loss_avg_per_group.values()))
         global_mean_loss = np.mean(list(self.loss_avg_per_group.values()))
 
         fairness_losses = []
@@ -416,11 +416,11 @@ class FedCustom(Strategy):
             fairness_losses.append((parameters_to_ndarrays(fit_res.parameters), fairness_loss))
 
         def aggregate(weights):
-            total_weight = sum(1 / weight for _, weight in weights)
+            total_weight = sum(weight for _, weight in weights)
             weighted_avg = [np.zeros_like(weight) for weight in weights[0][0]]
             for weight, scale in weights:
                 for i in range(len(weighted_avg)):
-                    weighted_avg[i] += (weight[i] * (1 / scale) / total_weight)
+                    weighted_avg[i] += (weight[i] * (scale / total_weight))
             return weighted_avg
 
         parameters_aggregated = ndarrays_to_parameters(aggregate(fairness_losses))

@@ -378,7 +378,7 @@ class FedCustom(Strategy):
             print(f'self.loss_avg_per_group: {self.loss_avg_per_group}')
             print(f'global_groups_variance: {self.global_groups_variance}')
 
-        learning_rate = self.adaptive_learning_rate(0.01, 0.01, server_round, self.global_groups_variance)
+        learning_rate = self.adaptive_learning_rate(0.01, server_round, self.global_groups_variance)
         
         config = {
             "server_round": server_round,

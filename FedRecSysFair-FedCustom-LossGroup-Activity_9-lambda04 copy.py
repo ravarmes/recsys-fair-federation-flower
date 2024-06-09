@@ -318,7 +318,6 @@ from flwr.common import (
 
 import numpy as np
 from typing import List, Tuple, Dict, Optional, Union
-from flwr.server.strategy.aggregate import aggregate, weighted_loss_avg
 
 class FedCustom(Strategy):
     def __init__(
@@ -350,15 +349,12 @@ class FedCustom(Strategy):
         ndarrays = get_parameters(net)
         return fl.common.ndarrays_to_parameters(ndarrays)
 
-    def adaptive_learning_rate(initial_lr, decay_factor, round_num, global_groups_variance, min_lr=0.005, max_lr=0.02, scale_factor=1.0):
+    def adaptive_learning_rate(self, initial_lr, decay_factor, round_num, global_groups_variance):
         if global_groups_variance == 1:
             return initial_lr / (1 + decay_factor * round_num)
         else:
             # Ajustar a taxa de aprendizado com base na global_groups_variance
-            adjusted_lr = initial_lr / (1 + decay_factor * round_num) * (1 + scale_factor * global_groups_variance)
-            # Limitar a taxa de aprendizado entre min_lr e max_lr
-            return min(max_lr, max(min_lr, adjusted_lr))
-
+            return initial_lr / (1 + decay_factor * round_num * global_groups_variance)
 
     def fairness_regularization(self, local_loss, group_loss, lambda_fairness):
         fairness_penalty = (lambda_fairness * group_loss)
@@ -391,59 +387,61 @@ class FedCustom(Strategy):
 
 
     def aggregate_fit(
-    self,
-    server_round: int,
-    results: List[Tuple[ClientProxy, FitRes]],
-    failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]],
+        self,
+        server_round: int,
+        results: List[Tuple[ClientProxy, FitRes]],
+        failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]],
     ) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
-        
+        print("---------------------------------------------------")
+        print("AGGREGATE")
+
         G_ACTIVITY = {1: list(range(0, 15)), 2: list(range(15, 300))}
-
-        # Calcular as perdas individuais dos clientes
         total_loss = sum(fit_res.metrics.get('loss', 0) for _, fit_res in results)
-        global_mean_loss = np.mean(list(group_losses.values()))
 
-        # Calcular as perdas médias por grupo
-        group_losses = {group: sum(fit_res.metrics.get('loss', 0) for index, (client, fit_res) in enumerate(results) if index in client_indexes) / len(client_indexes) for group, client_indexes in G_ACTIVITY.items()}
-        
-        self.loss_avg_per_group = group_losses
+        group_losses = {}
+        group_counts = {}
+        for group, client_indexes in G_ACTIVITY.items():
+            group_loss = sum(fit_res.metrics.get('loss', 0) for index, (client, fit_res) in enumerate(results) if index in client_indexes)
+            group_count = sum(1 for index in client_indexes if index < len(results))
+            group_losses[group] = group_loss
+            group_counts[group] = group_count
+
+        self.loss_avg_per_group = {group: (group_losses[group] / group_counts[group] if group_counts[group] != 0 else 0) for group in G_ACTIVITY}
         print(f"Perda Média por Grupo: {self.loss_avg_per_group}")
 
         total_examples = sum(fit_res.num_examples for _, fit_res in results)
         print(f"Número total de exemplos agregados: {total_examples}")
 
-        # Calcular a diferença nas perdas médias entre os grupos
-        group_loss_diffs = {group: group_losses[group] - global_mean_loss for group in G_ACTIVITY.keys()}
-
-        lambda_fairness = 0.4
+        global_groups_variance = np.var(list(self.loss_avg_per_group.values()))
+        global_mean_loss = np.mean(list(self.loss_avg_per_group.values()))
 
         fairness_losses = []
         for client_index, (client, fit_res) in enumerate(results):
             local_loss = fit_res.metrics.get('loss', 0)
-            client_group = next(group for group, client_indexes in G_ACTIVITY.items() if client_index in client_indexes)
-            
-            # Obter a perda média do grupo específico
-            group_loss = group_losses[client_group]
-            
-            # Aplicar a penalidade de justiça aos pesos individuais dos clientes
-            fairness_penalty = group_loss_diffs[client_group]
-            fairness_weight = 1.0 + lambda_fairness * fairness_penalty
-            
-            # Calcular a perda justa do cliente
-            fairness_loss = local_loss * fairness_weight
-            
+            client_group = next(group for group, client_indexes in G_ACTIVITY.items() if client_index in client_indexes) # Determinar a qual grupo o cliente pertence
+            group_loss = self.loss_avg_per_group[client_group] # Obter a perda média do grupo específico
+            fairness_loss = self.fairness_regularization(local_loss, group_loss, lambda_fairness=0.4)
             fairness_losses.append((parameters_to_ndarrays(fit_res.parameters), fairness_loss))
 
-        # Calcular os pesos normalizados
-        total_fairness_loss = sum(weighted_loss for _, weighted_loss in fairness_losses)
-        normalized_weights = [(parameters, weighted_loss / total_fairness_loss) for parameters, weighted_loss in fairness_losses]
+        def aggregate(weights):
+            total_weight = sum(1 / weight for _, weight in weights)
+            weighted_avg = [np.zeros_like(weight) for weight in weights[0][0]]
+            for weight, scale in weights:
+                for i in range(len(weighted_avg)):
+                    weighted_avg[i] += (weight[i] * (1 / scale) / total_weight)
+            return weighted_avg
 
-        # Agregar os parâmetros dos clientes
-        parameters_aggregated = ndarrays_to_parameters(aggregate(normalized_weights))
+        parameters_aggregated = ndarrays_to_parameters(aggregate(fairness_losses))
+        metrics_aggregated = {}
 
-        # Retornar os parâmetros agregados
-        return parameters_aggregated, {}
-
+        for client_index, (client, fit_res) in enumerate(results):
+            loss = fit_res.metrics.get('loss', 0)
+            weight = loss / total_loss
+            print(f"Cliente {client.cid}: Perda = {loss}, Peso = {weight}")
+            self.all_losses.append(loss)
+            self.all_weights.append(weight)
+        
+        return parameters_aggregated, metrics_aggregated
 
 
     def configure_evaluate(

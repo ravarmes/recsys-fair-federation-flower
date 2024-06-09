@@ -349,12 +349,15 @@ class FedCustom(Strategy):
         ndarrays = get_parameters(net)
         return fl.common.ndarrays_to_parameters(ndarrays)
 
-    def adaptive_learning_rate(self, initial_lr, decay_factor, round_num, global_groups_variance, min_lr=0.005, max_lr=0.02, scale_factor=1.0):
-        if global_groups_variance == 1:
-            return initial_lr
-        else:
-            adjusted_lr = initial_lr / (1 + decay_factor * round_num) * (1 + scale_factor * global_groups_variance)
-            return min(max_lr, max(min_lr, adjusted_lr))
+    # def adaptive_learning_rate(self, initial_lr, decay_factor, round_num, global_groups_variance, min_lr=0.005, max_lr=0.02, scale_factor=1.0):
+    #     if global_groups_variance == 1:
+    #         return initial_lr
+    #     else:
+    #         adjusted_lr = initial_lr / (1 + decay_factor * round_num) * (1 + scale_factor * global_groups_variance)
+    #         return min(max_lr, max(min_lr, adjusted_lr))
+
+    def adaptive_learning_rate(self, initial_lr, decay_factor, round_num):
+        return initial_lr / (1 + decay_factor * round_num)
 
     def fairness_regularization(self, loss, global_mean_loss, lambda_fairness):
         diff_loss_global_mean = loss - global_mean_loss
@@ -374,12 +377,12 @@ class FedCustom(Strategy):
 
         # learning_rate = self.adaptive_learning_rate(0.01, 0.01, server_round, self.global_groups_variance)
 
-        learning_rate = 0.01
         
         config = {
             "server_round": server_round,
             "local_epochs": 20,
-            "learning_rate": learning_rate,
+            # "learning_rate": learning_rate,
+            "learning_rate": self.adaptive_learning_rate(0.01, 0.01, server_round),
             "lotes_por_rodada": server_round,
         }
 

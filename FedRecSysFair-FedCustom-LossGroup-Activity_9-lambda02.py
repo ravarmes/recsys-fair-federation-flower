@@ -418,7 +418,7 @@ class FedCustom(Strategy):
         group_variance = np.var(list(self.loss_avg_per_group.values()))
         global_mean_loss = np.mean(list(self.loss_avg_per_group.values()))
 
-        lambda_fairness = 0.4
+        lambda_fairness = 0.2
 
         fairness_losses = []
         for client_index, (client, fit_res) in enumerate(results):

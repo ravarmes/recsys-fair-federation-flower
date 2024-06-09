@@ -367,12 +367,14 @@ class FedCustom(Strategy):
         sample_size, min_num_clients = self.num_fit_clients(client_manager.num_available())
         clients = client_manager.sample(num_clients=sample_size, min_num_clients=min_num_clients)
 
-        if self.loss_avg_per_group != {} :
-            self.global_groups_variance = np.var(list(self.loss_avg_per_group.values()))
-            print(f'self.loss_avg_per_group: {self.loss_avg_per_group}')
-            print(f'global_groups_variance: {self.global_groups_variance}')
+        # if self.loss_avg_per_group != {} :
+        #     self.global_groups_variance = np.var(list(self.loss_avg_per_group.values()))
+        #     print(f'self.loss_avg_per_group: {self.loss_avg_per_group}')
+        #     print(f'global_groups_variance: {self.global_groups_variance}')
 
-        learning_rate = self.adaptive_learning_rate(0.01, 0.01, server_round, self.global_groups_variance)
+        # learning_rate = self.adaptive_learning_rate(0.01, 0.01, server_round, self.global_groups_variance)
+
+        learning_rate = 0.01
         
         config = {
             "server_round": server_round,

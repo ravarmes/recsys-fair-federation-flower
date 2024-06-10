@@ -537,7 +537,7 @@ ax4.legend()
 # Subplot 5
 ax5.plot(data_rgrp_age_FedAvg["Round"], data_rgrp_age_FedAvg["RgrpAge"], label=r"FedAvg", linestyle='-', linewidth=4, color = 'black')
 ax5.plot(data_rgrp_age_FedCustom_LossIndv_1["Round"], data_rgrp_age_FedCustom_LossIndv_1["RgrpAge"], label=r"Fed($\ell$)", linestyle='-', linewidth=4, color = 'gray')
-ax5.plot(data_rgrp_age_FedCustom_LossGroup_Age_7_lambda02["Round"], data_rgrp_age_FedCustom_LossGroup_Age_7_lambda02["RgrpAge"], label=r"FairFed$(\lambda=0.1)$", linestyle='-')
+ax5.plot(data_rgrp_age_FedCustom_LossGroup_Age_7_lambda02["Round"], data_rgrp_age_FedCustom_LossGroup_Age_7_lambda02["RgrpAge"], label=r"FairFed$(\lambda=0.2)$", linestyle='-')
 
 ax5.set_xlabel("Round")
 # ax5.set_ylabel(r"$R_{grp} Idade$")

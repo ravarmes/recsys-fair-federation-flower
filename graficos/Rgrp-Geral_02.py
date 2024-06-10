@@ -664,86 +664,89 @@ data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda06 = {
 import matplotlib.pyplot as plt
 
 # Criação da figura e dos subplots
-fig, ((ax1, ax2, ax3), (ax4, ax5, ax6)) = plt.subplots(2, 3, figsize=(20, 18))
+fig, ((ax1, ax2, ax3), (ax4, ax5, ax6)) = plt.subplots(2, 3, figsize=(12, 9))
 
 # Subplot 1
-ax1.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda01["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda01["RgrpActivity"], label="FedLossGroupActivity6-lambda01", linestyle='-.')
-ax1.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda02["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda02["RgrpActivity"], label="FedLossGroupActivity6-lambda02", linestyle='-.')
-ax1.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda03["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda03["RgrpActivity"], label="FedLossGroupActivity6-lambda03", linestyle='-.')
-ax1.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda04["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda04["RgrpActivity"], label="FedLossGroupActivity6-lambda04", linestyle='-.')
-ax1.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda05["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda05["RgrpActivity"], label="FedLossGroupActivity6-lambda05", linestyle='-.')
-ax1.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda06["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda06["RgrpActivity"], label="FedLossGroupActivity6-lambda06", linestyle='-.')
+ax1.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda01["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda01["RgrpActivity"], label=r"$\lambda = 0.1$", linestyle='-')
+ax1.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda02["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda02["RgrpActivity"], label=r"$\lambda = 0.2$", linestyle='-')
+ax1.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda03["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda03["RgrpActivity"], label=r"$\lambda = 0.3$", linestyle='-')
+ax1.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda04["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda04["RgrpActivity"], label=r"$\lambda = 0.4$", linestyle='-')
+ax1.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda05["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda05["RgrpActivity"], label=r"$\lambda = 0.5$", linestyle='-')
+ax1.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda06["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda06["RgrpActivity"], label=r"$\lambda = 0.6$", linestyle='-')
 
-ax1.set_xlabel("Round")
-ax1.set_ylabel(r"$R_{grp} Atividade$")
-ax1.set_title(r"$R_{grp}$ em cada round (Agrupamento por Atividade)")
+# ax1.set_xlabel("Round")
+ax1.set_ylabel(r"Injustiça FairFed$(\lambda\ell)$")
+
+
+ax1.set_title(r"$R_{grp}$ Atividade")
 ax1.legend()
 ax1.grid(True)
 
 # Subplot 2
-ax2.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda01["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda01["RgrpAge"], label="FedLossGroupAge5-lambda01", linestyle='-.')
-ax2.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda02["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda02["RgrpAge"], label="FedLossGroupAge5-lambda02", linestyle='-.')
-ax2.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda03["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda03["RgrpAge"], label="FedLossGroupAge5-lambda03", linestyle='-.')
-ax2.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda04["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda04["RgrpAge"], label="FedLossGroupAge5-lambda04", linestyle='-.')
-ax2.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda05["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda05["RgrpAge"], label="FedLossGroupAge5-lambda05", linestyle='-.')
-ax2.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda06["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda06["RgrpAge"], label="FedLossGroupAge5-lambda06", linestyle='-.')
+ax2.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda01["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda01["RgrpAge"], label=r"$\lambda = 0.1$", linestyle='-')
+ax2.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda02["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda02["RgrpAge"], label=r"$\lambda = 0.2$", linestyle='-')
+ax2.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda03["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda03["RgrpAge"], label=r"$\lambda = 0.3$", linestyle='-')
+ax2.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda04["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda04["RgrpAge"], label=r"$\lambda = 0.4$", linestyle='-')
+ax2.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda05["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda05["RgrpAge"], label=r"$\lambda = 0.5$", linestyle='-')
+ax2.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda06["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda06["RgrpAge"], label=r"$\lambda = 0.6$", linestyle='-')
 
-ax2.set_xlabel("Round")
-ax2.set_ylabel(r"$R_{grp} Idade$")
-ax2.set_title(r"$R_{grp}$ em cada round (Agrupamento por Idade)")
+# ax2.set_xlabel("Round")
+# ax2.set_ylabel(r"$R_{grp} Idade$")
+ax2.set_title(r"$R_{grp}$ Idade")
 ax2.legend()
 ax2.grid(True)
 
 
 # Subplot 3
-ax3.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda01["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda01["RgrpGender"], label="FedLossGroupGender5-lambda01", linestyle='-.')
-ax3.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda02["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda02["RgrpGender"], label="FedLossGroupGender5-lambda02", linestyle='-.')
-ax3.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda03["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda03["RgrpGender"], label="FedLossGroupGender5-lambda03", linestyle='-.')
-ax3.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda04["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda04["RgrpGender"], label="FedLossGroupGender5-lambda04", linestyle='-.')
-ax3.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda05["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda05["RgrpGender"], label="FedLossGroupGender5-lambda05", linestyle='-.')
-ax3.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda06["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda06["RgrpGender"], label="FedLossGroupGender5-lambda06", linestyle='-.')
+ax3.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda01["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda01["RgrpGender"], label=r"$\lambda = 0.1$", linestyle='-')
+ax3.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda02["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda02["RgrpGender"], label=r"$\lambda = 0.2$", linestyle='-')
+ax3.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda03["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda03["RgrpGender"], label=r"$\lambda = 0.3$", linestyle='-')
+ax3.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda04["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda04["RgrpGender"], label=r"$\lambda = 0.4$", linestyle='-')
+ax3.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda05["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda05["RgrpGender"], label=r"$\lambda = 0.5$", linestyle='-')
+ax3.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda06["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda06["RgrpGender"], label=r"$\lambda = 0.6$", linestyle='-')
 
-ax3.set_xlabel("Round")
-ax3.set_ylabel(r"$R_{grp} Gênero$")
-ax3.set_title(r"$R_{grp}$ em cada round (Agrupamento por Gênero)")
+# ax3.set_xlabel("Round")
+# ax3.set_ylabel(r"$R_{grp} Gênero$")
+ax3.set_title(r"$R_{grp}$ Gênero")
 ax3.legend()
 ax3.grid(True)
 
 
 # Subplot 4
-ax4.plot(data_rgrp_activity_FedAvg["Round"], data_rgrp_activity_FedAvg["RgrpActivity"], label="FedAvg", linestyle='-', linewidth=3)
-ax4.plot(data_rgrp_activity_FedCustom_LossIndv_1["Round"], data_rgrp_activity_FedCustom_LossIndv_1["RgrpActivity"], label="FedLossIndv1", linestyle='-', linewidth=3)
-ax4.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda05["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda05["RgrpActivity"], label="FedLossGroupActivity6-lambda05", linestyle='-.')
+ax4.plot(data_rgrp_activity_FedAvg["Round"], data_rgrp_activity_FedAvg["RgrpActivity"], label=r"FedAvg", linestyle='-', linewidth=4, color = 'black')
+ax4.plot(data_rgrp_activity_FedCustom_LossIndv_1["Round"], data_rgrp_activity_FedCustom_LossIndv_1["RgrpActivity"], label=r"Fed($\ell$)", linestyle='-', linewidth=4, color = 'gray')
+ax4.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda05["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda05["RgrpActivity"], label=r"FairFed$(\lambda=0.5)$", linestyle='-', color = 'purple')
 
 ax4.set_xlabel("Round")
-ax4.set_ylabel(r"$R_{grp} Atividade$")
-ax4.set_title(r"$R_{grp}$ em cada round (Agrupamento por Atividade)")
+ax4.set_ylabel(r"Injustiça FedAvg $vs$ FairFed$(\lambda\ell)$")
+# ax4.set_title(r"$R_{grp}$ Atividade")
 ax4.legend()
 ax4.grid(True)
 
 
 # Subplot 5
-ax5.plot(data_rgrp_age_FedAvg["Round"], data_rgrp_age_FedAvg["RgrpAge"], label="FedAvg", linestyle='-', linewidth=3)
-ax5.plot(data_rgrp_age_FedCustom_LossIndv_1["Round"], data_rgrp_age_FedCustom_LossIndv_1["RgrpAge"], label=r"Fed$(\ell)$", linestyle='-', linewidth=3)
-ax5.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda01["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda01["RgrpAge"], label=r"FairFed$(\lambda=0.1)$", linestyle='-.')
+ax5.plot(data_rgrp_age_FedAvg["Round"], data_rgrp_age_FedAvg["RgrpAge"], label=r"FedAvg", linestyle='-', linewidth=4, color = 'black')
+ax5.plot(data_rgrp_age_FedCustom_LossIndv_1["Round"], data_rgrp_age_FedCustom_LossIndv_1["RgrpAge"], label=r"Fed($\ell$)", linestyle='-', linewidth=4, color = 'gray')
+ax5.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda01["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda01["RgrpAge"], label=r"FairFed$(\lambda=0.1)$", linestyle='-')
 
 ax5.set_xlabel("Round")
-ax5.set_ylabel(r"$R_{grp} Idade$")
-ax5.set_title(r"$R_{grp}$ em cada round (Agrupamento por Idade)")
+# ax5.set_ylabel(r"$R_{grp} Idade$")
+# ax5.set_title(r"$R_{grp}$ Idade")
 ax5.legend()
 ax5.grid(True)
 
 # Subplot 6
-ax6.plot(data_rgrp_gender_FedAvg["Round"], data_rgrp_gender_FedAvg["RgrpGender"], label="FedAvg", linestyle='-', linewidth=3)
-ax6.plot(data_rgrp_gender_FedCustom_LossIndv_1["Round"], data_rgrp_gender_FedCustom_LossIndv_1["RgrpGender"], label="FedLossIndv1", linestyle='-', linewidth=3)
-ax6.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda01["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda01["RgrpGender"], label="FedLossGroupGender5-lambda01", linestyle='-.')
+ax6.plot(data_rgrp_gender_FedAvg["Round"], data_rgrp_gender_FedAvg["RgrpGender"], label=r"FedAvg", linestyle='-', linewidth=4, color = 'black')
+ax6.plot(data_rgrp_gender_FedCustom_LossIndv_1["Round"], data_rgrp_gender_FedCustom_LossIndv_1["RgrpGender"], label=r"Fed($\ell$)", linestyle='-', linewidth=4, color = 'gray')
+ax6.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda01["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda01["RgrpGender"], label=r"FairFed$(\lambda=0.1)$", linestyle='-')
 
 ax6.set_xlabel("Round")
-ax6.set_ylabel(r"$R_{grp} Gênero$")
-ax6.set_title(r"$R_{grp}$ em cada round (Agrupamento por Gênero)")
+# ax6.set_ylabel(r"$R_{grp} Gênero$")
+# ax6.set_title(r"$R_{grp}$ Gênero")
 ax6.legend()
 ax6.grid(True)
 
+plt.subplots_adjust(hspace=0.8, wspace=0.5)
 
 # Ajustar espaçamento entre subplots
 plt.tight_layout()

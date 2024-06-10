@@ -349,20 +349,20 @@ class FedCustom(Strategy):
         ndarrays = get_parameters(net)
         return fl.common.ndarrays_to_parameters(ndarrays)
 
-    # def adaptive_learning_rate(self, initial_lr, decay_factor, round_num, global_groups_variance, min_lr=0.005, max_lr=0.02, scale_factor=2.0):
-    #     if global_groups_variance == 1:
-    #         return initial_lr
-    #     else:
-    #         adjusted_lr = initial_lr / (1 + decay_factor * round_num) * (1 + scale_factor * global_groups_variance)
-    #         return min(max_lr, max(min_lr, adjusted_lr))
-
-    def adaptive_learning_rate(self, initial_lr, decay_factor, round_num, global_groups_variance, min_lr=0.005, max_lr=0.02, scale_factor=5):
+    def adaptive_learning_rate(self, initial_lr, decay_factor, round_num, global_groups_variance, min_lr=0.007, max_lr=0.015, scale_factor=2.0):
         if global_groups_variance == 1:
             return initial_lr
         else:
-            # Use exponential function for higher sensitivity
-            adjusted_lr = initial_lr / (1 + decay_factor * round_num) * (1 + np.exp(scale_factor * global_groups_variance))
+            adjusted_lr = initial_lr / (1 + decay_factor * round_num) * (1 + scale_factor * global_groups_variance)
             return min(max_lr, max(min_lr, adjusted_lr))
+
+    # def adaptive_learning_rate(self, initial_lr, decay_factor, round_num, global_groups_variance, min_lr=0.005, max_lr=0.02, scale_factor=5):
+    #     if global_groups_variance == 1:
+    #         return initial_lr
+    #     else:
+    #         # Use exponential function for higher sensitivity
+    #         adjusted_lr = initial_lr / (1 + decay_factor * round_num) * (1 + np.exp(scale_factor * global_groups_variance))
+    #         return min(max_lr, max(min_lr, adjusted_lr))
 
 
     # def adaptive_learning_rate(self, initial_lr, decay_factor, round_num):

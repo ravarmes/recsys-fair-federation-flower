@@ -190,38 +190,38 @@ data_rgrp_age_FedCustom_LossIndv_1 = {
 
 # ----------------------------------------------------------------------------------------------
 
-data_rgrp_age_FedCustom_LossGroup_Age_5_lambda02 = {
+data_rgrp_age_FedCustom_LossGroup_Age_7_lambda02 = {
     "Round": list(range(0, 25)),
     "RgrpAge": [
-        0.004869781258222754,
-        0.003224568118121713,
-        0.003252479498553004,
-        0.0029558525352419143,
-        0.002618874038507807,
-        0.0027139568792032285,
-        0.003032154034587249,
-        0.003313714258490185,
-        0.003463109514622426,
-        0.003686705631901381,
-        0.00389158234614902,
-        0.004119712909406418,
-        0.004341326748887144,
-        0.004280486310001536,
-        0.004443465769938289,
-        0.004532107736454386,
-        0.004947036889481905,
-        0.004765754274755405,
-        0.0048660808228034435,
-        0.005497102779649128,
-        0.0055478269123866285,
-        0.006753102490869132,
-        0.007338751081681674,
-        0.007299856512772577,
-        0.008411652290922025
+        0.0026760154049762946,
+        0.004184978742302253,
+        0.003396281319034537,
+        0.0034747685768813214,
+        0.0036327152028063497,
+        0.0038039665425795674,
+        0.004359008641757271,
+        0.004727375794270311,
+        0.005001943876351477,
+        0.0058585916194369226,
+        0.005780396459617732,
+        0.005303576884494369,
+        0.005887779751749896,
+        0.005569134789497383,
+        0.005726295376214449,
+        0.0072591397220192954,
+        0.008459250236968158,
+        0.006549272436694359,
+        0.006641848793531186,
+        0.00905258764400127,
+        0.01067565560669913,
+        0.01150544366307745,
+        0.014512900309076029,
+        0.013952238433252986,
+        0.008876168046999158
     ]
 }
 
-data_rgrp_age_FedCustom_LossGroup_Age_5_lambda04 = {
+data_rgrp_age_FedCustom_LossGroup_Age_7_lambda04 = {
     "Round": list(range(0, 25)),
     "RgrpAge": [
         0.0031327718580779216,
@@ -251,6 +251,7 @@ data_rgrp_age_FedCustom_LossGroup_Age_5_lambda04 = {
         0.010290315161156815
     ]
 }
+
 
 data_rgrp_age_FedCustom_LossGroup_Age_5_lambda06 = {
     "Round": list(range(0, 25)),
@@ -495,8 +496,8 @@ ax1.legend()
 # ax1.grid(True)
 
 # Subplot 2
-ax2.plot(data_rgrp_age_FedCustom_LossGroup_Age_5_lambda02["Round"], data_rgrp_age_FedCustom_LossGroup_Age_5_lambda02["RgrpAge"], label=r"$\lambda = 0.2$", linestyle='-')
-ax2.plot(data_rgrp_age_FedCustom_LossGroup_Age_5_lambda04["Round"], data_rgrp_age_FedCustom_LossGroup_Age_5_lambda04["RgrpAge"], label=r"$\lambda = 0.4$", linestyle='-')
+ax2.plot(data_rgrp_age_FedCustom_LossGroup_Age_7_lambda02["Round"], data_rgrp_age_FedCustom_LossGroup_Age_7_lambda02["RgrpAge"], label=r"$\lambda = 0.2$", linestyle='-')
+ax2.plot(data_rgrp_age_FedCustom_LossGroup_Age_7_lambda04["Round"], data_rgrp_age_FedCustom_LossGroup_Age_7_lambda04["RgrpAge"], label=r"$\lambda = 0.4$", linestyle='-')
 ax2.plot(data_rgrp_age_FedCustom_LossGroup_Age_5_lambda06["Round"], data_rgrp_age_FedCustom_LossGroup_Age_5_lambda06["RgrpAge"], label=r"$\lambda = 0.6$", linestyle='-')
 ax2.plot(data_rgrp_age_FedCustom_LossGroup_Age_5_lambda08["Round"], data_rgrp_age_FedCustom_LossGroup_Age_5_lambda08["RgrpAge"], label=r"$\lambda = 0.8$", linestyle='-')
 
@@ -536,7 +537,7 @@ ax4.legend()
 # Subplot 5
 ax5.plot(data_rgrp_age_FedAvg["Round"], data_rgrp_age_FedAvg["RgrpAge"], label=r"FedAvg", linestyle='-', linewidth=4, color = 'black')
 ax5.plot(data_rgrp_age_FedCustom_LossIndv_1["Round"], data_rgrp_age_FedCustom_LossIndv_1["RgrpAge"], label=r"Fed($\ell$)", linestyle='-', linewidth=4, color = 'gray')
-ax5.plot(data_rgrp_age_FedCustom_LossGroup_Age_5_lambda02["Round"], data_rgrp_age_FedCustom_LossGroup_Age_5_lambda02["RgrpAge"], label=r"FairFed$(\lambda=0.1)$", linestyle='-')
+ax5.plot(data_rgrp_age_FedCustom_LossGroup_Age_7_lambda02["Round"], data_rgrp_age_FedCustom_LossGroup_Age_7_lambda02["RgrpAge"], label=r"FairFed$(\lambda=0.1)$", linestyle='-')
 
 ax5.set_xlabel("Round")
 # ax5.set_ylabel(r"$R_{grp} Idade$")

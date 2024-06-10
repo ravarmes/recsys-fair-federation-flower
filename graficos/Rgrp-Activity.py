@@ -1029,7 +1029,6 @@ plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_8_lambda06["Round"], da
 # plt.plot(data_rgrp_activity_NFS["Round"], data_rgrp_activity_NFS["RgrpActivity"], label="NFS", linestyle='-')
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------
-<<<<<<< HEAD
 # plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda01["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda01["RgrpActivity"], label="FedLossGroupActivity5-lambda01", linestyle='-.', color = 'red')
 # plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda02["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda02["RgrpActivity"], label="FedLossGroupActivity5-lambda02", linestyle='-.', color = 'red')
 # plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda03["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda03["RgrpActivity"], label="FedLossGroupActivity5-lambda03", linestyle='-.', color = 'red')
@@ -1047,7 +1046,7 @@ plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_8_lambda06["Round"], da
 # plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_8_lambda02["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_8_lambda02["RgrpActivity"], label="FedLossGroupActivity8-lambda02", linestyle='-.', color = 'green')
 # plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_8_lambda04["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_8_lambda04["RgrpActivity"], label="FedLossGroupActivity8-lambda04", linestyle='-.', color = 'green')
 # plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_8_lambda06["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_8_lambda06["RgrpActivity"], label="FedLossGroupActivity8-lambda06", linestyle='-.', color = 'green')
-=======
+
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda01["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda01["RgrpActivity"], label="FedLossGroupActivity5-lambda01", linestyle='-.', color = 'red')
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda02["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda02["RgrpActivity"], label="FedLossGroupActivity5-lambda02", linestyle='-.', color = 'red')
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda03["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda03["RgrpActivity"], label="FedLossGroupActivity5-lambda03", linestyle='-.', color = 'red')
@@ -1061,7 +1060,6 @@ plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda03["Round"], da
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda04["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda04["RgrpActivity"], label="FedLossGroupActivity6-lambda04", linestyle='-.', color = 'blue')
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda05["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda05["RgrpActivity"], label="FedLossGroupActivity6-lambda05", linestyle='-.', color = 'blue')
 plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda06["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda06["RgrpActivity"], label="FedLossGroupActivity6-lambda06", linestyle='-.', color = 'blue')
->>>>>>> 156c553c6c94bbf49183745a6eeeddecdb9ca7fa
 #---------------------------------------------
 # plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda02["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda02["RgrpActivity"], label="FedLossGroupActivity5-lambda02", linestyle='-.', color = 'red')
 # plt.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda03["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_5_lambda03["RgrpActivity"], label="FedLossGroupActivity5-lambda03", linestyle='-.', color = 'red')

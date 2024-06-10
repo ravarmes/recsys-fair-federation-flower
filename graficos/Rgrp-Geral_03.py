@@ -34,37 +34,6 @@ data_rgrp_activity_FedCustom_LossIndv_1 = {
 # ACTIVITY
 # ----------------------------------------------------------
 
-data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda01 = {
-    "Round": list(range(0, 25)),
-    "RgrpActivity": [
-        0.002421017224738655,
-        0.0010640600594010374,
-        0.0014049074729477438,
-        0.0013511152812750418,
-        0.0010413902310173805,
-        0.0005500365275441361,
-        0.0001682711272922418,
-        5.1367514572941336e-05,
-        1.7418756564279102e-06,
-        3.3615036459378884e-07,
-        5.99428607467561e-06,
-        1.9614119125181045e-05,
-        2.598962153331463e-05,
-        4.238663618052236e-05,
-        9.886161795460123e-05,
-        0.0001605906769922424,
-        0.0002755438016996951,
-        0.0004748431727693493,
-        0.0008960191421721592,
-        0.0012105263622249922,
-        0.001167925695422969,
-        0.00132317191490461,
-        0.0017764684166906935,
-        0.001984021416262325,
-        0.0023527467647414535
-    ]
-}
-
 data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda02 = {
     "Round": list(range(0, 25)),
     "RgrpActivity": [
@@ -93,37 +62,6 @@ data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda02 = {
         0.0017580477948850757,
         0.0018358993419040914,
         0.00209981056639253
-    ]
-}
-
-data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda03 = {
-    "Round": list(range(0, 25)),
-    "RgrpActivity": [
-        0.0036043873960795707,
-        0.0009927028635843315,
-        0.0017997042565218425,
-        0.0013243966080412227,
-        0.0009731718531638316,
-        0.0006470717807793406,
-        0.0003538637208713554,
-        0.0002342327140116976,
-        8.550751767830977e-05,
-        3.678964222107975e-05,
-        1.8505386002504337e-05,
-        0.00010751684781830152,
-        7.76786163850082e-06,
-        3.3125007976794063e-06,
-        4.300771068626306e-05,
-        9.587383405339613e-05,
-        9.210926872712474e-05,
-        0.00012958295130459268,
-        0.00028582651808425896,
-        0.00030486874734461916,
-        0.0003591345644805257,
-        2.9048090820658635e-05,
-        0.00011941628562959255,
-        0.0003944999316073649,
-        0.0007542791610998475
     ]
 }
 
@@ -158,37 +96,6 @@ data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda04 = {
     ]
 }
 
-data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda05 = {
-    "Round": list(range(0, 25)),
-    "RgrpActivity": [
-        0.003147292949156337,
-        0.0013203780827201873,
-        0.002099850596246432,
-        0.0014831493441206812,
-        0.0007689603512684575,
-        0.00027568663412273525,
-        1.848122504239485e-05,
-        3.98127410864265e-06,
-        7.375415763321772e-05,
-        8.288656262619698e-05,
-        0.00011742833085325597,
-        0.000200113699360484,
-        0.0001248326940876422,
-        5.3469714983391386e-05,
-        8.023327470162072e-06,
-        3.045396651573553e-06,
-        5.067201924497569e-06,
-        1.751001724914203e-05,
-        5.746414092760763e-05,
-        0.00025624585664866715,
-        0.00041237494784663453,
-        0.0005773194985827422,
-        4.926369716381427e-07,
-        0.00011468082509425574,
-        0.000537609631025893
-    ]
-}
-
 data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda06 = {
     "Round": list(range(0, 25)),
     "RgrpActivity": [
@@ -217,6 +124,37 @@ data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda06 = {
         0.00116544120416833,
         0.0014718905851514759,
         0.001631452876931395
+    ]
+}
+
+data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda08 = {
+    "Round": list(range(0, 25)),
+    "RgrpActivity": [
+        0.003147292949156337,
+        0.0013203780827201873,
+        0.002099850596246432,
+        0.0014831493441206812,
+        0.0007689603512684575,
+        0.00027568663412273525,
+        1.848122504239485e-05,
+        3.98127410864265e-06,
+        7.375415763321772e-05,
+        8.288656262619698e-05,
+        0.00011742833085325597,
+        0.000200113699360484,
+        0.0001248326940876422,
+        5.3469714983391386e-05,
+        8.023327470162072e-06,
+        3.045396651573553e-06,
+        5.067201924497569e-06,
+        1.751001724914203e-05,
+        5.746414092760763e-05,
+        0.00025624585664866715,
+        0.00041237494784663453,
+        0.0005773194985827422,
+        4.926369716381427e-07,
+        0.00011468082509425574,
+        0.000537609631025893
     ]
 }
 
@@ -252,38 +190,7 @@ data_rgrp_age_FedCustom_LossIndv_1 = {
 
 # ----------------------------------------------------------------------------------------------
 
-data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda01 = {
-    "Round": list(range(0, 25)),
-    "RgrpAge": [
-        0.0037144731085223107,
-        0.0028928591597676373,
-        0.003350229437778701,
-        0.0030286248843016143,
-        0.0026074903972721462,
-        0.0023983176855329517,
-        0.0024474929518293657,
-        0.0027579537527441336,
-        0.002619774294806821,
-        0.003341368698652404,
-        0.0036616776053464565,
-        0.003672101959582249,
-        0.0036025126800047283,
-        0.002781132203840931,
-        0.0026236699314403137,
-        0.00263036746604892,
-        0.0027163718185172,
-        0.0033191751143256446,
-        0.003178557687454128,
-        0.00324486448944449,
-        0.0037459740885085464,
-        0.0038933495360892498,
-        0.004190702078648781,
-        0.004942585723444185,
-        0.005975283828106547
-    ]
-}
-
-data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda02 = {
+data_rgrp_age_FedCustom_LossGroup_Age_5_lambda02 = {
     "Round": list(range(0, 25)),
     "RgrpAge": [
         0.004869781258222754,
@@ -314,38 +221,7 @@ data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda02 = {
     ]
 }
 
-data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda03 = {
-    "Round": list(range(0, 25)),
-    "RgrpAge": [
-        0.006087167190678646,
-        0.0031306304359064586,
-        0.003191584331122718,
-        0.003123398965172195,
-        0.0029984154282299597,
-        0.002934450394448024,
-        0.0033466186667212095,
-        0.003520826440146161,
-        0.003627267738318308,
-        0.0034451808281368798,
-        0.0035528394441908437,
-        0.003652697757247265,
-        0.0027155094394600916,
-        0.003558580954465621,
-        0.003794303738247469,
-        0.0040516704191987185,
-        0.004463541557619246,
-        0.004617746195347429,
-        0.004882067248457445,
-        0.005598964280592577,
-        0.00602110085773916,
-        0.00729692450089003,
-        0.007463442926867819,
-        0.008382623730343703,
-        0.009772056423971066
-    ]
-}
-
-data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda04 = {
+data_rgrp_age_FedCustom_LossGroup_Age_5_lambda04 = {
     "Round": list(range(0, 25)),
     "RgrpAge": [
         0.0031327718580779216,
@@ -376,38 +252,7 @@ data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda04 = {
     ]
 }
 
-data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda05 = {
-    "Round": list(range(0, 25)),
-    "RgrpAge": [
-        0.00245408126840185,
-        0.0036252348315510712,
-        0.003154863097768076,
-        0.003127002795346421,
-        0.0030872974289349814,
-        0.0034606730763469744,
-        0.0041067513202614975,
-        0.004682706795956296,
-        0.005076001135333267,
-        0.0047932285078496955,
-        0.004861483990839149,
-        0.0049561872306277625,
-        0.0055098700844977075,
-        0.005816828978584411,
-        0.0064841376579586815,
-        0.007281201830142271,
-        0.00792319720122246,
-        0.00809732094359711,
-        0.008260042686555787,
-        0.009961281480839227,
-        0.010817905339166739,
-        0.012012039458540184,
-        0.012394178066277359,
-        0.01319322598691068,
-        0.012431509475529226
-    ]
-}
-
-data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda06 = {
+data_rgrp_age_FedCustom_LossGroup_Age_5_lambda06 = {
     "Round": list(range(0, 25)),
     "RgrpAge": [
         0.0050874279329356726,
@@ -435,6 +280,37 @@ data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda06 = {
         0.009853386763405303,
         0.01124883647955331,
         0.013664813826749117
+    ]
+}
+
+data_rgrp_age_FedCustom_LossGroup_Age_5_lambda08 = {
+    "Round": list(range(0, 25)),
+    "RgrpAge": [
+        0.00245408126840185,
+        0.0036252348315510712,
+        0.003154863097768076,
+        0.003127002795346421,
+        0.0030872974289349814,
+        0.0034606730763469744,
+        0.0041067513202614975,
+        0.004682706795956296,
+        0.005076001135333267,
+        0.0047932285078496955,
+        0.004861483990839149,
+        0.0049561872306277625,
+        0.0055098700844977075,
+        0.005816828978584411,
+        0.0064841376579586815,
+        0.007281201830142271,
+        0.00792319720122246,
+        0.00809732094359711,
+        0.008260042686555787,
+        0.009961281480839227,
+        0.010817905339166739,
+        0.012012039458540184,
+        0.012394178066277359,
+        0.01319322598691068,
+        0.012431509475529226
     ]
 }
 
@@ -472,37 +348,6 @@ data_rgrp_gender_FedCustom_LossIndv_1 = {
     ]
 }
 
-data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda01 = {
-    "Round": list(range(0, 25)),
-    "RgrpGender": [
-        2.4156523054484867e-06,
-        4.4989037753778726e-05,
-        4.1078287689676405e-05,
-        6.432830325903678e-05,
-        0.00015815749698425203,
-        0.0005543608963952454,
-        0.0013551866004483087,
-        0.0022962557672176606,
-        0.003043389409946187,
-        0.0032618116588800515,
-        0.0038059076628080965,
-        0.00400669321608144,
-        0.004093010371053079,
-        0.0042144330468304545,
-        0.004473609523314422,
-        0.004302815561945421,
-        0.004021374857468159,
-        0.004014501093039507,
-        0.00425836151513188,
-        0.004376700347338836,
-        0.004171343172882492,
-        0.004109484817336397,
-        0.003980302939894644,
-        0.004145651674888053,
-        0.004169547441299177
-    ]
-}
-
 data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda02 = {
     "Round": list(range(0, 25)),
     "RgrpGender": [
@@ -531,37 +376,6 @@ data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda02 = {
         0.0046411271520717945,
         0.004604869673788911,
         0.004684601986915232
-    ]
-}
-
-data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda03 = {
-    "Round": list(range(0, 25)),
-    "RgrpGender": [
-        0.0001923727142265868,
-        5.461660174704097e-05,
-        5.6071812955236534e-05,
-        8.791568786510244e-05,
-        0.0002980136054740805,
-        0.000982530375748003,
-        0.001976942538560868,
-        0.002967253951606055,
-        0.003501945326774482,
-        0.0037066440774685405,
-        0.003999404502540883,
-        0.004010671794939466,
-        0.003491044064956697,
-        0.0038789951733689716,
-        0.004115188554289904,
-        0.004302868074645166,
-        0.00429756514728729,
-        0.004316265518759659,
-        0.00429661488407105,
-        0.004392612249915229,
-        0.004474790619505224,
-        0.004679720450750784,
-        0.004828852888472738,
-        0.004708611593273684,
-        0.004998395255288945
     ]
 }
 
@@ -596,37 +410,6 @@ data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda04 = {
     ]
 }
 
-data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda05 = {
-    "Round": list(range(0, 25)),
-    "RgrpGender": [
-        0.00018108920246030118,
-        0.00011653626835982814,
-        9.104550135993761e-05,
-        0.00010850598477471665,
-        0.00020433840432419208,
-        0.0005709846027879857,
-        0.001267614232811094,
-        0.0022328089392039626,
-        0.0030534251833309383,
-        0.003485991971465985,
-        0.003636986022798684,
-        0.0038355450672285835,
-        0.004121513820882061,
-        0.004334062573125132,
-        0.004351061165381517,
-        0.004425035638803476,
-        0.004669312365791415,
-        0.004694733482868916,
-        0.004625203853817848,
-        0.004902155995169172,
-        0.004933270849280415,
-        0.005035537897085019,
-        0.005120865364542341,
-        0.0053679828472150744,
-        0.005186087057468919
-    ]
-}
-
 data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda06 = {
     "Round": list(range(0, 25)),
     "RgrpGender": [
@@ -658,6 +441,37 @@ data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda06 = {
     ]
 }
 
+data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda08 = {
+    "Round": list(range(0, 25)),
+    "RgrpGender": [
+        0.00018108920246030118,
+        0.00011653626835982814,
+        9.104550135993761e-05,
+        0.00010850598477471665,
+        0.00020433840432419208,
+        0.0005709846027879857,
+        0.001267614232811094,
+        0.0022328089392039626,
+        0.0030534251833309383,
+        0.003485991971465985,
+        0.003636986022798684,
+        0.0038355450672285835,
+        0.004121513820882061,
+        0.004334062573125132,
+        0.004351061165381517,
+        0.004425035638803476,
+        0.004669312365791415,
+        0.004694733482868916,
+        0.004625203853817848,
+        0.004902155995169172,
+        0.004933270849280415,
+        0.005035537897085019,
+        0.005120865364542341,
+        0.0053679828472150744,
+        0.005186087057468919
+    ]
+}
+
 # --------------------------------------------------------------------------------------------
 
 
@@ -667,12 +481,10 @@ import matplotlib.pyplot as plt
 fig, ((ax1, ax2, ax3), (ax4, ax5, ax6)) = plt.subplots(2, 3, figsize=(12, 9))
 
 # Subplot 1
-ax1.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda01["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda01["RgrpActivity"], label=r"$\lambda = 0.1$", linestyle='-')
 ax1.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda02["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda02["RgrpActivity"], label=r"$\lambda = 0.2$", linestyle='-')
-ax1.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda03["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda03["RgrpActivity"], label=r"$\lambda = 0.3$", linestyle='-')
 ax1.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda04["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda04["RgrpActivity"], label=r"$\lambda = 0.4$", linestyle='-')
-ax1.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda05["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda05["RgrpActivity"], label=r"$\lambda = 0.5$", linestyle='-')
 ax1.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda06["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda06["RgrpActivity"], label=r"$\lambda = 0.6$", linestyle='-')
+ax1.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda08["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda08["RgrpActivity"], label=r"$\lambda = 0.8$", linestyle='-')
 
 # ax1.set_xlabel("Round")
 ax1.set_ylabel(r"Injustiça FairFed$(\lambda\ell)$")
@@ -683,12 +495,10 @@ ax1.legend()
 ax1.grid(True)
 
 # Subplot 2
-ax2.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda01["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda01["RgrpAge"], label=r"$\lambda = 0.1$", linestyle='-')
-ax2.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda02["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda02["RgrpAge"], label=r"$\lambda = 0.2$", linestyle='-')
-ax2.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda03["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda03["RgrpAge"], label=r"$\lambda = 0.3$", linestyle='-')
-ax2.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda04["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda04["RgrpAge"], label=r"$\lambda = 0.4$", linestyle='-')
-ax2.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda05["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda05["RgrpAge"], label=r"$\lambda = 0.5$", linestyle='-')
-ax2.plot(data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda06["Round"], data_rgrp_age_FedCustom_LossGroup_Activity_5_lambda06["RgrpAge"], label=r"$\lambda = 0.6$", linestyle='-')
+ax2.plot(data_rgrp_age_FedCustom_LossGroup_Age_5_lambda02["Round"], data_rgrp_age_FedCustom_LossGroup_Age_5_lambda02["RgrpAge"], label=r"$\lambda = 0.2$", linestyle='-')
+ax2.plot(data_rgrp_age_FedCustom_LossGroup_Age_5_lambda04["Round"], data_rgrp_age_FedCustom_LossGroup_Age_5_lambda04["RgrpAge"], label=r"$\lambda = 0.4$", linestyle='-')
+ax2.plot(data_rgrp_age_FedCustom_LossGroup_Age_5_lambda06["Round"], data_rgrp_age_FedCustom_LossGroup_Age_5_lambda06["RgrpAge"], label=r"$\lambda = 0.6$", linestyle='-')
+ax2.plot(data_rgrp_age_FedCustom_LossGroup_Age_5_lambda08["Round"], data_rgrp_age_FedCustom_LossGroup_Age_5_lambda08["RgrpAge"], label=r"$\lambda = 0.5$", linestyle='-')
 
 # ax2.set_xlabel("Round")
 # ax2.set_ylabel(r"$R_{grp} Idade$")
@@ -698,12 +508,10 @@ ax2.grid(True)
 
 
 # Subplot 3
-ax3.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda01["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda01["RgrpGender"], label=r"$\lambda = 0.1$", linestyle='-')
 ax3.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda02["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda02["RgrpGender"], label=r"$\lambda = 0.2$", linestyle='-')
-ax3.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda03["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda03["RgrpGender"], label=r"$\lambda = 0.3$", linestyle='-')
 ax3.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda04["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda04["RgrpGender"], label=r"$\lambda = 0.4$", linestyle='-')
-ax3.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda05["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda05["RgrpGender"], label=r"$\lambda = 0.5$", linestyle='-')
 ax3.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda06["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda06["RgrpGender"], label=r"$\lambda = 0.6$", linestyle='-')
+ax3.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda08["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda08["RgrpGender"], label=r"$\lambda = 0.5$", linestyle='-')
 
 # ax3.set_xlabel("Round")
 # ax3.set_ylabel(r"$R_{grp} Gênero$")

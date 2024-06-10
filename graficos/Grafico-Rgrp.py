@@ -253,34 +253,34 @@ data_rgrp_age_FedCustom_LossGroup_Age_7_lambda04 = {
 }
 
 
-data_rgrp_age_FedCustom_LossGroup_Age_5_lambda06 = {
+data_rgrp_age_FedCustom_LossGroup_Age_7_lambda06 = {
     "Round": list(range(0, 25)),
     "RgrpAge": [
-        0.0050874279329356726,
-        0.003329400240557951,
-        0.003235540756687103,
-        0.00278000997225262,
-        0.0022172033876549017,
-        0.002157080921522234,
-        0.002407768107907079,
-        0.0026966518323127625,
-        0.0029971788747351316,
-        0.003059203474598462,
-        0.0028429606662470123,
-        0.0029740742183376576,
-        0.0025174076725956716,
-        0.0027195522885666836,
-        0.0034745406345179056,
-        0.003925534475963425,
-        0.00441417520699822,
-        0.004964237973090547,
-        0.005725028121458515,
-        0.006273597161578448,
-        0.007277076402660141,
-        0.007653661973155485,
-        0.009853386763405303,
-        0.01124883647955331,
-        0.013664813826749117
+        0.003451105327847381,
+        0.0030940412239629307,
+        0.0030503299417297585,
+        0.0029680488418198287,
+        0.002965555649644669,
+        0.0031832296020911635,
+        0.0037457209005327427,
+        0.004465882369749216,
+        0.00474683488927498,
+        0.00466981035660252,
+        0.004744157363321314,
+        0.004771433841896245,
+        0.004995171036961857,
+        0.004877988214983323,
+        0.005098130626598922,
+        0.005713171086191944,
+        0.0065284241436091685,
+        0.007105963517923343,
+        0.008202487987161356,
+        0.009313382389888283,
+        0.009983536784066577,
+        0.010221459013708774,
+        0.012397970678872433,
+        0.013046950820995079,
+        0.013029213583114109
     ]
 }
 
@@ -498,7 +498,7 @@ ax1.legend()
 # Subplot 2
 ax2.plot(data_rgrp_age_FedCustom_LossGroup_Age_7_lambda02["Round"], data_rgrp_age_FedCustom_LossGroup_Age_7_lambda02["RgrpAge"], label=r"$\lambda = 0.2$", linestyle='-')
 ax2.plot(data_rgrp_age_FedCustom_LossGroup_Age_7_lambda04["Round"], data_rgrp_age_FedCustom_LossGroup_Age_7_lambda04["RgrpAge"], label=r"$\lambda = 0.4$", linestyle='-')
-ax2.plot(data_rgrp_age_FedCustom_LossGroup_Age_5_lambda06["Round"], data_rgrp_age_FedCustom_LossGroup_Age_5_lambda06["RgrpAge"], label=r"$\lambda = 0.6$", linestyle='-')
+ax2.plot(data_rgrp_age_FedCustom_LossGroup_Age_7_lambda06["Round"], data_rgrp_age_FedCustom_LossGroup_Age_7_lambda06["RgrpAge"], label=r"$\lambda = 0.6$", linestyle='-')
 ax2.plot(data_rgrp_age_FedCustom_LossGroup_Age_5_lambda08["Round"], data_rgrp_age_FedCustom_LossGroup_Age_5_lambda08["RgrpAge"], label=r"$\lambda = 0.8$", linestyle='-')
 
 # ax2.set_xlabel("Round")

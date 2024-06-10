@@ -1,17 +1,95 @@
 import matplotlib.pyplot as plt
 
 # --------------------------------------------------------------------------------------------
-# ACTIVITY
+# FedAvg
 # --------------------------------------------------------------------------------------------
 
-data_rgrp_activity_FedAvg = {
+data_Losses_RgrpActivity_FedAvg = {
     "Round": list(range(0, 25)),
-    "RgrpActivity": [
-        0.000981994, 0.000238225, 0.000504384, 0.000430394, 0.000188408, 3.596e-06, 
-        0.000134395, 0.000476567, 0.000709533, 0.000955670, 0.001092158, 0.001086757, 
-        0.001186913, 0.001348532, 0.001563960, 0.001856400, 0.002241598, 0.002600655, 
-        0.003121024, 0.003715837, 0.004516703, 0.005286370, 0.006090524, 0.006575472, 
-        0.007342683
+    "Ativos": [
+        1.432424, 1.244771, 1.293405, 1.265230, 1.185315, 1.087239, 
+        1.013768, 0.965486, 0.941803, 0.932693, 0.931094, 0.939602, 
+        0.946563, 0.950219, 0.951937, 0.945578, 0.937862, 0.928369, 
+        0.918190, 0.910171, 0.899080, 0.893008, 0.894234, 0.892460, 
+        0.894878
+    ],
+    "Inativos": [
+        1.369751, 1.213902, 1.248488, 1.223738, 1.157863, 1.083446, 
+        1.036954, 1.009147, 0.995077, 0.994520, 0.997190, 1.005534, 
+        1.015466, 1.023664, 1.031030, 1.031750, 1.032553, 1.030363, 
+        1.029922, 1.032086, 1.033493, 1.038423, 1.050318, 1.054638, 
+        1.066257
+    ]
+}
+
+data_Losses_RgrpAge_FedAvg = {
+    "Round": list(range(0, 25)),
+    "00-17": [
+        1.444010, 1.300652, 1.326861, 1.302489, 1.237340, 1.157655, 
+        1.095042, 1.049193, 1.017078, 1.001018, 0.992476, 0.989838, 
+        0.987796, 0.988692, 0.986884, 0.985004, 0.983020, 0.980465, 
+        0.979803, 0.982075, 0.986600, 0.993027, 1.005559, 1.010593, 
+        1.024532
+    ],
+    "18-24": [
+        1.429315, 1.265223, 1.299307, 1.275173, 1.207711, 1.128787, 
+        1.074742, 1.041118, 1.024767, 1.023577, 1.025953, 1.034965, 
+        1.044574, 1.053481, 1.059053, 1.057716, 1.054780, 1.050120, 
+        1.045166, 1.043307, 1.039581, 1.039725, 1.047532, 1.048979, 
+        1.056041
+    ],
+    "25-34": [
+        1.399730, 1.232681, 1.271766, 1.245575, 1.175302, 1.092003, 
+        1.036197, 1.001107, 0.984453, 0.982636, 0.985138, 0.994752, 
+        1.004558, 1.012209, 1.017960, 1.016180, 1.014062, 1.009495, 
+        1.005653, 1.004085, 1.001701, 1.002967, 1.011048, 1.013123, 
+        1.021808
+    ],
+    "35-44": [
+        1.295373, 1.154616, 1.185257, 1.162134, 1.102370, 1.040576, 
+        1.006890, 0.988574, 0.977808, 0.978188, 0.980545, 0.987651, 
+        0.997901, 1.005934, 1.014806, 1.018372, 1.022842, 1.023332, 
+        1.026973, 1.033023, 1.038232, 1.046551, 1.062408, 1.069109, 
+        1.084415
+    ],
+    "45-49": [
+        1.284259, 1.146454, 1.177151, 1.152171, 1.089611, 1.023345, 
+        0.988832, 0.971097, 0.959367, 0.957992, 0.959810, 0.964481, 
+        0.974027, 0.981637, 0.992996, 0.998609, 1.005240, 1.007848, 
+        1.015077, 1.026275, 1.036799, 1.051855, 1.072982, 1.083178, 
+        1.102128
+    ],
+    "50-55": [
+        1.376054, 1.181862, 1.234692, 1.207273, 1.127671, 1.040065, 
+        0.990049, 0.965726, 0.961055, 0.967452, 0.976605, 0.991936, 
+        1.006667, 1.015811, 1.024464, 1.023769, 1.022257, 1.017345, 
+        1.013636, 1.012072, 1.006923, 1.007279, 1.015985, 1.018909, 
+        1.025792
+    ],
+    "56-99": [
+        1.404795, 1.307614, 1.318594, 1.299586, 1.250914, 1.208497, 
+        1.190661, 1.181316, 1.166004, 1.161907, 1.158153, 1.153708, 
+        1.156918, 1.163107, 1.176880, 1.184617, 1.201821, 1.209377, 
+        1.226985, 1.245975, 1.270388, 1.295223, 1.321462, 1.335551, 
+        1.362505
+    ]
+}
+
+data_Losses_RgrpGender_FedAvg = {
+    "Round": list(range(0, 25)),
+    "M": [
+        1.373217, 1.212111, 1.248107, 1.222188, 1.152647, 1.071794, 
+        1.018352, 0.985473, 0.969019, 0.966668, 0.968400, 0.976523, 
+        0.985842, 0.993388, 0.999789, 0.999536, 0.999092, 0.995984, 
+        0.994212, 0.994979, 0.994891, 0.998425, 1.008927, 1.012528, 
+        1.023097
+    ],
+    "F": [
+        1.379348, 1.233237, 1.267330, 1.246148, 1.190183, 1.133554, 
+        1.105715, 1.091222, 1.083412, 1.087064, 1.092007, 1.101338, 
+        1.112687, 1.121865, 1.131093, 1.133154, 1.135893, 1.134727, 
+        1.136105, 1.140193, 1.143040, 1.149568, 1.163181, 1.168168, 
+        1.180630
     ]
 }
 
@@ -481,60 +559,60 @@ import matplotlib.pyplot as plt
 fig, ((ax1, ax2, ax3), (ax4, ax5, ax6), (ax7, ax8, ax9)) = plt.subplots(3, 3, figsize=(12, 9))
 
 # Subplot 1
-ax1.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_7_lambda02["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_7_lambda02["RgrpActivity"], label=r"$\lambda = 0.2$", linestyle='-')
-ax1.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_7_lambda04["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_7_lambda04["RgrpActivity"], label=r"$\lambda = 0.4$", linestyle='-')
-ax1.set_ylabel(r"FairFed$(\lambda\ell)$", fontsize=14)
+ax1.plot(data_Losses_RgrpActivity_FedAvg["Round"], data_Losses_RgrpActivity_FedAvg["Ativos"], label="Ativos", linestyle='-')
+ax1.plot(data_Losses_RgrpActivity_FedAvg["Round"], data_Losses_RgrpActivity_FedAvg["Inativos"], label="Inativos", linestyle='-')
+ax1.set_ylabel(r"FedAvg", fontsize=14)
 
-ax1.set_title(r"$R_{grp}$ Atividade")
+ax1.set_title(r"Perdas de Grupo (L) Atividade")
 ax1.legend()
 
 
 # Subplot 2
-ax2.plot(data_rgrp_age_FedCustom_LossGroup_Age_5_lambda02["Round"], data_rgrp_age_FedCustom_LossGroup_Age_5_lambda02["RgrpAge"], label=r"$\lambda = 0.2$", linestyle='-')
-ax2.plot(data_rgrp_age_FedCustom_LossGroup_Age_5_lambda04["Round"], data_rgrp_age_FedCustom_LossGroup_Age_5_lambda04["RgrpAge"], label=r"$\lambda = 0.4$", linestyle='-')
+ax2.plot(data_Losses_RgrpAge_FedAvg["Round"], data_Losses_RgrpAge_FedAvg["00-17"], label="00-17", linestyle='-')
+ax2.plot(data_Losses_RgrpAge_FedAvg["Round"], data_Losses_RgrpAge_FedAvg["18-24"], label="18-24", linestyle='-')
+ax2.plot(data_Losses_RgrpAge_FedAvg["Round"], data_Losses_RgrpAge_FedAvg["25-34"], label="25-34", linestyle='-')
+ax2.plot(data_Losses_RgrpAge_FedAvg["Round"], data_Losses_RgrpAge_FedAvg["35-44"], label="35-44", linestyle='-')
+ax2.plot(data_Losses_RgrpAge_FedAvg["Round"], data_Losses_RgrpAge_FedAvg["45-49"], label="45-49", linestyle='-')
+ax2.plot(data_Losses_RgrpAge_FedAvg["Round"], data_Losses_RgrpAge_FedAvg["50-55"], label="50-55", linestyle='-')
+ax2.plot(data_Losses_RgrpAge_FedAvg["Round"], data_Losses_RgrpAge_FedAvg["56-99"], label="56-99", linestyle='-')
 
-ax2.set_title(r"$R_{grp}$ Idade")
+ax2.set_title(r"Perdas de Grupo (L) Idade")
 ax2.legend()
 
 
 # Subplot 3
-ax3.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_7_lambda02["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_7_lambda02["RgrpGender"], label=r"$\lambda = 0.2$", linestyle='-')
-ax3.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_7_lambda04["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_7_lambda04["RgrpGender"], label=r"$\lambda = 0.4$", linestyle='-')
+ax3.plot(data_Losses_RgrpGender_FedAvg["Round"], data_Losses_RgrpGender_FedAvg["M"], label="M", linestyle='-')
+ax3.plot(data_Losses_RgrpGender_FedAvg["Round"], data_Losses_RgrpGender_FedAvg["F"], label="F", linestyle='-')
+ax3.set_ylabel(r"FedAvg", fontsize=14)
 
-ax3.set_title(r"$R_{grp}$ Gênero")
+ax3.set_title(r"Perdas de Grupo (L) Atividade")
 ax3.legend()
 
 
 # Subplot 4
-ax4.plot(data_rgrp_activity_FedAvg["Round"], data_rgrp_activity_FedAvg["RgrpActivity"], label=r"FedAvg", linestyle='-', linewidth=4, color = 'black')
-ax4.plot(data_rgrp_activity_FedCustom_LossIndv_1["Round"], data_rgrp_activity_FedCustom_LossIndv_1["RgrpActivity"], label=r"Fed($\ell$)", linestyle='-', linewidth=4, color = 'gray')
+
 
 ax4.set_xlabel("Round")
-ax4.set_ylabel(r"FedAvg Fed($\ell$) FairFed$(\lambda\ell)$", fontsize=14)
+ax4.set_ylabel(r"Fed($\ell$)", fontsize=14)
 ax4.legend()
 
 
 # Subplot 5
-ax5.plot(data_rgrp_age_FedAvg["Round"], data_rgrp_age_FedAvg["RgrpAge"], label=r"FedAvg", linestyle='-', linewidth=4, color = 'black')
-ax5.plot(data_rgrp_age_FedCustom_LossIndv_1["Round"], data_rgrp_age_FedCustom_LossIndv_1["RgrpAge"], label=r"Fed($\ell$)", linestyle='-', linewidth=4, color = 'gray')
+
 
 ax5.set_xlabel("Round")
 ax5.legend()
 
 
 # Subplot 6
-ax6.plot(data_rgrp_gender_FedAvg["Round"], data_rgrp_gender_FedAvg["RgrpGender"], label=r"FedAvg", linestyle='-', linewidth=4, color = 'black')
-ax6.plot(data_rgrp_gender_FedCustom_LossIndv_1["Round"], data_rgrp_gender_FedCustom_LossIndv_1["RgrpGender"], label=r"Fed($\ell$)", linestyle='-', linewidth=4, color = 'gray')
 
 ax6.set_xlabel("Round")
 ax6.legend()
 
 # Subplot 7
-ax7.plot(data_rgrp_activity_FedAvg["Round"], data_rgrp_activity_FedAvg["RgrpActivity"], label=r"FedAvg", linestyle='-', linewidth=4, color = 'black')
-ax7.plot(data_rgrp_activity_FedCustom_LossIndv_1["Round"], data_rgrp_activity_FedCustom_LossIndv_1["RgrpActivity"], label=r"Fed($\ell$)", linestyle='-', linewidth=4, color = 'gray')
 
 ax7.set_xlabel("Round")
-ax7.set_ylabel(r"FedAvg Fed($\ell$) FairFed$(\lambda\ell)$", fontsize=14)
+ax7.set_ylabel(r"FairFed$(\lambda\ell)$", fontsize=14)
 ax7.legend()
 
 

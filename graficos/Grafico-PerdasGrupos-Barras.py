@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 # --------------------------------------------------------------------------------------------
 # FedAvg
@@ -282,102 +283,60 @@ data_Losses_RgrpGender_FedCustom_LossGroup_Gender_7_lambda02 = {
 
 
 import matplotlib.pyplot as plt
+import numpy as np
+
+# Supondo que os dados foram carregados previamente
+# data_Losses_RgrpActivity_FedAvg, data_Losses_RgrpAge_FedAvg, data_Losses_RgrpGender_FedAvg
+# data_Losses_RgrpActivity_FedCustom_LossIndv_1, data_Losses_RgrpAge_FedCustom_LossIndv_1, data_Losses_RgrpGender_FedCustom_LossIndv_1
+# data_Losses_RgrpActivity_FedCustom_LossGroup_Activity_7_lambda02, data_Losses_RgrpAge_FedCustom_LossGroup_Age_7_lambda02, data_Losses_RgrpGender_FedCustom_LossGroup_Gender_7_lambda02
 
 # Criação da figura e dos subplots
 fig, ((ax1, ax2, ax3), (ax4, ax5, ax6), (ax7, ax8, ax9)) = plt.subplots(3, 3, figsize=(12, 9))
 
 # Subplot 1
-ax1.bar(data_Losses_RgrpActivity_FedAvg["Round"], data_Losses_RgrpActivity_FedAvg["Ativos"], label="Ativos")
-ax1.bar(data_Losses_RgrpActivity_FedAvg["Round"], data_Losses_RgrpActivity_FedAvg["Inativos"], label="Inativos", bottom=data_Losses_RgrpActivity_FedAvg["Ativos"])
+ax1.bar("Ativos", np.mean(data_Losses_RgrpActivity_FedAvg["Ativos"]), label="Ativos")
+ax1.bar("Inativos", np.mean(data_Losses_RgrpActivity_FedAvg["Inativos"]), label="Inativos")
 ax1.set_ylabel(r"FedAvg", fontsize=14)
-
-ax1.set_title(r"Perdas de Grupo (L) Atividade")
-ax1.legend()
-
+ax1.set_title(r"Perda Média de Grupo (Atividade)")
 
 # Subplot 2
-ax2.plot(data_Losses_RgrpAge_FedAvg["Round"], data_Losses_RgrpAge_FedAvg["00-17"], label="00-17", linestyle='-')
-ax2.plot(data_Losses_RgrpAge_FedAvg["Round"], data_Losses_RgrpAge_FedAvg["18-24"], label="18-24", linestyle='-')
-ax2.plot(data_Losses_RgrpAge_FedAvg["Round"], data_Losses_RgrpAge_FedAvg["25-34"], label="25-34", linestyle='-')
-ax2.plot(data_Losses_RgrpAge_FedAvg["Round"], data_Losses_RgrpAge_FedAvg["35-44"], label="35-44", linestyle='-')
-ax2.plot(data_Losses_RgrpAge_FedAvg["Round"], data_Losses_RgrpAge_FedAvg["45-49"], label="45-49", linestyle='-')
-ax2.plot(data_Losses_RgrpAge_FedAvg["Round"], data_Losses_RgrpAge_FedAvg["50-55"], label="50-55", linestyle='-')
-ax2.plot(data_Losses_RgrpAge_FedAvg["Round"], data_Losses_RgrpAge_FedAvg["56-99"], label="56-99", linestyle='-')
-
-ax2.set_title(r"Perdas de Grupo (L) Idade")
-ax2.legend()
-
+age_labels = ["00-17", "18-24", "25-34", "35-44", "45-49", "50-55", "56-99"]
+for label in age_labels:
+    ax2.bar(label, np.mean(data_Losses_RgrpAge_FedAvg[label]), label=label)
+ax2.set_title(r"Perda Média de Grupo (Idade)")
 
 # Subplot 3
-ax3.plot(data_Losses_RgrpGender_FedAvg["Round"], data_Losses_RgrpGender_FedAvg["M"], label="M", linestyle='-')
-ax3.plot(data_Losses_RgrpGender_FedAvg["Round"], data_Losses_RgrpGender_FedAvg["F"], label="F", linestyle='-')
-# ax3.set_ylabel(r"FedAvg", fontsize=14)
-
-ax3.set_title(r"Perdas de Grupo (L) Gênero")
-ax3.legend()
-
+ax3.bar("M", np.mean(data_Losses_RgrpGender_FedAvg["M"]), label="M")
+ax3.bar("F", np.mean(data_Losses_RgrpGender_FedAvg["F"]), label="F")
+ax3.set_title(r"Perda Média de Grupo (Gênero)")
 
 # Subplot 4
-ax4.plot(data_Losses_RgrpActivity_FedCustom_LossIndv_1["Round"], data_Losses_RgrpActivity_FedCustom_LossIndv_1["Ativos"], label="Ativos", linestyle='-')
-ax4.plot(data_Losses_RgrpActivity_FedCustom_LossIndv_1["Round"], data_Losses_RgrpActivity_FedCustom_LossIndv_1["Inativos"], label="Inativos", linestyle='-')
-
-ax4.set_xlabel("Round")
+ax4.bar("Ativos", np.mean(data_Losses_RgrpActivity_FedCustom_LossIndv_1["Ativos"]), label="Ativos")
+ax4.bar("Inativos", np.mean(data_Losses_RgrpActivity_FedCustom_LossIndv_1["Inativos"]), label="Inativos")
 ax4.set_ylabel(r"Fed($\ell$)", fontsize=14)
-ax4.legend()
-
 
 # Subplot 5
-ax5.plot(data_Losses_RgrpAge_FedCustom_LossIndv_1["Round"], data_Losses_RgrpAge_FedCustom_LossIndv_1["00-17"], label="00-17", linestyle='-')
-ax5.plot(data_Losses_RgrpAge_FedCustom_LossIndv_1["Round"], data_Losses_RgrpAge_FedCustom_LossIndv_1["18-24"], label="18-24", linestyle='-')
-ax5.plot(data_Losses_RgrpAge_FedCustom_LossIndv_1["Round"], data_Losses_RgrpAge_FedCustom_LossIndv_1["25-34"], label="25-34", linestyle='-')
-ax5.plot(data_Losses_RgrpAge_FedCustom_LossIndv_1["Round"], data_Losses_RgrpAge_FedCustom_LossIndv_1["35-44"], label="35-44", linestyle='-')
-ax5.plot(data_Losses_RgrpAge_FedCustom_LossIndv_1["Round"], data_Losses_RgrpAge_FedCustom_LossIndv_1["45-49"], label="45-49", linestyle='-')
-ax5.plot(data_Losses_RgrpAge_FedCustom_LossIndv_1["Round"], data_Losses_RgrpAge_FedCustom_LossIndv_1["50-55"], label="50-55", linestyle='-')
-ax5.plot(data_Losses_RgrpAge_FedCustom_LossIndv_1["Round"], data_Losses_RgrpAge_FedCustom_LossIndv_1["56-99"], label="56-99", linestyle='-')
-
-ax5.set_xlabel("Round")
-ax5.legend()
-
+for label in age_labels:
+    ax5.bar(label, np.mean(data_Losses_RgrpAge_FedCustom_LossIndv_1[label]), label=label)
 
 # Subplot 6
-ax6.plot(data_Losses_RgrpGender_FedCustom_LossIndv_1["Round"], data_Losses_RgrpGender_FedCustom_LossIndv_1["M"], label="M", linestyle='-')
-ax6.plot(data_Losses_RgrpGender_FedCustom_LossIndv_1["Round"], data_Losses_RgrpGender_FedCustom_LossIndv_1["F"], label="F", linestyle='-')
-ax6.set_xlabel("Round")
-ax6.legend()
+ax6.bar("M", np.mean(data_Losses_RgrpGender_FedCustom_LossIndv_1["M"]), label="M")
+ax6.bar("F", np.mean(data_Losses_RgrpGender_FedCustom_LossIndv_1["F"]), label="F")
 
 # Subplot 7
-
-ax7.plot(data_Losses_RgrpActivity_FedCustom_LossGroup_Activity_7_lambda02["Round"], data_Losses_RgrpActivity_FedCustom_LossGroup_Activity_7_lambda02["Ativos"], label="Ativos", linestyle='-')
-ax7.plot(data_Losses_RgrpActivity_FedCustom_LossGroup_Activity_7_lambda02["Round"], data_Losses_RgrpActivity_FedCustom_LossGroup_Activity_7_lambda02["Inativos"], label="Inativos", linestyle='-')
-
-ax7.set_xlabel("Round")
+ax7.bar("Ativos", np.mean(data_Losses_RgrpActivity_FedCustom_LossGroup_Activity_7_lambda02["Ativos"]), label="Ativos")
+ax7.bar("Inativos", np.mean(data_Losses_RgrpActivity_FedCustom_LossGroup_Activity_7_lambda02["Inativos"]), label="Inativos")
 ax7.set_ylabel(r"FairFed$(\lambda\ell)$", fontsize=14)
-ax7.legend()
-
 
 # Subplot 8
-ax8.plot(data_Losses_RgrpAge_FedCustom_LossGroup_Age_7_lambda02["Round"], data_Losses_RgrpAge_FedCustom_LossGroup_Age_7_lambda02["00-17"], label="00-17", linestyle='-')
-ax8.plot(data_Losses_RgrpAge_FedCustom_LossGroup_Age_7_lambda02["Round"], data_Losses_RgrpAge_FedCustom_LossGroup_Age_7_lambda02["18-24"], label="18-24", linestyle='-')
-ax8.plot(data_Losses_RgrpAge_FedCustom_LossGroup_Age_7_lambda02["Round"], data_Losses_RgrpAge_FedCustom_LossGroup_Age_7_lambda02["25-34"], label="25-34", linestyle='-')
-ax8.plot(data_Losses_RgrpAge_FedCustom_LossGroup_Age_7_lambda02["Round"], data_Losses_RgrpAge_FedCustom_LossGroup_Age_7_lambda02["35-44"], label="35-44", linestyle='-')
-ax8.plot(data_Losses_RgrpAge_FedCustom_LossGroup_Age_7_lambda02["Round"], data_Losses_RgrpAge_FedCustom_LossGroup_Age_7_lambda02["45-49"], label="45-49", linestyle='-')
-ax8.plot(data_Losses_RgrpAge_FedCustom_LossGroup_Age_7_lambda02["Round"], data_Losses_RgrpAge_FedCustom_LossGroup_Age_7_lambda02["50-55"], label="50-55", linestyle='-')
-ax8.plot(data_Losses_RgrpAge_FedCustom_LossGroup_Age_7_lambda02["Round"], data_Losses_RgrpAge_FedCustom_LossGroup_Age_7_lambda02["56-99"], label="56-99", linestyle='-')
-
-ax8.set_xlabel("Round")
-ax8.legend()
-
+for label in age_labels:
+    ax8.bar(label, np.mean(data_Losses_RgrpAge_FedCustom_LossGroup_Age_7_lambda02[label]), label=label)
 
 # Subplot 9
-ax9.plot(data_Losses_RgrpGender_FedCustom_LossGroup_Gender_7_lambda02["Round"], data_Losses_RgrpGender_FedCustom_LossGroup_Gender_7_lambda02["M"], label="M", linestyle='-')
-ax9.plot(data_Losses_RgrpGender_FedCustom_LossGroup_Gender_7_lambda02["Round"], data_Losses_RgrpGender_FedCustom_LossGroup_Gender_7_lambda02["F"], label="F", linestyle='-')
-
-ax9.set_xlabel("Round")
-ax9.legend()
-
-
-plt.subplots_adjust(hspace=0.8, wspace=0.5)
+ax9.bar("M", np.mean(data_Losses_RgrpGender_FedCustom_LossGroup_Gender_7_lambda02["M"]), label="M")
+ax9.bar("F", np.mean(data_Losses_RgrpGender_FedCustom_LossGroup_Gender_7_lambda02["F"]), label="F")
 
 # Ajustar espaçamento entre subplots
+plt.subplots_adjust(hspace=0.8, wspace=0.5)
 plt.tight_layout()
 plt.show()

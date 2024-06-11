@@ -85,9 +85,11 @@ import matplotlib.pyplot as plt
 fig, ((ax1, ax2, ax3)) = plt.subplots(1, 3, figsize=(12, 9))
 
 # Subplot 1
-ax1.plot(data_f1["Round"], data_f1["FedAvg"], label=r"FedAvg", linestyle='-', linewidth=4, color = 'black')
-ax1.plot(data_f1["Round"], data_f1["FedLoss"], label=r"Fed($\ell$)", linestyle='-', linewidth=4, color = 'gray')
-ax1.plot(data_f1["Round"], data_f1["FairFedLoss"], label=r"FairFed$(\lambda=0.2)$", linestyle='-', linewidth=4, color = 'blue')
+ax1.plot(data_f1["Round"], data_f1["FedAvg"], label=r"FedAvg", linestyle='-', color = 'black')
+# ax1.plot(data_f1["Round"], data_f1["FedLossIndv"], label=r"Fed($\ell$)", linestyle='-', color = 'gray')
+# ax1.plot(data_f1["Round"], data_f1["FairFedLossGroupActivity"], label=r"FairFed$(\lambda=0.2)$", linestyle='-', color = 'blue')
+# ax1.plot(data_f1["Round"], data_f1["FairFedLossGroupAge"], label=r"FairFed$(\lambda=0.2)$", linestyle='-', color = 'green')
+# ax1.plot(data_f1["Round"], data_f1["FairFedLossGroupGender"], label=r"FairFed$(\lambda=0.6)$", linestyle='-', color = 'red')
 
 ax1.set_xlabel("Round")
 # ax1.set_ylabel(r"FairFed$(\lambda\ell)$", fontsize=14)

@@ -802,7 +802,7 @@ ax1.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_6_lambda08["Round"], da
 ax1.set_ylabel(r"FairFed$(\lambda\ell)$", fontsize=14)
 
 
-ax1.set_title(r"$R_{grp}$ Atividade")
+ax1.set_title(r"$R_{grp}$ (Atividade)")
 ax1.legend()
 # ax1.grid(True)
 
@@ -814,7 +814,7 @@ ax2.plot(data_rgrp_age_FedCustom_LossGroup_Age_7_lambda08["Round"], data_rgrp_ag
 
 # ax2.set_xlabel("Round")
 # ax2.set_ylabel(r"$R_{grp} Idade$")
-ax2.set_title(r"$R_{grp}$ Idade")
+ax2.set_title(r"$R_{grp}$ (Idade)")
 ax2.legend()
 # ax2.grid(True)
 
@@ -827,15 +827,15 @@ ax3.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda08["Round"], data_r
 
 # ax3.set_xlabel("Round")
 # ax3.set_ylabel(r"$R_{grp} Gênero$")
-ax3.set_title(r"$R_{grp}$ Gênero")
+ax3.set_title(r"$R_{grp}$ (Gênero)")
 ax3.legend()
 # ax3.grid(True)
 
 
 # Subplot 4
-ax4.plot(data_rgrp_activity_FedAvg["Round"], data_rgrp_activity_FedAvg["RgrpActivity"], label=r"FedAvg", linestyle='-', linewidth=4, color = 'black')
-ax4.plot(data_rgrp_activity_FedCustom_LossIndv_1["Round"], data_rgrp_activity_FedCustom_LossIndv_1["RgrpActivity"], label=r"Fed($\ell$)", linestyle='-', linewidth=4, color = 'gray')
-ax4.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_7_lambda02["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_7_lambda02["RgrpActivity"], label=r"FairFed$(\lambda=0.2)$", linestyle='-', linewidth=4)
+ax4.plot(data_rgrp_activity_FedAvg["Round"], data_rgrp_activity_FedAvg["RgrpActivity"], label=r"FedAvg", linestyle='-', color = 'black')
+ax4.plot(data_rgrp_activity_FedCustom_LossIndv_1["Round"], data_rgrp_activity_FedCustom_LossIndv_1["RgrpActivity"], label=r"Fed($\ell$)", linestyle='-', color = 'gray')
+ax4.plot(data_rgrp_activity_FedCustom_LossGroup_Activity_7_lambda02["Round"], data_rgrp_activity_FedCustom_LossGroup_Activity_7_lambda02["RgrpActivity"], label=r"FairFed$(\lambda=0.2)$", linestyle='-')
 
 ax4.set_xlabel("Round")
 ax4.set_ylabel(r"FedAvg | Fed($\ell$) | FairFed$(\lambda\ell)$", fontsize=14)
@@ -846,9 +846,9 @@ ax4.legend()
 
 
 # Subplot 5
-ax5.plot(data_rgrp_age_FedAvg["Round"], data_rgrp_age_FedAvg["RgrpAge"], label=r"FedAvg", linestyle='-', linewidth=4, color = 'black')
-ax5.plot(data_rgrp_age_FedCustom_LossIndv_1["Round"], data_rgrp_age_FedCustom_LossIndv_1["RgrpAge"], label=r"Fed($\ell$)", linestyle='-', linewidth=4, color = 'gray')
-ax5.plot(data_rgrp_age_FedCustom_LossGroup_Age_7_lambda02["Round"], data_rgrp_age_FedCustom_LossGroup_Age_7_lambda02["RgrpAge"], label=r"FairFed$(\lambda=0.2)$", linestyle='-', linewidth=4)
+ax5.plot(data_rgrp_age_FedAvg["Round"], data_rgrp_age_FedAvg["RgrpAge"], label=r"FedAvg", linestyle='-', color = 'black')
+ax5.plot(data_rgrp_age_FedCustom_LossIndv_1["Round"], data_rgrp_age_FedCustom_LossIndv_1["RgrpAge"], label=r"Fed($\ell$)", linestyle='-', color = 'gray')
+ax5.plot(data_rgrp_age_FedCustom_LossGroup_Age_7_lambda02["Round"], data_rgrp_age_FedCustom_LossGroup_Age_7_lambda02["RgrpAge"], label=r"FairFed$(\lambda=0.2)$", linestyle='-')
 
 ax5.set_xlabel("Round")
 # ax5.set_ylabel(r"$R_{grp} Idade$")
@@ -857,9 +857,9 @@ ax5.legend()
 # ax5.grid(True)
 
 # Subplot 6
-ax6.plot(data_rgrp_gender_FedAvg["Round"], data_rgrp_gender_FedAvg["RgrpGender"], label=r"FedAvg", linestyle='-', linewidth=4, color = 'black')
-ax6.plot(data_rgrp_gender_FedCustom_LossIndv_1["Round"], data_rgrp_gender_FedCustom_LossIndv_1["RgrpGender"], label=r"Fed($\ell$)", linestyle='-', linewidth=4, color = 'gray')
-ax6.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_7_lambda06["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_7_lambda06["RgrpGender"], label=r"FairFed$(\lambda=0.6)$", linestyle='-', color = 'green', linewidth=4)
+ax6.plot(data_rgrp_gender_FedAvg["Round"], data_rgrp_gender_FedAvg["RgrpGender"], label=r"FedAvg", linestyle='-', color = 'black')
+ax6.plot(data_rgrp_gender_FedCustom_LossIndv_1["Round"], data_rgrp_gender_FedCustom_LossIndv_1["RgrpGender"], label=r"Fed($\ell$)", linestyle='-', color = 'gray')
+ax6.plot(data_rgrp_gender_FedCustom_LossGroup_Gender_7_lambda06["Round"], data_rgrp_gender_FedCustom_LossGroup_Gender_7_lambda06["RgrpGender"], label=r"FairFed$(\lambda=0.6)$", linestyle='-', color = 'green')
 
 ax6.set_xlabel("Round")
 # ax6.set_ylabel(r"$R_{grp} Gênero$")

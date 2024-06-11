@@ -291,7 +291,7 @@ ax1.plot(data_Losses_RgrpActivity_FedAvg["Round"], data_Losses_RgrpActivity_FedA
 ax1.plot(data_Losses_RgrpActivity_FedAvg["Round"], data_Losses_RgrpActivity_FedAvg["Inativos"], label="Inativos", linestyle='-')
 ax1.set_ylabel(r"FedAvg", fontsize=14)
 
-ax1.set_title(r"Perdas de Grupo (L) Atividade")
+ax1.set_title(r"Perdas de Grupo (Atividade)")
 ax1.legend()
 
 
@@ -304,7 +304,7 @@ ax2.plot(data_Losses_RgrpAge_FedAvg["Round"], data_Losses_RgrpAge_FedAvg["45-49"
 ax2.plot(data_Losses_RgrpAge_FedAvg["Round"], data_Losses_RgrpAge_FedAvg["50-55"], label="50-55", linestyle='-')
 ax2.plot(data_Losses_RgrpAge_FedAvg["Round"], data_Losses_RgrpAge_FedAvg["56-99"], label="56-99", linestyle='-')
 
-ax2.set_title(r"Perdas de Grupo (L) Idade")
+ax2.set_title(r"Perdas de Grupo (Idade)")
 ax2.legend()
 
 
@@ -313,7 +313,7 @@ ax3.plot(data_Losses_RgrpGender_FedAvg["Round"], data_Losses_RgrpGender_FedAvg["
 ax3.plot(data_Losses_RgrpGender_FedAvg["Round"], data_Losses_RgrpGender_FedAvg["F"], label="F", linestyle='-')
 # ax3.set_ylabel(r"FedAvg", fontsize=14)
 
-ax3.set_title(r"Perdas de Grupo (L) Gênero")
+ax3.set_title(r"Perdas de Grupo (Gênero)")
 ax3.legend()
 
 

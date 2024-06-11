@@ -70,30 +70,30 @@ import matplotlib.pyplot as plt
 fig, ((ax1, ax2, ax3)) = plt.subplots(1, 3, figsize=(12, 9))
 
 # Subplot 1
-ax1.plot(data_rmse["Round"], data_rmse["FedAvg"], label=r"FedAvg", linestyle='-', linewidth=4, color = 'black')
-ax1.plot(data_rmse["Round"], data_rmse["FedLossIndv"], label=r"Fed($\ell$)", linestyle='-', linewidth=4, color = 'gray')
-ax1.plot(data_rmse["Round"], data_rmse["FairFedLossGroupActivity"], label=r"FairFed$(\lambda=0.2)$", linestyle='-', linewidth=4, color = 'blue')
+ax1.plot(data_rmse["Round"], data_rmse["FedAvg"], label=r"FedAvg", linestyle='-',  color = 'black')
+ax1.plot(data_rmse["Round"], data_rmse["FedLossIndv"], label=r"Fed($\ell$)", linestyle='-',  color = 'gray')
+ax1.plot(data_rmse["Round"], data_rmse["FairFedLossGroupActivity"], label=r"FairFed$(\lambda=0.2)$", linestyle='-')
 ax1.set_xlabel("Round")
 ax1.set_ylabel(r"$RMSE$", fontsize=14)
-ax1.set_title(r"$RMSE$ Atividade")
+ax1.set_title(r"$RMSE$ (Atividade)")
 ax1.legend()
 
 # Subplot 2
-ax2.plot(data_rmse["Round"], data_rmse["FedAvg"], label=r"FedAvg", linestyle='-', linewidth=4, color = 'black')
-ax2.plot(data_rmse["Round"], data_rmse["FedLossIndv"], label=r"Fed($\ell$)", linestyle='-', linewidth=4, color = 'gray')
-ax2.plot(data_rmse["Round"], data_rmse["FairFedLossGroupAge"], label=r"FairFed$(\lambda=0.2)$", linestyle='-', linewidth=4, color = 'blue')
+ax2.plot(data_rmse["Round"], data_rmse["FedAvg"], label=r"FedAvg", linestyle='-',  color = 'black')
+ax2.plot(data_rmse["Round"], data_rmse["FedLossIndv"], label=r"Fed($\ell$)", linestyle='-',  color = 'gray')
+ax2.plot(data_rmse["Round"], data_rmse["FairFedLossGroupAge"], label=r"FairFed$(\lambda=0.2)$", linestyle='-')
 ax2.set_xlabel("Round")
 # ax2.set_ylabel(r"$RMSE$", fontsize=14)
-ax2.set_title(r"$RMSE$ Idade")
+ax2.set_title(r"$RMSE$ (Idade)")
 ax2.legend()
 
 # Subplot 3
-ax3.plot(data_rmse["Round"], data_rmse["FedAvg"], label=r"FedAvg", linestyle='-', linewidth=4, color = 'black')
-ax3.plot(data_rmse["Round"], data_rmse["FedLossIndv"], label=r"Fed($\ell$)", linestyle='-', linewidth=4, color = 'gray')
-ax3.plot(data_rmse["Round"], data_rmse["FairFedLossGroupGender"], label=r"FairFed$(\lambda=0.6)$", linestyle='-', linewidth=4, color = 'green')
+ax3.plot(data_rmse["Round"], data_rmse["FedAvg"], label=r"FedAvg", linestyle='-',  color = 'black')
+ax3.plot(data_rmse["Round"], data_rmse["FedLossIndv"], label=r"Fed($\ell$)", linestyle='-',  color = 'gray')
+ax3.plot(data_rmse["Round"], data_rmse["FairFedLossGroupGender"], label=r"FairFed$(\lambda=0.6)$", linestyle='-',  color = 'green')
 ax3.set_xlabel("Round")
 # ax3.set_ylabel(r"$RMSE$", fontsize=14)
-ax3.set_title(r"$RMSE$ Gênero")
+ax3.set_title(r"$RMSE$ (Gênero)")
 ax3.legend()
 
 # # Subplot 2

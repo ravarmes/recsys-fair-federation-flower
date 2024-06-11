@@ -287,8 +287,8 @@ import matplotlib.pyplot as plt
 fig, ((ax1, ax2, ax3), (ax4, ax5, ax6), (ax7, ax8, ax9)) = plt.subplots(3, 3, figsize=(12, 9))
 
 # Subplot 1
-ax1.plot(data_Losses_RgrpActivity_FedAvg["Round"], data_Losses_RgrpActivity_FedAvg["Ativos"], label="Ativos", linestyle='-')
-ax1.plot(data_Losses_RgrpActivity_FedAvg["Round"], data_Losses_RgrpActivity_FedAvg["Inativos"], label="Inativos", linestyle='-')
+ax1.bar(data_Losses_RgrpActivity_FedAvg["Round"], data_Losses_RgrpActivity_FedAvg["Ativos"], label="Ativos")
+ax1.bar(data_Losses_RgrpActivity_FedAvg["Round"], data_Losses_RgrpActivity_FedAvg["Inativos"], label="Inativos", bottom=data_Losses_RgrpActivity_FedAvg["Ativos"])
 ax1.set_ylabel(r"FedAvg", fontsize=14)
 
 ax1.set_title(r"Perdas de Grupo (L) Atividade")
@@ -311,7 +311,7 @@ ax2.legend()
 # Subplot 3
 ax3.plot(data_Losses_RgrpGender_FedAvg["Round"], data_Losses_RgrpGender_FedAvg["M"], label="M", linestyle='-')
 ax3.plot(data_Losses_RgrpGender_FedAvg["Round"], data_Losses_RgrpGender_FedAvg["F"], label="F", linestyle='-')
-ax3.set_ylabel(r"FedAvg", fontsize=14)
+# ax3.set_ylabel(r"FedAvg", fontsize=14)
 
 ax3.set_title(r"Perdas de Grupo (L) Gênero")
 ax3.legend()

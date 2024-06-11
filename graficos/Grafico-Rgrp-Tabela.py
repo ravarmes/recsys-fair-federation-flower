@@ -124,36 +124,36 @@ data_rgrp_activity_FedCustom_LossGroup_Activity_7_lambda06 = {
 }
 
 # # Experimento 1
-# data_rgrp_activity_FedCustom_LossGroup_Activity_7_lambda08 = {
-#     "Round": list(range(0, 25)),
-#     "RgrpActivity": [
-#         0.003147292949156337,
-#         0.0013203780827201873,
-#         0.002099850596246432,
-#         0.0014831493441206812,
-#         0.0007689603512684575,
-#         0.00027568663412273525,
-#         1.848122504239485e-05,
-#         3.98127410864265e-06,
-#         7.375415763321772e-05,
-#         8.288656262619698e-05,
-#         0.00011742833085325597,
-#         0.000200113699360484,
-#         0.0001248326940876422,
-#         5.3469714983391386e-05,
-#         8.023327470162072e-06,
-#         3.045396651573553e-06,
-#         5.067201924497569e-06,
-#         1.751001724914203e-05,
-#         5.746414092760763e-05,
-#         0.00025624585664866715,
-#         0.00041237494784663453,
-#         0.0005773194985827422,
-#         4.926369716381427e-07,
-#         0.00011468082509425574,
-#         0.000537609631025893
-#     ]
-# }
+data_rgrp_activity_FedCustom_LossGroup_Activity_7_lambda08 = {
+    "Round": list(range(0, 25)),
+    "RgrpActivity": [
+        0.003147292949156337,
+        0.0013203780827201873,
+        0.002099850596246432,
+        0.0014831493441206812,
+        0.0007689603512684575,
+        0.00027568663412273525,
+        1.848122504239485e-05,
+        3.98127410864265e-06,
+        7.375415763321772e-05,
+        8.288656262619698e-05,
+        0.00011742833085325597,
+        0.000200113699360484,
+        0.0001248326940876422,
+        5.3469714983391386e-05,
+        8.023327470162072e-06,
+        3.045396651573553e-06,
+        5.067201924497569e-06,
+        1.751001724914203e-05,
+        5.746414092760763e-05,
+        0.00025624585664866715,
+        0.00041237494784663453,
+        0.0005773194985827422,
+        4.926369716381427e-07,
+        0.00011468082509425574,
+        0.000537609631025893
+    ]
+}
 
 # --------------------------------------------------------------------------------------------
 # AGE
@@ -460,7 +460,7 @@ data_rgrp_gender_FedCustom_LossGroup_Gender_7_lambda06 = {
     ]
 }
 
-data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda08 = {
+data_rgrp_gender_FedCustom_LossGroup_Gender_7_lambda08 = {
     "Round": list(range(0, 25)),
     "RgrpGender": [
         0.00018108920246030118,
@@ -494,9 +494,43 @@ data_rgrp_gender_FedCustom_LossGroup_Gender_5_lambda08 = {
 # --------------------------------------------------------------------------------------------
 
 Rgrp_Medio_Activity_FedAvg = np.mean(data_rgrp_activity_FedAvg['RgrpActivity'])
+Rgrp_Medio_Activity_FedLossIndv = np.mean(data_rgrp_activity_FedCustom_LossIndv_1['RgrpActivity'])
+Rgrp_Medio_Activity_FedLossGroup_Lambda02 = np.mean(data_rgrp_activity_FedCustom_LossGroup_Activity_7_lambda02['RgrpActivity'])
+Rgrp_Medio_Activity_FedLossGroup_Lambda04 = np.mean(data_rgrp_activity_FedCustom_LossGroup_Activity_7_lambda04['RgrpActivity'])
+Rgrp_Medio_Activity_FedLossGroup_Lambda06 = np.mean(data_rgrp_activity_FedCustom_LossGroup_Activity_7_lambda06['RgrpActivity'])
+Rgrp_Medio_Activity_FedLossGroup_Lambda08 = np.mean(data_rgrp_activity_FedCustom_LossGroup_Activity_7_lambda08['RgrpActivity'])
+
+Rgrp_Medio_Age_FedAvg = np.mean(data_rgrp_age_FedAvg['RgrpAge'])
+Rgrp_Medio_Age_FedLossIndv = np.mean(data_rgrp_age_FedCustom_LossIndv_1['RgrpAge'])
+Rgrp_Medio_Age_FedLossGroup_Lambda02 = np.mean(data_rgrp_age_FedCustom_LossGroup_Age_7_lambda02['RgrpAge'])
+Rgrp_Medio_Age_FedLossGroup_Lambda04 = np.mean(data_rgrp_age_FedCustom_LossGroup_Age_7_lambda04['RgrpAge'])
+Rgrp_Medio_Age_FedLossGroup_Lambda06 = np.mean(data_rgrp_age_FedCustom_LossGroup_Age_7_lambda06['RgrpAge'])
+Rgrp_Medio_Age_FedLossGroup_Lambda08 = np.mean(data_rgrp_age_FedCustom_LossGroup_Age_7_lambda08['RgrpAge'])
+
+Rgrp_Medio_Gender_FedAvg = np.mean(data_rgrp_gender_FedAvg['RgrpGender'])
+Rgrp_Medio_Gender_FedLossIndv = np.mean(data_rgrp_gender_FedCustom_LossIndv_1['RgrpGender'])
+Rgrp_Medio_Gender_FedLossGroup_Lambda02 = np.mean(data_rgrp_gender_FedCustom_LossGroup_Gender_7_lambda02['RgrpGender'])
+Rgrp_Medio_Gender_FedLossGroup_Lambda04 = np.mean(data_rgrp_gender_FedCustom_LossGroup_Gender_7_lambda04['RgrpGender'])
+Rgrp_Medio_Gender_FedLossGroup_Lambda06 = np.mean(data_rgrp_gender_FedCustom_LossGroup_Gender_7_lambda06['RgrpGender'])
+Rgrp_Medio_Gender_FedLossGroup_Lambda08 = np.mean(data_rgrp_gender_FedCustom_LossGroup_Gender_7_lambda08['RgrpGender'])
+
 
 data_rgrp = {
-    "Agrupamento": ['Atividade', 'Idade', 'Gênero'],
     "Método" : ['FedAvg', 'FedLossIndv', 'FedLossGroup'],
-    'Rgrp': []
+    "Agrupamento": ['Atividade', 'Idade', 'Gênero'],
+    "Lambda" : [0.2, 0.4, 0.6, 0.8],
+    'Rgrp': [Rgrp_Medio_Activity_FedAvg, Rgrp_Medio_Activity_FedAvg, Rgrp_Medio_Activity_FedAvg, Rgrp_Medio_Activity_FedAvg,
+             Rgrp_Medio_Age_FedAvg, Rgrp_Medio_Age_FedAvg, Rgrp_Medio_Age_FedAvg, Rgrp_Medio_Age_FedAvg,
+             Rgrp_Medio_Gender_FedAvg, Rgrp_Medio_Gender_FedAvg, Rgrp_Medio_Gender_FedAvg, Rgrp_Medio_Gender_FedAvg,
+
+             Rgrp_Medio_Activity_FedLossIndv, Rgrp_Medio_Activity_FedLossIndv, Rgrp_Medio_Activity_FedLossIndv, Rgrp_Medio_Activity_FedLossIndv,
+             Rgrp_Medio_Age_FedLossIndv, Rgrp_Medio_Age_FedLossIndv, Rgrp_Medio_Age_FedLossIndv, Rgrp_Medio_Age_FedLossIndv,
+             Rgrp_Medio_Gender_FedLossIndv, Rgrp_Medio_Gender_FedLossIndv, Rgrp_Medio_Gender_FedLossIndv, Rgrp_Medio_Gender_FedLossIndv,
+             
+             Rgrp_Medio_Activity_FedLossGroup_Lambda02, Rgrp_Medio_Activity_FedLossGroup_Lambda04, Rgrp_Medio_Activity_FedLossGroup_Lambda06, Rgrp_Medio_Activity_FedLossGroup_Lambda08,
+             Rgrp_Medio_Age_FedLossGroup_Lambda02, Rgrp_Medio_Age_FedLossGroup_Lambda04, Rgrp_Medio_Age_FedLossGroup_Lambda06, Rgrp_Medio_Age_FedLossGroup_Lambda08,
+             Rgrp_Medio_Gender_FedLossGroup_Lambda02, Rgrp_Medio_Gender_FedLossGroup_Lambda04, Rgrp_Medio_Gender_FedLossGroup_Lambda06, Rgrp_Medio_Gender_FedLossGroup_Lambda08
+    ]
 }
+
+print(data_rgrp)

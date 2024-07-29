@@ -22,7 +22,6 @@ from torch.utils.data import DataLoader, random_split, TensorDataset
 from collections import OrderedDict
 from AlgorithmUserFairness import GroupLossVariance
 
-
 import flwr as fl
 
 DEVICE = torch.device("cpu")  # Try "cuda" to train on GPU
@@ -359,20 +358,21 @@ class FedCustom(Strategy):
     def adaptive_learning_rate(self, initial_lr, decay_factor, round_num):
         return initial_lr / (1 + decay_factor * round_num)
 
-    def fairness_regularization(self, loss, global_mean_loss, global_groups_variance, lambda_fairness):
+    def fairness_regularization(self, server_round, loss, global_mean_loss, global_groups_variance, lambda_fairness):
         # Calcular a diferença entre a perda local e a média global
         diff_loss_global_mean = loss - global_mean_loss
 
-        # Ajustar o impacto da penalidade com base na variância global das perdas dos grupos
-        # Quando `global_groups_variance` é alto, o impacto da diferença é reduzido
-        # Ajustar o impacto da variância dos grupos para ser inversamente proporcional para aprendizado menos agressivo
-        fairness_penalty = (diff_loss_global_mean * lambda_fairness) / (1 + global_groups_variance)
+        # Ajustar a penalidade com base na variância de grupos e um fator de ajuste exponencial
+        # A variância de grupo é aplicada para reduzir o impacto de grandes variações
+        # Utilize exp(1 - x) para garantir que quanto maior a variância, menor a penalidade
+        fairness_penalty = (diff_loss_global_mean * lambda_fairness) * np.exp(-global_groups_variance)
         
         # Ajustar a penalidade para perda adicionada
         adjusted_loss = loss + fairness_penalty
 
         # # Logging para depuração
         # with open('fairness_debug.log', 'a') as log_file:
+        #     log_file.write(f"server_round: {server_round}\n")
         #     log_file.write(f"loss: {loss}\n")
         #     log_file.write(f"global_mean_loss: {global_mean_loss}\n")
         #     log_file.write(f"global_groups_variance: {global_groups_variance}\n")
@@ -444,7 +444,7 @@ class FedCustom(Strategy):
         fairness_losses = []
         for client_index, (client, fit_res) in enumerate(results):
             local_loss = fit_res.metrics.get('loss', 0)
-            fairness_loss = self.fairness_regularization(local_loss, global_mean_loss, global_groups_variance, lambda_fairness=0.2)
+            fairness_loss = self.fairness_regularization(server_round, local_loss, global_mean_loss, global_groups_variance, lambda_fairness=0.2)
             fairness_losses.append((parameters_to_ndarrays(fit_res.parameters), fairness_loss))
 
         def aggregate(weights):

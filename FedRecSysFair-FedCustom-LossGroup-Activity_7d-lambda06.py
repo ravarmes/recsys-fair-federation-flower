@@ -370,7 +370,7 @@ class FedCustom(Strategy):
         scaled_global_groups_variance = global_groups_variance * scaling_factor
         
         # Calcular a penalidade de justiça
-        fairness_penalty = diff_loss_global_mean * (lambda_fairness - scaled_global_groups_variance)
+        fairness_penalty = diff_loss_global_mean * (lambda_fairness + scaled_global_groups_variance)
         
         # Garantir que fairness_penalty não introduza valores negativos excessivos
         fairness_penalty = max(fairness_penalty, -diff_loss_global_mean)

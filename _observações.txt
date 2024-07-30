@@ -1,3 +1,7 @@
+No contexto de aprendizado federado estou trabalhando em um sistema de recomendação federado com preocupação de justiça de grupo.
+
+Segue o código:
+
 # Neste script a estratégia de agregação é ponderar os pesos na proporção das Perdas Individuais
 # Além disso, os grupos recebem parâmetros de taxa de aprendizagem e épocas de acordo com as Perdas Individuais dentro do Grupo
 # Grupos favorecidos tem menores taxas de aprendizado e épocas
@@ -370,7 +374,7 @@ class FedCustom(Strategy):
         scaled_global_groups_variance = global_groups_variance * scaling_factor
         
         # Calcular a penalidade de justiça
-        fairness_penalty = diff_loss_global_mean * (lambda_fairness + scaled_global_groups_variance)
+        fairness_penalty = diff_loss_global_mean * (lambda_fairness - scaled_global_groups_variance)
         
         # Garantir que fairness_penalty não introduza valores negativos excessivos
         fairness_penalty = max(fairness_penalty, -diff_loss_global_mean)
@@ -449,7 +453,7 @@ class FedCustom(Strategy):
         fairness_losses = []
         for client_index, (client, fit_res) in enumerate(results):
             local_loss = fit_res.metrics.get('loss', 0)
-            fairness_loss = self.fairness_regularization(server_round, local_loss, global_mean_loss, global_groups_variance, lambda_fairness=0.8)
+            fairness_loss = self.fairness_regularization(server_round, local_loss, global_mean_loss, global_groups_variance, lambda_fairness=0.2)
             fairness_losses.append((parameters_to_ndarrays(fit_res.parameters), fairness_loss))
 
         def aggregate(weights):
@@ -579,3 +583,59 @@ fl.simulation.start_simulation(
     strategy=FedCustom(),  # <-- pass the new strategy here
     client_resources=client_resources,
 )
+
+No entanto, os valores de injustiça de grupo estão ficando mais altos que outras estratégias de regulação e agregação.
+Por exemplo:
+
+Resultados dessa estratégia para injustiça de grupo com fator igual a 0.8:
+{'RgrpActivity': [(0, 0.00205895600801246),
+INFO :                            (1, 0.0007083272074801317),
+INFO :                            (2, 0.0009324909683090655),
+INFO :                            (3, 0.0007773591016951286),
+INFO :                            (4, 0.0005009531137025126),
+INFO :                            (5, 0.00015557318046472178),
+INFO :                            (6, 1.258042619838807e-05),
+INFO :                            (7, 1.6708161662309753e-05),
+INFO :                            (8, 9.149636599514404e-05),
+INFO :                            (9, 0.00016058914501356947),
+INFO :                            (10, 0.00016663332866746452),
+INFO :                            (11, 0.00018796694184157933),
+INFO :                            (12, 0.00018803948330322278),
+INFO :                            (13, 0.00023040011452683408),
+INFO :                            (14, 0.00031231431255390003),
+INFO :                            (15, 0.0004156421799470999),
+INFO :                            (16, 0.0005080277321601348),
+INFO :                            (17, 0.0007350631905856813),
+INFO :                            (18, 0.0010158947238219891),
+INFO :                            (19, 0.0012747515024091717),
+INFO :                            (20, 0.0015957516246936868),
+INFO :                            (21, 0.002103881892875729),
+INFO :                            (22, 0.002340162720064275),
+INFO :                            (23, 0.002730915099774919),
+INFO :                            (24, 0.003356397652351849)]
+
+Já obtive em outras estratégias, no Round 24, o valor de injustiça de 0.001
+
+Como eu poderia alterar a função:
+
+def fairness_regularization(self, server_round, loss, global_mean_loss, global_groups_variance, lambda_fairness):
+        diff_loss_global_mean = loss - global_mean_loss
+        
+        # Normalização de global_groups_variance (usando z-score)
+        mean_diff_loss = np.sqrt(np.mean(diff_loss_global_mean ** 2)) # RMS of diff
+        mean_global_groups_variance = np.sqrt(np.mean(global_groups_variance ** 2)) # RMS of variance
+        scaling_factor = mean_diff_loss / mean_global_groups_variance if mean_global_groups_variance != 0 else 1
+        
+        scaled_global_groups_variance = global_groups_variance * scaling_factor
+        
+        # Calcular a penalidade de justiça
+        fairness_penalty = diff_loss_global_mean * (lambda_fairness - scaled_global_groups_variance)
+        
+        # Garantir que fairness_penalty não introduza valores negativos excessivos
+        fairness_penalty = max(fairness_penalty, -diff_loss_global_mean)
+        
+        adjusted_loss = loss + fairness_penalty
+
+Para melhorar a justiça de grupo (ou seja, diminuir a injustiça de grupo).
+
+No meu entendimento eu precisaria penalizar um pouco mais os modelos locais com mais erro. Ou seja, fazê-los contribuir um pouco mais na agregação do modelo global.

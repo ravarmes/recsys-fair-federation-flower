@@ -433,7 +433,7 @@ class FedCustom(Strategy):
             group_losses[group] = group_loss
             group_counts[group] = group_count
 
-        self.loss_avg_per_group = {group: (group_losses[group] / group_counts[group] if group_counts[group] != 0 else 0) for group in G_ACTIVITY}
+        self.loss_avg_per_group = {group: (group_losses[group] / group_counts[group] if group_counts[group] != 0 else 0) for group in G_AGE}
         print(f"Perda Média por Grupo: {self.loss_avg_per_group}")
 
         total_examples = sum(fit_res.num_examples for _, fit_res in results)

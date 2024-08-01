@@ -58,42 +58,45 @@ def load_datasets(num_clients: int, filename: str, seed: int = 42):
     
     trainloaders = []
     valloaders = []
-
-    # Criar uma lista para armazenar dados de todos os clientes
-    all_data = []  # Para extração posterior do teste
+    all_data = []
 
     for cliente_id in sorted(cliente_avaliacoes.keys()):
         dados_cliente = np.array(cliente_avaliacoes[cliente_id])
-        all_data.append(dados_cliente)  # armazenar dados de todos os clientes para posterior amostragem
+        X_train = dados_cliente[:, :2]
+        y_train = dados_cliente[:, 2]
+        dataset = TensorDataset(torch.from_numpy(X_train).float(), torch.from_numpy(y_train).float())
+        
+        # Divisão de dados 80% treinamento, 10% validação, 10% teste
+        len_test = len(dataset) // 10     # 10% para teste
+        len_val = len(dataset) // 10       # 10% para validação
+        len_train = len(dataset) - len_val - len_test  # 80% para treinamento
+        
+        # Realizando as divisões
+        ds_train, ds_val, ds_test = random_split(dataset, [len_train, len_val, len_test], 
+                                                  generator=torch.Generator().manual_seed(seed))
+        
+        batch_size = 32 if cliente_id <= 14 else 16  # Configurando o tamanho do lote
+        train_loader = DataLoader(ds_train, batch_size=batch_size, shuffle=True)
+        val_loader = DataLoader(ds_val, batch_size=batch_size, shuffle=False)
+        
+        trainloaders.append(train_loader)
+        valloaders.append(val_loader)
 
-    # Os dados de todos os clientes são concatenados em um único array
-    all_data = np.concatenate(all_data)
+        # Armazenar todos os dados para amostragem do conjunto de teste final
+        all_data.extend(dados_cliente)
 
-    # Definir a semente novamente antes do embaralhamento
-    np.random.seed(seed)  # Garantindo que o embaralhamento seja reprodutível
-    np.random.shuffle(all_data)  # Embaralha os dados
+    # Amostragem do conjunto de teste de 10% de todos os dados acumulados
+    num_test_samples = len(all_data) // 10  # 10% dos dados acumulados para teste
+    test_data_sample = random.sample(all_data, num_test_samples)  # Amostra de 10% aleatoriamente
 
-    # Dividir os dados em conjuntos de teste (10%), treinamento (80%) e validação (10%)
-    num_test_samples = len(all_data) // 10   # 10% dos dados para teste
-    num_val_samples = len(all_data) // 10     # 10% dos dados para validação
-    num_train_samples = len(all_data) - num_test_samples - num_val_samples  # 80% os dados restantes para treinamento
+    # Criação do DataLoader para o conjunto de teste
+    X_test_all = np.array(test_data_sample)[:, :2]
+    y_test_all = np.array(test_data_sample)[:, 2]
+    test_dataset = TensorDataset(torch.from_numpy(X_test_all).float(), torch.from_numpy(y_test_all).float())
+    testloader = DataLoader(test_dataset, batch_size=32, shuffle=True)
 
-    # Criar os datasets
-    train_data = all_data[:num_train_samples]
-    val_data = all_data[num_train_samples:num_train_samples + num_val_samples]
-    test_data = all_data[num_train_samples + num_val_samples:]
+    return df, trainloaders, valloaders, testloader
 
-    # Criar DataLoader para os datasets de treinamento, validação e teste
-    train_dataset = TensorDataset(torch.from_numpy(train_data[:, :2]).float(), torch.from_numpy(train_data[:, 2]).float())
-    val_dataset = TensorDataset(torch.from_numpy(val_data[:, :2]).float(), torch.from_numpy(val_data[:, 2]).float())
-    test_dataset = TensorDataset(torch.from_numpy(test_data[:, :2]).float(), torch.from_numpy(test_data[:, 2]).float())
-    
-    # Configurando os DataLoaders
-    train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False)
-    test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
-
-    return df, [train_loader], [val_loader], test_loader
 
 
 avaliacoes_df, trainloaders, valloaders, testloader = load_datasets(NUM_CLIENTS, filename="X.xlsx")

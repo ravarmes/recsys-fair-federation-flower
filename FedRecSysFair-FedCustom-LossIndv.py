@@ -1,5 +1,3 @@
-# Neste script a estratégia de agregação é ponderar os pesos na proporção das Perdas Individuais
-
 # !pip install -q flwr[simulation] torch torchvision
 
 from collections import OrderedDict
@@ -15,7 +13,6 @@ from torch.utils.data import DataLoader, random_split, TensorDataset
 from collections import OrderedDict
 from AlgorithmUserFairness import GroupLossVariance
 
-
 import flwr as fl
 
 DEVICE = torch.device("cpu")  # Try "cuda" to train on GPU
@@ -30,7 +27,6 @@ datasets = None
 # Função para imprimir o conteúdo de cada DataLoader
 def verificar_trainloaders(trainloaders):
     for i, trainloader in enumerate(trainloaders):
-        #if i == 0 or i == 299:
         if i == 0:
             print(f"Trainloader {i+1} (Cliente {i+1}):")
             for data in trainloader:
@@ -41,55 +37,80 @@ def verificar_trainloaders(trainloaders):
             print("============== Fim do DataLoader ============")
             print()  # Linha extra para separar cada DataLoader
 
-            # Comente a próxima linha para visualizar todos os DataLoader
-            # break  # Remova ou comente esta linha para verificar todos os trainloaders
+def set_random_seed(seed: int):
+    """Função para configurar as sementes para reprodutibilidade."""
+    np.random.seed(seed)
+    random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed(seed)
+        torch.cuda.manual_seed_all(seed)  # Para GPUs com múltiplas GPUs
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
 
+def load_datasets(num_clients: int, filename: str, seed: int = 42):
+    set_random_seed(seed)  # Chamada para configurar a semente
 
-def load_datasets(num_clients: int, filename: str):
     # Carregar dados do arquivo Excel
     df = pd.read_excel(filename, index_col=0)
     dados = df.fillna(0).values
     X, y = np.nonzero(dados)
     ratings = dados[X, y]
+    
     # Criar dicionário para agrupar avaliações por usuário
     cliente_avaliacoes = {usuario: [] for usuario in np.unique(X)}
     for usuario, item, rating in zip(X, y, ratings):
         cliente_avaliacoes[usuario].append((usuario, item, rating))
+    
     trainloaders = []
     valloaders = []
     testloader_data = []
+    
     for cliente_id in sorted(cliente_avaliacoes.keys()):
         dados_cliente = np.array(cliente_avaliacoes[cliente_id])
         X_train = dados_cliente[:, :2]
         y_train = dados_cliente[:, 2]
         dataset = TensorDataset(torch.from_numpy(X_train).float(), torch.from_numpy(y_train).float())
+        
         len_val = len(dataset) // 10
         len_train = len(dataset) - len_val
-        ds_train, ds_val = random_split(dataset, [len_train, len_val], torch.Generator().manual_seed(42))
+        ds_train, ds_val = random_split(dataset, [len_train, len_val], generator=torch.Generator().manual_seed(seed))
 
-        batch_size = 32 if cliente_id <= 14 else 16 # Configurando o tamanho do lote de acordo com o nível de atividade dos usuários
+        batch_size = 32 if cliente_id <= 14 else 16
         train_loader = DataLoader(ds_train, batch_size=batch_size, shuffle=True)
         val_loader = DataLoader(ds_val, batch_size=batch_size, shuffle=False)
 
         trainloaders.append(train_loader)
         valloaders.append(val_loader)
-        testloader_data.extend(dados_cliente) # Adicionar dados de teste do cliente à lista de testes
+        
+        testloader_data.extend(dados_cliente)
 
     # Supondo que queiramos usar apenas 10% dos dados acumulados para o teste
     num_test_samples = len(testloader_data)
-    test_data_sample = random.sample(testloader_data, num_test_samples // 8) # 10: deixei 8 para que o último lote tenha 30 exemplos para calcular recall e f1
+    test_data_sample = random.sample(testloader_data, num_test_samples // 8)
 
-    X_test_all = np.array(test_data_sample)[:, :2]
-    y_test_all = np.array(test_data_sample)[:, 2]
+    test_data_set = set(map(tuple, test_data_sample))
+    
+    train_val_data_set = set(
+        map(tuple, sum([loader.dataset.dataset.tensors[0].numpy().tolist() for loader in trainloaders + valloaders], []))
+    )
+
+    final_test_data = [dados for dados in testloader_data if tuple(dados) not in train_val_data_set]
+    
+    if len(final_test_data) > 0:
+        final_test_sample = random.sample(final_test_data, min(len(final_test_data), num_test_samples // 8))
+    else:
+        final_test_sample = []
+
+    X_test_all = np.array(final_test_sample)[:, :2]
+    y_test_all = np.array(final_test_sample)[:, 2]
     test_dataset = TensorDataset(torch.from_numpy(X_test_all).float(), torch.from_numpy(y_test_all).float())
     testloader = DataLoader(test_dataset, batch_size=32, shuffle=True)
 
     return df, trainloaders, valloaders, testloader
 
-
 avaliacoes_df, trainloaders, valloaders, testloader = load_datasets(NUM_CLIENTS, filename="X.xlsx")
 # verificar_trainloaders(trainloaders)
-
 
 class Net(nn.Module):
     def __init__(self, num_users: int, num_items: int, embedding_dim: int = 128) -> None:
@@ -101,16 +122,13 @@ class Net(nn.Module):
         self.fc3 = nn.Linear(32, 1)  # Saída final para um valor
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        user_idx = x[:, 0].long()  # Converter para índice inteiro
+        user_idx = x[:, 0].long()
         item_idx = x[:, 1].long()
-        # Obter embeddings e concatenar
         user_embed = self.user_embedding(user_idx)
         item_embed = self.item_embedding(item_idx)
         x = torch.cat((user_embed, item_embed), dim=1)
-        # Aplicar camadas com ReLU
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
-        # Aplicar sigmoid para restringir saída entre 0 e 1, depois converter para 1-5
         x = torch.sigmoid(self.fc3(x)) * 4 + 1  # 0-1 para 1-5
         return x
     
@@ -125,19 +143,16 @@ class Net(nn.Module):
         df = pd.DataFrame(predictions, index=np.arange(num_users), columns=np.arange(num_items))
         return df
 
-
 def get_parameters(net) -> List[np.ndarray]:
     return [val.cpu().numpy() for _, val in net.state_dict().items()]
-
 
 def set_parameters(net, parameters: List[np.ndarray]):
     params_dict = zip(net.state_dict().keys(), parameters)
     state_dict = OrderedDict({k: torch.tensor(v, dtype=torch.float32) for k, v in params_dict})  # Certifique-se de usar float32
     net.load_state_dict(state_dict, strict=True)
 
-
 def train(net, trainloader, cid, epochs: int, lotes_por_rodada: int, learning_rate : float):
-    criterion = nn.MSELoss()  # Função de perda para prever avaliações
+    criterion = nn.MSELoss()
     optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
     net.train()
     for epoch in range(epochs):
@@ -146,26 +161,24 @@ def train(net, trainloader, cid, epochs: int, lotes_por_rodada: int, learning_ra
         num_examples = 0
         for i, (data, target) in enumerate(trainloader):
             if i >= lotes_por_rodada:
-                break  # Parar após atingir o número de lotes desejado
+                break
             num_batches += 1
             num_examples += len(data)
-            optimizer.zero_grad()  # Zerando gradientes
-            outputs = net(data)    # Previsão do modelo
+            optimizer.zero_grad()
+            outputs = net(data)
             target = torch.unsqueeze(target, 1)
-            loss = criterion(outputs, target) # Calcular a perda
-            loss.backward()   # Passo para trás
-            optimizer.step()  # Atualizar parâmetros do modelo
-            epoch_loss += loss.item()  # Acumular perda
+            loss = criterion(outputs, target)
+            loss.backward()
+            optimizer.step()
+            epoch_loss += loss.item()
         print(f"[Cliente {cid}] Número de lotes processados: {num_batches}")
         print(f"[Cliente {cid}] Número de exemplos processados: {num_examples}")
         print(f"[Cliente {cid}] Época {epoch + 1}: loss {epoch_loss}")
     return num_examples, epoch_loss
 
-
 def test(net, testloader, tolerance=0.7, server=False):
-    """Avaliar a rede no conjunto de teste."""
-    criterion = nn.MSELoss()  # Critério de perda
-    net.eval()  # Modo de avaliação
+    criterion = nn.MSELoss()
+    net.eval()
     total = correct = loss = squared_error = 0.0
     precision_at_10 = recall_at_10 = 0.0
     RgrpActivity = RgrpGender = RgrpAge = 0.0
@@ -175,34 +188,28 @@ def test(net, testloader, tolerance=0.7, server=False):
     with torch.no_grad():
         for data, target in testloader:
             target = torch.unsqueeze(target, 1)
-            outputs = net(data)  # Previsão do modelo
-            loss += criterion(outputs, target).item() # Calcular a perda
-            squared_error += F.mse_loss(outputs, target, reduction='sum').item() # Calcular erro quadrático
-            within_tolerance = (torch.abs(outputs - target) <= tolerance).sum().item() # Calcular precisão considerando a tolerância
+            outputs = net(data)
+            loss += criterion(outputs, target).item()
+            squared_error += F.mse_loss(outputs, target, reduction='sum').item()
+            within_tolerance = (torch.abs(outputs - target) <= tolerance).sum().item()
             correct += within_tolerance
-            total += len(target)  # Total de exemplos processados
-    loss /= len(testloader)  # Perda média por exemplo
-    rmse = torch.sqrt(torch.tensor(squared_error) / total)  # RMSE - Raiz do Erro Quadrático Médio
-    accuracy = correct / total  # Cálculo da precisão considerando a tolerância
+            total += len(target)
+    loss /= len(testloader)
+    rmse = torch.sqrt(torch.tensor(squared_error) / total)
+    accuracy = correct / total
     if server == True:
         precision_at_10, recall_at_10 = calculate_f1_recall_at_k(outputs, target, k=10, threshold=3.5)
         RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = calculate_Rgrp(net)
     return loss, rmse.item(), accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses
 
-
 def calculate_f1_recall_at_k(predictions, targets, k=10, threshold=3.5):
-    # Assegurando que os tensores sejam convertidos para arrays NumPy de uma dimensão
     predictions_np = predictions.cpu().numpy().flatten()
     targets_np = targets.cpu().numpy().flatten()
-    # Ordenar as predições em ordem decrescente e pegar os primeiros k índices
     top_k_indices = np.argsort(predictions_np)[::-1][:k]
-    # Usar os índices para derivar os top k targets e predictions
     top_predictions = predictions_np[top_k_indices]
     top_targets = targets_np[top_k_indices]
-    # Determinar os índices de elementos relevantes e recomendados
     relevant_indices = np.where(top_targets >= threshold)[0]
     recommended_indices = np.where(top_predictions >= threshold)[0]
-    # Intersecção dos dois conjuntos de índices
     relevant_recommended_indices = np.intersect1d(relevant_indices, recommended_indices)
     num_relevant_recommended = len(relevant_recommended_indices)
     num_relevant = len(relevant_indices)
@@ -210,23 +217,28 @@ def calculate_f1_recall_at_k(predictions, targets, k=10, threshold=3.5):
     recall_at_k = num_relevant_recommended / num_relevant if num_relevant > 0 else 0.0
     return precision_at_k, recall_at_k
 
-
 def calculate_Rgrp(net):
     recomendacoes_df = net.predict_all(300, 1000)
     omega = ~avaliacoes_df.isnull()
     # Agrupamento por Atividade
     G_ACTIVITY = {1: list(range(0, 15)), 2: list(range(15, 300))}
     # Agrupamento por Gênero
-    G_GENDER = {1: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 30, 32, 33, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 64, 65, 66, 67, 68, 69, 70, 71, 72, 74, 75, 76, 77, 78, 79, 80, 82, 83, 84, 85, 86, 87, 88, 89, 90, 93, 94, 95, 96, 99, 100, 102, 103, 105, 107, 108, 109, 110, 111, 112, 115, 117, 118, 120, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 146, 147, 148, 149, 151, 152, 153, 154, 156, 159, 160, 161, 162, 164, 165, 166, 168, 169, 170, 172, 174, 175, 176, 177, 178, 181, 182, 183, 184, 186, 187, 188, 189, 191, 194, 196, 198, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 218, 219, 220, 222, 223, 224, 226, 227, 229, 230, 231, 232, 233, 234, 237, 238, 239, 240, 245, 246, 247, 248, 249, 250, 251, 252, 255, 256, 257, 258, 259, 260, 261, 262, 263, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 293, 294, 295, 296, 297, 298, 299], 2: [14, 25, 31, 34, 35, 42, 63, 73, 81, 91, 92, 97, 98, 101, 104, 106, 113, 114, 116, 119, 121, 122, 133, 144, 145, 150, 155, 157, 158, 163, 167, 171, 173, 179, 180, 185, 190, 192, 193, 195, 197, 199, 213, 214, 215, 216, 217, 221, 225, 228, 235, 236, 241, 242, 243, 244, 253, 254, 264, 290]}
+    G_GENDER = {1: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 30, 32, 33, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 64, 65, 66, 67, 68, 69, 70, 71, 72, 74, 75, 76, 77, 78, 79, 80, 82, 83, 84, 85, 86, 87, 88, 89, 90, 93, 94, 95, 96, 99, 100, 102, 103, 105, 107, 108, 109, 110, 111, 112, 115, 117, 118, 120, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 146, 147, 148, 149, 151, 152, 153, 154, 156, 159, 160, 161, 162, 164, 165, 166, 168, 169, 170, 172, 174, 175, 176, 177, 178, 181, 182, 183, 184, 186, 187, 188, 189, 191, 194, 196, 198, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 218, 219, 220, 222, 223, 224, 226, 227, 229, 230, 231, 232, 233, 234, 237, 238, 239, 240, 245, 246, 247, 248, 249, 250, 251, 252, 255, 256, 257, 258, 259, 260, 261, 262, 263, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 293, 294, 295, 296, 297, 298, 299], 
+    2: [14, 25, 31, 34, 35, 42, 63, 73, 81, 91, 92, 97, 98, 101, 104, 106, 113, 114, 116, 119, 121, 122, 133, 144, 145, 150, 155, 157, 158, 163, 167, 171, 173, 179, 180, 185, 190, 192, 193, 195, 197, 199, 213, 214, 215, 216, 217, 221, 225, 228, 235, 236, 241, 242, 243, 244, 253, 254, 264, 290]}
     # Agrupamento por Idade
-    G_AGE = {1: [14, 132, 194, 262, 273], 2: [8, 23, 26, 33, 48, 50, 61, 64, 70, 71, 76, 82, 86, 90, 92, 94, 96, 101, 107, 124, 126, 129, 134, 140, 149, 157, 158, 159, 163, 168, 171, 174, 175, 189, 191, 201, 207, 209, 215, 216, 222, 231, 237, 244, 246, 251, 255, 265, 270, 275, 282, 288, 290], 3: [3, 6, 7, 9, 10, 11, 15, 16, 21, 22, 24, 28, 29, 31, 32, 34, 35, 37, 39, 40, 41, 42, 43, 44, 45, 51, 53, 55, 56, 59, 60, 63, 65, 66, 69, 72, 73, 74, 75, 79, 80, 81, 85, 89, 93, 97, 102, 103, 104, 106, 108, 109, 110, 111, 116, 118, 119, 120, 122, 128, 130, 131, 133, 135, 136, 138, 139, 141, 142, 143, 145, 147, 151, 155, 161, 164, 169, 170, 173, 176, 179, 181, 183, 186, 187, 188, 190, 192, 193, 195, 196, 198, 200, 202, 203, 204, 205, 206, 211, 212, 213, 217, 219, 220, 223, 225, 226, 229, 230, 232, 233, 234, 236, 238, 240, 241, 249, 252, 253, 254, 258, 260, 261, 264, 267, 268, 269, 276, 277, 279, 280, 283, 285, 286, 287, 289, 291, 293, 294, 295, 296, 298], 4: [1, 2, 4, 5, 13, 17, 18, 25, 27, 36, 38, 49, 52, 57, 68, 77, 78, 84, 87, 88, 91, 95, 98, 99, 100, 105, 112, 117, 121, 127, 144, 146, 150, 152, 153, 156, 166, 172, 177, 182, 199, 208, 210, 214, 227, 228, 243, 245, 248, 250, 256, 263, 271, 272, 278, 292, 297, 299], 5: [19, 20, 30, 46, 47, 54, 58, 62, 67, 83, 113, 125, 137, 148, 160, 165, 167, 184, 197, 221, 235, 239, 242, 281], 6: [0, 114, 115, 123, 178, 180, 185, 224, 247, 257, 266, 274], 7: [12, 154, 162, 218, 259, 284]}
-    glv = GroupLossVariance(avaliacoes_df, omega, G_ACTIVITY, 1) #axis = 1 (0 rows e 1 columns)
+    G_AGE = {1: [14, 132, 194, 262, 273], 2: [8, 23, 26, 33, 48, 50, 61, 64, 70, 71, 76, 82, 86, 90, 92, 94, 96, 101, 107, 124, 126, 129, 134, 140, 149, 157, 158, 159, 163, 168, 171, 174, 175, 189, 191, 201, 207, 209, 215, 216, 222, 231, 237, 244, 246, 251, 255, 265, 270, 275, 282, 288, 290], 
+    3: [3, 6, 7, 9, 10, 11, 15, 16, 21, 22, 24, 28, 29, 31, 32, 34, 35, 37, 39, 40, 41, 42, 43, 44, 45, 51, 53, 55, 56, 59, 60, 63, 65, 66, 69, 72, 73, 74, 75, 79, 80, 81, 85, 89, 93, 97, 102, 103, 104, 106, 108, 109, 110, 111, 116, 118, 119, 120, 122, 128, 130, 131, 133, 135, 136, 138, 139, 141, 142, 143, 145, 147, 151, 155, 161, 164, 169, 170, 173, 176, 179, 181, 183, 186, 187, 188, 190, 192, 193, 195, 196, 198, 200, 202, 203, 204, 205, 206, 211, 212, 213, 217, 219, 220, 223, 225, 226, 229, 230, 232, 233, 234, 236, 238, 240, 241, 249, 252, 253, 254, 258, 260, 261, 264, 267, 268, 269, 276, 277, 279, 280, 283, 285, 286, 287, 289, 291, 293, 294, 295, 296, 298], 
+    4: [1, 2, 4, 5, 13, 17, 18, 25, 27, 36, 38, 49, 52, 57, 68, 77, 78, 84, 87, 88, 91, 95, 98, 99, 100, 105, 112, 117, 121, 127, 144, 146, 150, 152, 153, 156, 166, 172, 177, 182, 199, 208, 210, 214, 227, 228, 243, 245, 248, 250, 256, 263, 271, 272, 278, 292, 297, 299], 
+    5: [19, 20, 30, 46, 47, 54, 58, 62, 67, 83, 113, 125, 137, 148, 160, 165, 167, 184, 197, 221, 235, 239, 242, 281], 
+    6: [0, 114, 115, 123, 178, 180, 185, 224, 247, 257, 266, 274], 
+    7: [12, 154, 162, 218, 259, 284]}
+    glv = GroupLossVariance(avaliacoes_df, omega, G_ACTIVITY, 1)
     RgrpActivity = glv.evaluate(recomendacoes_df)
     RgrpActivity_Losses = glv.get_losses(recomendacoes_df)
-    glv = GroupLossVariance(avaliacoes_df, omega, G_GENDER, 1) #axis = 1 (0 rows e 1 columns)
+    glv = GroupLossVariance(avaliacoes_df, omega, G_GENDER, 1)
     RgrpGender = glv.evaluate(recomendacoes_df)
     RgrpGender_Losses = glv.get_losses(recomendacoes_df)
-    glv = GroupLossVariance(avaliacoes_df, omega, G_AGE, 1) #axis = 1 (0 rows e 1 columns)
+    glv = GroupLossVariance(avaliacoes_df, omega, G_AGE, 1)
     RgrpAge = glv.evaluate(recomendacoes_df)
     RgrpAge_Losses = glv.get_losses(recomendacoes_df)
     
@@ -234,7 +246,6 @@ def calculate_Rgrp(net):
     print(recomendacoes_df)
 
     return RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses
-
 
 class FlowerClient(fl.client.NumPyClient):
     def __init__(self, cid, net, trainloader, valloader):
@@ -267,7 +278,6 @@ class FlowerClient(fl.client.NumPyClient):
             "loss": loss, # Perda do cliente
         }
 
-        # num_examples = len(self.trainloader.dataset)  # Certifique-se de que esta contagem é correta
         result = get_parameters(self.net), num_examples, metrics
         return result
 
@@ -277,7 +287,6 @@ class FlowerClient(fl.client.NumPyClient):
         loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = test(self.net, self.valloader, server=False)
         return float(loss), len(self.valloader), {"rmse": float(rmse), "accuracy": float(accuracy)}
 
-
 def client_fn(cid) -> FlowerClient:
     net = Net(300, 1000).to(DEVICE)
     trainloader = trainloaders[int(cid)]
@@ -286,7 +295,6 @@ def client_fn(cid) -> FlowerClient:
     valloader = valloaders[int(cid)]
     flower_client = FlowerClient(cid, net, trainloader, valloader)
     return flower_client.to_client()
-
 
 #---------------------------------------------------------------
 # DEFININDO UMA ESTRATÉGIA DE AGREGAÇÃO CUSTOMIZADA
@@ -320,23 +328,23 @@ class FedCustom(Strategy):
         min_available_clients: int = NUM_CLIENTS,
     ) -> None:
         super().__init__()
-        self.fraction_fit = fraction_fit  # Fração de clientes para treinamento
-        self.fraction_evaluate = fraction_evaluate  # Fração de clientes para avaliação
-        self.min_fit_clients = min_fit_clients  # Mínimo de clientes para treinamento
-        self.min_evaluate_clients = min_evaluate_clients  # Mínimo para avaliação
-        self.min_available_clients = min_available_clients  # Mínimo de clientes disponíveis
+        self.fraction_fit = fraction_fit
+        self.fraction_evaluate = fraction_evaluate
+        self.min_fit_clients = min_fit_clients
+        self.min_evaluate_clients = min_evaluate_clients
+        self.min_available_clients = min_available_clients
 
     def __repr__(self) -> str:
-        return "FedCustom"  # Representação da estratégia
+        return "FedCustom"
 
     def initialize_parameters(
         self, client_manager: ClientManager
     ) -> Optional[Parameters]:
         """Inicializar os parâmetros do modelo global."""
-        # Cria uma instância do modelo para obter os parâmetros iniciais
+        seed = 42  # Defina a semente aleatória
+        set_random_seed(seed)  # Chame a função para garantir reprodutibilidade
         net = Net(300, 1000)
         ndarrays = get_parameters(net)
-        # Converte os parâmetros para o formato necessário pelo Flower
         return fl.common.ndarrays_to_parameters(ndarrays)
 
     def configure_fit(
@@ -344,17 +352,14 @@ class FedCustom(Strategy):
     ) -> List[Tuple[ClientProxy, FitIns]]:
         """Configurar a próxima rodada de treinamento."""
 
-        # Selecionar clientes
         sample_size, min_num_clients = self.num_fit_clients(
             client_manager.num_available()
-        )  # Define quantos clientes participarão do treinamento
+        )
         clients = client_manager.sample(
             num_clients=sample_size, min_num_clients=min_num_clients
-        )  # Amostra de clientes para a rodada
+        )
 
-        # Criar configurações personalizadas para treinamento
         n_clients = len(clients)
-        # half_clients = n_clients // 2  # Divide os clientes em duas metades
         favorecidos = 15
         desfavorecidos = 285
 
@@ -374,47 +379,16 @@ class FedCustom(Strategy):
             "lotes_por_rodada": lotes_por_rodada,
         }
 
-        # Define configurações de treinamento para cada cliente
         fit_configurations = []
         for idx, client in enumerate(clients):
             if idx < favorecidos:
-                # Primeira metade usa a configuração padrão
                 fit_configurations.append((client, FitIns(parameters, config_g1)))
             else:
-                # Segunda metade usa a configuração com taxa de aprendizado maior
                 fit_configurations.append(
                     (client, FitIns(parameters, config_g2))
                 )
         return fit_configurations
 
-    # # Agregando pelo número de exemplos processados pelo cliente
-    # def aggregate_fit(
-    #     self,
-    #     server_round: int,
-    #     results: List[Tuple[ClientProxy, FitRes]],
-    #     failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]],
-    # ) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
-    #     """Aggregate training results using weighted average."""
-    #     total_examples = sum(fit_res.num_examples for _, fit_res in results)
-    #     print(f"Número total de exemplos agregados: {total_examples}")
-    #     # Convert results to a list of arrays and associated weights (contributions)
-    #     weights_results = [
-    #         (parameters_to_ndarrays(fit_res.parameters), fit_res.num_examples)
-    #         for _, fit_res in results
-    #     ]
-    #     # Calculate aggregated parameters using weighted average
-    #     parameters_aggregated = ndarrays_to_parameters(aggregate(weights_results))
-    #     # Dictionary for aggregated metrics (empty for now)
-    #     metrics_aggregated = {}
-    #     # Debugging: Iterate over the results to print the number of examples and weight for each client
-    #     for client_index, (client, fit_res) in enumerate(results):
-    #         num_examples = fit_res.num_examples
-    #         weight = num_examples / total_examples  # Calculating the weight based on number of examples
-    #         print(f"Cliente {client_index}: Número de exemplos = {num_examples}, Peso = {weight}")
-    #     # Return the aggregated parameters and metrics
-    #     return parameters_aggregated, metrics_aggregated
-
-    # Agregando pela perda (loss) do cliente
     def aggregate_fit(
         self,
         server_round: int,
@@ -428,38 +402,28 @@ class FedCustom(Strategy):
         
         total_loss = sum(fit_res.metrics.get('loss', 0) for _, fit_res in results)
         print(f"Soma total de perdas (loss) agregadas: {total_loss}")
-        # Convert results to a list of arrays and associated weights (contributions)
         weights_results = [
             (parameters_to_ndarrays(fit_res.parameters), fit_res.metrics.get('loss', 0))
             for _, fit_res in results
         ]
-        # Calculate aggregated parameters using weighted average
         parameters_aggregated = ndarrays_to_parameters(aggregate(weights_results))
-        # Dictionary for aggregated metrics (empty for now)
         metrics_aggregated = {}
-        # Debugging: Iterate over the results to print the number of examples and weight for each client
         for client_index, (client, fit_res) in enumerate(results):
             loss = fit_res.metrics.get('loss', 0)
-            weight = loss / total_loss  # Calculating the weight based on loss
+            weight = loss / total_loss
             print(f"Cliente {client.cid}: Perda = {loss}, Peso = {weight}")
-        # Return the aggregated parameters and metrics
         return parameters_aggregated, metrics_aggregated
-
 
     def configure_evaluate(
         self, server_round: int, parameters: Parameters, client_manager: ClientManager
     ) -> List[Tuple[ClientProxy, EvaluateIns]]:
-        """Configurar a próxima rodada de avaliação."""
         
-        # Se a fração de avaliação for zero, não há avaliação
         if self.fraction_evaluate == 0.0:
             return []
         
-        # Cria configuração de avaliação
         config = {}
         evaluate_ins = EvaluateIns(parameters, config)
 
-        # Selecionar clientes para avaliação
         sample_size, min_num_clients = self.num_evaluation_clients(
             client_manager.num_available()
         )
@@ -467,7 +431,6 @@ class FedCustom(Strategy):
             num_clients=sample_size, min_num_clients=min_num_clients
         )
 
-        # Retorna pares cliente/configuração para avaliação
         return [(client, evaluate_ins) for client in clients]
 
     def aggregate_evaluate(
@@ -477,70 +440,35 @@ class FedCustom(Strategy):
         failures: List[Union[Tuple[ClientProxy, EvaluateRes], BaseException]],
     ) -> Tuple[Optional[float], Dict[str, Scalar]]:
         
-        
-        if not results:  # Se não houver resultados, retorne nada
+        if not results:
             return None, {}
         
-        # # # Calcular a perda média ponderada
-        # # loss_aggregated = weighted_loss_avg(
-        # #     [
-        # #         (evaluate_res.num_examples, evaluate_res.loss)
-        # #         for _, evaluate_res in results
-        # #     ]
-        # # )
-
-        # # Calcula a perda média ponderada e exibe o número de amostras de cada cliente
-        # examples_and_loss = [
-        #     (evaluate_res.num_examples, evaluate_res.loss)
-        #     for _, evaluate_res in results
-        # ]
-
-        # loss_aggregated = weighted_loss_avg(examples_and_loss)
-
-        # # Exibindo o número de amostras consideradas por cada cliente
-        # # Certifique-se de ter a lista de clientes e resultados para obter o ID do cliente corretamente
-        # for result, (num_samples, _) in zip(results, examples_and_loss):
-        #     client_proxy = result[0]  # O primeiro item da tupla deve ser o ClientProxy
-        #     client_id = client_proxy.cid  # Obter o ID do cliente real
-        #     print(f"Cliente {client_id}: Número de amostras consideradas = {num_samples}")
-
-        
-        # Dicionário para métricas agregadas (vazio por enquanto)
         metrics_aggregated = {}
         loss_aggregated = None
         
-        # Retorna a perda agregada e métricas
         return loss_aggregated, metrics_aggregated
-
 
     def evaluate(self, server_round: int, parameters: Parameters) -> Optional[Tuple[float, Dict[str, Scalar]]]:
         net = Net(300, 1000).to(DEVICE)
         set_parameters(net, parameters_to_ndarrays(parameters))
         loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = test(net, testloader, server=True)
-        metrics = {"rmse": rmse, "accuracy": accuracy, "precision_at_10": precision_at_10, "recall_at_10": recall_at_10, "RgrpActivity": RgrpActivity, "RgrpGender": RgrpGender, "RgrpAge": RgrpAge, "RgrpActivity_Losses": RgrpActivity_Losses, "RgrpGender_Losses": RgrpGender_Losses, "RgrpAge_Losses": RgrpAge_Losses}  # Agrupar RMSE e accuracy em um dicionário
+        metrics = {"rmse": rmse, "accuracy": accuracy, "precision_at_10": precision_at_10, "recall_at_10": recall_at_10, "RgrpActivity": RgrpActivity, "RgrpGender": RgrpGender, "RgrpAge": RgrpAge, "RgrpActivity_Losses": RgrpActivity_Losses, "RgrpGender_Losses": RgrpGender_Losses, "RgrpAge_Losses": RgrpAge_Losses}
         print(f"Server-side evaluation :: Round {server_round}")
         print(f"loss {loss} / RMSE {rmse} / accuracy {accuracy} / Precision@10 {precision_at_10} / Recall@10 {recall_at_10}")
         print(f"RgrpActivity {RgrpActivity} / RgrpGender {RgrpGender} / RgrpAge {RgrpAge}")
         print(f"RgrpActivity_Losses {RgrpActivity_Losses} / RgrpGender_Losses {RgrpGender_Losses} / RgrpAge_Losses {RgrpAge_Losses}")
         return loss, metrics
     
-        
     def num_fit_clients(self, num_available_clients: int) -> Tuple[int, int]:
-        """Retorna o tamanho da amostra e o número necessário de clientes para treinamento."""
-        
         num_clients = int(num_available_clients * self.fraction_fit)
         return max(num_clients, self.min_fit_clients), self.min_available_clients
 
     def num_evaluation_clients(self, num_available_clients: int) -> Tuple[int, int]:
-        """Usar uma fração dos clientes disponíveis para avaliação."""
-        
         num_clients = int(num_available_clients * self.fraction_evaluate)
         return max(num_clients, self.min_evaluate_clients), self.min_available_clients
 
-
 #-----------------------------------------------------------------
 
-# Especifique os recursos do cliente se precisar de GPU (o padrão é 1 CPU e 0 GPU).
 client_resources = None
 if DEVICE.type == "cuda":
     client_resources = {"num_gpus": 1}

@@ -58,7 +58,9 @@ def load_datasets(num_clients: int, filename: str, seed: int = 42):
     
     trainloaders = []
     valloaders = []
-    all_data = []
+
+    # Separar dados para teste, treino e validação
+    all_test_data = []
 
     for cliente_id in sorted(cliente_avaliacoes.keys()):
         dados_cliente = np.array(cliente_avaliacoes[cliente_id])
@@ -72,8 +74,8 @@ def load_datasets(num_clients: int, filename: str, seed: int = 42):
         len_train = len(dataset) - len_val - len_test  # 80% para treinamento
         
         # Realizando as divisões
-        ds_train, ds_val, ds_test = random_split(dataset, [len_train, len_val, len_test], 
-                                                  generator=torch.Generator().manual_seed(seed))
+        ds_train, ds_val = random_split(dataset, [len_train, len_val], 
+                                         generator=torch.Generator().manual_seed(seed))
         
         batch_size = 32 if cliente_id <= 14 else 16  # Configurando o tamanho do lote
         train_loader = DataLoader(ds_train, batch_size=batch_size, shuffle=True)
@@ -82,12 +84,13 @@ def load_datasets(num_clients: int, filename: str, seed: int = 42):
         trainloaders.append(train_loader)
         valloaders.append(val_loader)
 
-        # Armazenar todos os dados para amostragem do conjunto de teste final
-        all_data.extend(dados_cliente)
+        # Armazenar dados de teste para amostragem do conjunto de teste final
+        test_data = dados_cliente[-len_test:]  # Sempre pegar o último bloco
+        all_test_data.extend(test_data)
 
-    # Amostragem do conjunto de teste de 10% de todos os dados acumulados
-    num_test_samples = len(all_data) // 10  # 10% dos dados acumulados para teste
-    test_data_sample = random.sample(all_data, num_test_samples)  # Amostra de 10% aleatoriamente
+    # Amostrando dados finais para o conjunto de teste
+    num_test_samples = len(all_test_data) // 10  # 10% dos dados acumulados para teste
+    test_data_sample = random.sample(all_test_data, num_test_samples)  # Amostre 10% aleatoriamente
 
     # Criação do DataLoader para o conjunto de teste
     X_test_all = np.array(test_data_sample)[:, :2]
@@ -96,6 +99,7 @@ def load_datasets(num_clients: int, filename: str, seed: int = 42):
     testloader = DataLoader(test_dataset, batch_size=32, shuffle=True)
 
     return df, trainloaders, valloaders, testloader
+
 
 
 

@@ -431,7 +431,7 @@ if DEVICE.type == "cuda":
 fl.simulation.start_simulation(
     client_fn=client_fn,
     num_clients=NUM_CLIENTS,
-    config=fl.server.ServerConfig(num_rounds=5),
+    config=fl.server.ServerConfig(num_rounds=10),
     strategy=FedCustom(),
     client_resources=client_resources,
 )

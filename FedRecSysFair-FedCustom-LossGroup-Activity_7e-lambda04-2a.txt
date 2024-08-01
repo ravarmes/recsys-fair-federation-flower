@@ -1,0 +1,697 @@
+[92mINFO [0m:      Starting Flower simulation, config: num_rounds=10, no round_timeout
+2024-07-31 17:18:49,006	INFO worker.py:1621 -- Started a local Ray instance.
+[92mINFO [0m:      Flower VCE: Ray initialized with resources: {'GPU': 1.0, 'node:__internal_head__': 1.0, 'memory': 5149406823.0, 'object_store_memory': 2574703411.0, 'node:127.0.0.1': 1.0, 'CPU': 8.0}
+[92mINFO [0m:      Optimize your simulation with Flower VCE: https://flower.ai/docs/framework/how-to-run-simulations.html
+[92mINFO [0m:      No `client_resources` specified. Using minimal resources for clients.
+[92mINFO [0m:      Flower VCE: Resources for each Virtual Client: {'num_cpus': 1, 'num_gpus': 0.0}
+[92mINFO [0m:      Flower VCE: Creating VirtualClientEngineActorPool with 8 actors
+[92mINFO [0m:      [INIT]
+[92mINFO [0m:      Using initial global parameters provided by strategy
+[92mINFO [0m:      Evaluating initial global parameters
+[92mINFO [0m:      initial parameters (loss, other metrics): 1.4708260538562243, {'rmse': 1.2127822637557983, 'accuracy': 0.28640173859049983, 'precision_at_10': 0.0, 'recall_at_10': 0.0, 'RgrpActivity': 0.0026173396084957718, 'RgrpGender': 5.6277329459137845e-05, 'RgrpAge': 0.002842128154546929, 'RgrpActivity_Losses': 1    1.564884
+2    1.462564
+dtype: float64, 'RgrpGender_Losses': 1    1.467259
+2    1.482262
+dtype: float64, 'RgrpAge_Losses': 1    1.526699
+2    1.507206
+3    1.497170
+4    1.392457
+5    1.393592
+6    1.521137
+7    1.459941
+dtype: float64}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 1]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 8x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 32x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 32x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 32x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 32x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 31x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 29x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 33x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 30x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 30x across cluster][0m
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (1, 1.260913000004181, {'rmse': 1.1229091882705688, 'accuracy': 0.29302494049467037, 'precision_at_10': 0.0, 'recall_at_10': 0.0, 'RgrpActivity': 0.0005863156825570367, 'RgrpGender': 0.00014306063727413578, 'RgrpAge': 0.0027081399310702643, 'RgrpActivity_Losses': 1    1.308028
+2    1.259600
+dtype: float64, 'RgrpGender_Losses': 1    1.258572
+2    1.282494
+dtype: float64, 'RgrpAge_Losses': 1    1.329253
+2    1.311230
+3    1.282094
+4    1.195454
+5    1.195219
+6    1.257894
+7    1.318002
+dtype: float64}, 77.2435378)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 17x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 42x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 43x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 44x across cluster][0m
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 42x across cluster][0m
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 44x across cluster][0m
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 38x across cluster][0m
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 2]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 42x across cluster][0m
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 30x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 28x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 29x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 27x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 29x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 28x across cluster][0m
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 28x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 28x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 29x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 28x across cluster][0m
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (2, 1.1337953320402183, {'rmse': 1.0648051500320435, 'accuracy': 0.45244748007865054, 'precision_at_10': 0.2, 'recall_at_10': 0.2222222222222222, 'RgrpActivity': 0.0001971110115208538, 'RgrpGender': 0.00046841983627167536, 'RgrpAge': 0.0027646391439764936, 'RgrpActivity_Losses': 1    1.164176
+2    1.136096
+dtype: float64, 'RgrpGender_Losses': 1    1.129816
+2    1.173102
+dtype: float64, 'RgrpAge_Losses': 1    1.182237
+2    1.185839
+3    1.151542
+4    1.082323
+5    1.076700
+6    1.118480
+7    1.228516
+dtype: float64}, 170.8556667)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 15x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 42x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 41x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 42x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 43x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 43x across cluster][0m
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 44x across cluster][0m
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 41x across cluster][0m
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 3]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 27x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 25x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 26x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 25x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 26x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 24x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 26x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 23x across cluster][0m
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 28x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 22x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 24x across cluster][0m
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 23x across cluster][0m
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (3, 0.9897601684395051, {'rmse': 0.9948756694793701, 'accuracy': 0.501241850357032, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 2.6030875562784408e-05, 'RgrpGender': 0.001657264982787733, 'RgrpAge': 0.0043694535822094895, 'RgrpActivity_Losses': 1    0.985484
+2    0.995688
+dtype: float64, 'RgrpGender_Losses': 1    0.979198
+2    1.060617
+dtype: float64, 'RgrpAge_Losses': 1    1.019000
+2    1.038553
+3    0.997027
+4    0.960592
+5    0.947257
+6    0.963942
+7    1.155055
+dtype: float64}, 273.646834)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 10x across cluster][0m
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 45x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 45x across cluster][0m
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 40x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 44x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 44x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 43x across cluster][0m
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 4]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 39x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 22x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 21x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 23x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 22x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 21x across cluster][0m
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 22x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 23x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 21x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 23x across cluster][0m
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 22x across cluster][0m
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 21x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 21x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 22x across cluster][0m
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (4, 0.9510574355129374, {'rmse': 0.9752315282821655, 'accuracy': 0.5105039842698955, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.0002329442431337079, 'RgrpGender': 0.0022759484382688364, 'RgrpAge': 0.00565666122308184, 'RgrpActivity_Losses': 1    0.927000
+2    0.957525
+dtype: float64, 'RgrpGender_Losses': 1    0.936823
+2    1.032237
+dtype: float64, 'RgrpAge_Losses': 1    0.975330
+2    0.992825
+3    0.952684
+4    0.930401
+5    0.916407
+6    0.924780
+7    1.150737
+dtype: float64}, 382.06008810000003)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 11x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 42x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 44x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 41x across cluster][0m
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 43x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 46x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 42x across cluster][0m
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 5]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 43x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 21x across cluster][0m
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 21x across cluster][0m
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 19x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 21x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 21x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 19x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 21x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 20x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 20x across cluster][0m
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 20x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 20x across cluster][0m
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 20x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 20x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 20x across cluster][0m
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (5, 0.9368856982975606, {'rmse': 0.967940092086792, 'accuracy': 0.5096243402669979, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.0003376313058601592, 'RgrpGender': 0.002616473128517935, 'RgrpAge': 0.005992814025842462, 'RgrpActivity_Losses': 1    0.906249
+2    0.942999
+dtype: float64, 'RgrpGender_Losses': 1    0.920504
+2    1.022807
+dtype: float64, 'RgrpAge_Losses': 1    0.955263
+2    0.972872
+3    0.936125
+4    0.919200
+5    0.906473
+6    0.917377
+7    1.147121
+dtype: float64}, 496.92142020000006)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 16x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 44x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 42x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 43x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 41x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 41x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 45x across cluster][0m
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 6]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 43x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 20x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 17x across cluster][0m
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 18x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 18x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 19x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 18x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 19x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 19x across cluster][0m
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 19x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 19x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 18x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 16x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 18x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 19x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 18x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 18x across cluster][0m
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (6, 0.929508223389553, {'rmse': 0.9641222953796387, 'accuracy': 0.5157818482872814, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.000439467135047778, 'RgrpGender': 0.0028234121074534203, 'RgrpAge': 0.006386572463717289, 'RgrpActivity_Losses': 1    0.893712
+2    0.935639
+dtype: float64, 'RgrpGender_Losses': 1    0.911993
+2    1.018264
+dtype: float64, 'RgrpAge_Losses': 1    0.946052
+2    0.961730
+3    0.927880
+4    0.913330
+5    0.902225
+6    0.910000
+7    1.148352
+dtype: float64}, 621.4270812)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 8x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 42x across cluster][0m
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 41x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 44x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 44x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 45x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 43x across cluster][0m
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 7]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 42x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 17x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 18x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 15x across cluster][0m
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 18x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 16x across cluster][0m
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 16x across cluster][0m
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 17x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 17x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 17x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 17x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 15x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 17x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 17x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 16x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 16x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 16x across cluster][0m
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 18x across cluster][0m
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (7, 0.9235822559883263, {'rmse': 0.9610443711280823, 'accuracy': 0.5255096760840319, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.000528138367869313, 'RgrpGender': 0.0028657657409487686, 'RgrpAge': 0.00665169576671449, 'RgrpActivity_Losses': 1    0.884427
+2    0.930390
+dtype: float64, 'RgrpGender_Losses': 1    0.906291
+2    1.013356
+dtype: float64, 'RgrpAge_Losses': 1    0.936922
+2    0.953998
+3    0.921582
+4    0.910264
+5    0.899474
+6    0.903330
+7    1.148341
+dtype: float64}, 754.0584804)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 16x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 42x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 45x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 43x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 44x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 44x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 40x across cluster][0m
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 8]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 43x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 17x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 14x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 17x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 15x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 14x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 16x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 14x across cluster][0m
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 17x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 15x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 14x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 16x across cluster][0m
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 15x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 15x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 15x across cluster][0m
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 15x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 15x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 16x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 15x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 16x across cluster][0m
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (8, 0.9230055785830448, {'rmse': 0.9607445001602173, 'accuracy': 0.5315119528096864, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.0004502166297459283, 'RgrpGender': 0.0027878302794676264, 'RgrpAge': 0.0062734207220016495, 'RgrpActivity_Losses': 1    0.887222
+2    0.929658
+dtype: float64, 'RgrpGender_Losses': 1    0.906104
+2    1.011704
+dtype: float64, 'RgrpAge_Losses': 1    0.933246
+2    0.951582
+3    0.921614
+4    0.910112
+5    0.899762
+6    0.906460
+7    1.141951
+dtype: float64}, 894.8519873)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 8x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 42x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 45x across cluster][0m
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 40x across cluster][0m
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 41x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 41x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 41x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 43x across cluster][0m
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 9]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 20x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 13x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 14x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 13x across cluster][0m
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 14x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 13x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 14x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 12x across cluster][0m
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 15x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 13x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 15x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 15x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 14x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 13x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 13x across cluster][0m
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 15x across cluster][0m
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 15x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 13x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 14x across cluster][0m
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 14x across cluster][0m
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 14x across cluster][0m
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (9, 0.9232814877435861, {'rmse': 0.9608882069587708, 'accuracy': 0.5323915968125841, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.00042001428511244816, 'RgrpGender': 0.0027828365061462633, 'RgrpAge': 0.006110959656852062, 'RgrpActivity_Losses': 1    0.888817
+2    0.929806
+dtype: float64, 'RgrpGender_Losses': 1    0.906377
+2    1.011883
+dtype: float64, 'RgrpAge_Losses': 1    0.931078
+2    0.952195
+3    0.922429
+4    0.909903
+5    0.897743
+6    0.908295
+7    1.138656
+dtype: float64}, 1048.3104724)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 11x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 44x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 43x across cluster][0m
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 41x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 42x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 42x across cluster][0m
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 44x across cluster][0m
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 10]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[2m[36m(ClientAppActor pid=24984)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 43x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 15x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 13x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 14x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 13x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 13x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 14x across cluster][0m
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 12x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 14x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 12x across cluster][0m
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 13x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 13x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 13x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 13x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 14x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 10x across cluster][0m
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 12x across cluster][0m
+[2m[36m(ClientAppActor pid=6592)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 11x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 12x across cluster][0m
+[2m[36m(ClientAppActor pid=22920)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 14x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 13x across cluster][0m
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 12x across cluster][0m
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 12x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 14x across cluster][0m
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (10, 0.9223843299296518, {'rmse': 0.9604212641716003, 'accuracy': 0.5314602090448101, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.0004484157216213118, 'RgrpGender': 0.002824944092833045, 'RgrpAge': 0.006293738890121163, 'RgrpActivity_Losses': 1    0.886656
+2    0.929008
+dtype: float64, 'RgrpGender_Losses': 1    0.905324
+2    1.011625
+dtype: float64, 'RgrpAge_Losses': 1    0.929660
+2    0.951856
+3    0.921132
+4    0.909432
+5    0.896470
+6    0.906978
+7    1.140918
+dtype: float64}, 1213.0083872)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 5x across cluster][0m
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 42x across cluster][0m
+[2m[36m(ClientAppActor pid=19068)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 42x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 43x across cluster][0m
+[2m[36m(ClientAppActor pid=1964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 41x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 44x across cluster][0m
+[2m[36m(ClientAppActor pid=24312)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 31x across cluster][0m
+[2m[36m(ClientAppActor pid=24964)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 41x across cluster][0m
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [SUMMARY]
+[92mINFO [0m:      Run finished 10 rounds in 1250.40s
+[92mINFO [0m:      History (loss, centralized):
+[92mINFO [0m:      	('\tround 0: 1.4708260538562243\n'
+[92mINFO [0m:      	 '\tround 1: 1.260913000004181\n'
+[92mINFO [0m:      	 '\tround 2: 1.1337953320402183\n'
+[92mINFO [0m:      	 '\tround 3: 0.9897601684395051\n'
+[92mINFO [0m:      	 '\tround 4: 0.9510574355129374\n'
+[92mINFO [0m:      	 '\tround 5: 0.9368856982975606\n'
+[92mINFO [0m:      	 '\tround 6: 0.929508223389553\n'
+[92mINFO [0m:      	 '\tround 7: 0.9235822559883263\n'
+[92mINFO [0m:      	 '\tround 8: 0.9230055785830448\n'
+[92mINFO [0m:      	 '\tround 9: 0.9232814877435861\n'
+[92mINFO [0m:      	 '\tround 10: 0.9223843299296518\n')History (metrics, centralized):
+[92mINFO [0m:      	{'RgrpActivity': [(0, 0.0026173396084957718),
+[92mINFO [0m:      	                  (1, 0.0005863156825570367),
+[92mINFO [0m:      	                  (2, 0.0001971110115208538),
+[92mINFO [0m:      	                  (3, 2.6030875562784408e-05),
+[92mINFO [0m:      	                  (4, 0.0002329442431337079),
+[92mINFO [0m:      	                  (5, 0.0003376313058601592),
+[92mINFO [0m:      	                  (6, 0.000439467135047778),
+[92mINFO [0m:      	                  (7, 0.000528138367869313),
+[92mINFO [0m:      	                  (8, 0.0004502166297459283),
+[92mINFO [0m:      	                  (9, 0.00042001428511244816),
+[92mINFO [0m:      	                  (10, 0.0004484157216213118)],
+[92mINFO [0m:      	 'RgrpActivity_Losses': [(0, 1    1.564884
+[92mINFO [0m:      	2    1.462564
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (1, 1    1.308028
+[92mINFO [0m:      	2    1.259600
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (2, 1    1.164176
+[92mINFO [0m:      	2    1.136096
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (3, 1    0.985484
+[92mINFO [0m:      	2    0.995688
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (4, 1    0.927000
+[92mINFO [0m:      	2    0.957525
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (5, 1    0.906249
+[92mINFO [0m:      	2    0.942999
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (6, 1    0.893712
+[92mINFO [0m:      	2    0.935639
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (7, 1    0.884427
+[92mINFO [0m:      	2    0.930390
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (8, 1    0.887222
+[92mINFO [0m:      	2    0.929658
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (9, 1    0.888817
+[92mINFO [0m:      	2    0.929806
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (10, 1    0.886656
+[92mINFO [0m:      	2    0.929008
+[92mINFO [0m:      	dtype: float64)],
+[92mINFO [0m:      	 'RgrpAge': [(0, 0.002842128154546929),
+[92mINFO [0m:      	             (1, 0.0027081399310702643),
+[92mINFO [0m:      	             (2, 0.0027646391439764936),
+[92mINFO [0m:      	             (3, 0.0043694535822094895),
+[92mINFO [0m:      	             (4, 0.00565666122308184),
+[92mINFO [0m:      	             (5, 0.005992814025842462),
+[92mINFO [0m:      	             (6, 0.006386572463717289),
+[92mINFO [0m:      	             (7, 0.00665169576671449),
+[92mINFO [0m:      	             (8, 0.0062734207220016495),
+[92mINFO [0m:      	             (9, 0.006110959656852062),
+[92mINFO [0m:      	             (10, 0.006293738890121163)],
+[92mINFO [0m:      	 'RgrpAge_Losses': [(0,
+[92mINFO [0m:      	                     1    1.526699
+[92mINFO [0m:      	2    1.507206
+[92mINFO [0m:      	3    1.497170
+[92mINFO [0m:      	4    1.392457
+[92mINFO [0m:      	5    1.393592
+[92mINFO [0m:      	6    1.521137
+[92mINFO [0m:      	7    1.459941
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (1,
+[92mINFO [0m:      	                     1    1.329253
+[92mINFO [0m:      	2    1.311230
+[92mINFO [0m:      	3    1.282094
+[92mINFO [0m:      	4    1.195454
+[92mINFO [0m:      	5    1.195219
+[92mINFO [0m:      	6    1.257894
+[92mINFO [0m:      	7    1.318002
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (2,
+[92mINFO [0m:      	                     1    1.182237
+[92mINFO [0m:      	2    1.185839
+[92mINFO [0m:      	3    1.151542
+[92mINFO [0m:      	4    1.082323
+[92mINFO [0m:      	5    1.076700
+[92mINFO [0m:      	6    1.118480
+[92mINFO [0m:      	7    1.228516
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (3,
+[92mINFO [0m:      	                     1    1.019000
+[92mINFO [0m:      	2    1.038553
+[92mINFO [0m:      	3    0.997027
+[92mINFO [0m:      	4    0.960592
+[92mINFO [0m:      	5    0.947257
+[92mINFO [0m:      	6    0.963942
+[92mINFO [0m:      	7    1.155055
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (4,
+[92mINFO [0m:      	                     1    0.975330
+[92mINFO [0m:      	2    0.992825
+[92mINFO [0m:      	3    0.952684
+[92mINFO [0m:      	4    0.930401
+[92mINFO [0m:      	5    0.916407
+[92mINFO [0m:      	6    0.924780
+[92mINFO [0m:      	7    1.150737
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (5,
+[92mINFO [0m:      	                     1    0.955263
+[92mINFO [0m:      	2    0.972872
+[92mINFO [0m:      	3    0.936125
+[92mINFO [0m:      	4    0.919200
+[92mINFO [0m:      	5    0.906473
+[92mINFO [0m:      	6    0.917377
+[92mINFO [0m:      	7    1.147121
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (6,
+[92mINFO [0m:      	                     1    0.946052
+[92mINFO [0m:      	2    0.961730
+[92mINFO [0m:      	3    0.927880
+[92mINFO [0m:      	4    0.913330
+[92mINFO [0m:      	5    0.902225
+[92mINFO [0m:      	6    0.910000
+[92mINFO [0m:      	7    1.148352
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (7,
+[92mINFO [0m:      	                     1    0.936922
+[92mINFO [0m:      	2    0.953998
+[92mINFO [0m:      	3    0.921582
+[92mINFO [0m:      	4    0.910264
+[92mINFO [0m:      	5    0.899474
+[92mINFO [0m:      	6    0.903330
+[92mINFO [0m:      	7    1.148341
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (8,
+[92mINFO [0m:      	                     1    0.933246
+[92mINFO [0m:      	2    0.951582
+[92mINFO [0m:      	3    0.921614
+[92mINFO [0m:      	4    0.910112
+[92mINFO [0m:      	5    0.899762
+[92mINFO [0m:      	6    0.906460
+[92mINFO [0m:      	7    1.141951
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (9,
+[92mINFO [0m:      	                     1    0.931078
+[92mINFO [0m:      	2    0.952195
+[92mINFO [0m:      	3    0.922429
+[92mINFO [0m:      	4    0.909903
+[92mINFO [0m:      	5    0.897743
+[92mINFO [0m:      	6    0.908295
+[92mINFO [0m:      	7    1.138656
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (10,
+[92mINFO [0m:      	                     1    0.929660
+[92mINFO [0m:      	2    0.951856
+[92mINFO [0m:      	3    0.921132
+[92mINFO [0m:      	4    0.909432
+[92mINFO [0m:      	5    0.896470
+[92mINFO [0m:      	6    0.906978
+[92mINFO [0m:      	7    1.140918
+[92mINFO [0m:      	dtype: float64)],
+[92mINFO [0m:      	 'RgrpGender': [(0, 5.6277329459137845e-05),
+[92mINFO [0m:      	                (1, 0.00014306063727413578),
+[92mINFO [0m:      	                (2, 0.00046841983627167536),
+[92mINFO [0m:      	                (3, 0.001657264982787733),
+[92mINFO [0m:      	                (4, 0.0022759484382688364),
+[92mINFO [0m:      	                (5, 0.002616473128517935),
+[92mINFO [0m:      	                (6, 0.0028234121074534203),
+[92mINFO [0m:      	                (7, 0.0028657657409487686),
+[92mINFO [0m:      	                (8, 0.0027878302794676264),
+[92mINFO [0m:      	                (9, 0.0027828365061462633),
+[92mINFO [0m:      	                (10, 0.002824944092833045)],
+[92mINFO [0m:      	 'RgrpGender_Losses': [(0, 1    1.467259
+[92mINFO [0m:      	2    1.482262
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (1, 1    1.258572
+[92mINFO [0m:      	2    1.282494
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (2, 1    1.129816
+[92mINFO [0m:      	2    1.173102
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (3, 1    0.979198
+[92mINFO [0m:      	2    1.060617
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (4, 1    0.936823
+[92mINFO [0m:      	2    1.032237
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (5, 1    0.920504
+[92mINFO [0m:      	2    1.022807
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (6, 1    0.911993
+[92mINFO [0m:      	2    1.018264
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (7, 1    0.906291
+[92mINFO [0m:      	2    1.013356
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (8, 1    0.906104
+[92mINFO [0m:      	2    1.011704
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (9, 1    0.906377
+[92mINFO [0m:      	2    1.011883
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (10, 1    0.905324
+[92mINFO [0m:      	2    1.011625
+[92mINFO [0m:      	dtype: float64)],
+[92mINFO [0m:      	 'accuracy': [(0, 0.28640173859049983),
+[92mINFO [0m:      	              (1, 0.29302494049467037),
+[92mINFO [0m:      	              (2, 0.45244748007865054),
+[92mINFO [0m:      	              (3, 0.501241850357032),
+[92mINFO [0m:      	              (4, 0.5105039842698955),
+[92mINFO [0m:      	              (5, 0.5096243402669979),
+[92mINFO [0m:      	              (6, 0.5157818482872814),
+[92mINFO [0m:      	              (7, 0.5255096760840319),
+[92mINFO [0m:      	              (8, 0.5315119528096864),
+[92mINFO [0m:      	              (9, 0.5323915968125841),
+[92mINFO [0m:      	              (10, 0.5314602090448101)],
+[92mINFO [0m:      	 'precision_at_10': [(0, 0.0),
+[92mINFO [0m:      	                     (1, 0.0),
+[92mINFO [0m:      	                     (2, 0.2),
+[92mINFO [0m:      	                     (3, 0.9),
+[92mINFO [0m:      	                     (4, 0.9),
+[92mINFO [0m:      	                     (5, 0.9),
+[92mINFO [0m:      	                     (6, 0.9),
+[92mINFO [0m:      	                     (7, 0.9),
+[92mINFO [0m:      	                     (8, 0.9),
+[92mINFO [0m:      	                     (9, 0.9),
+[92mINFO [0m:      	                     (10, 0.9)],
+[92mINFO [0m:      	 'recall_at_10': [(0, 0.0),
+[92mINFO [0m:      	                  (1, 0.0),
+[92mINFO [0m:      	                  (2, 0.2222222222222222),
+[92mINFO [0m:      	                  (3, 1.0),
+[92mINFO [0m:      	                  (4, 1.0),
+[92mINFO [0m:      	                  (5, 1.0),
+[92mINFO [0m:      	                  (6, 1.0),
+[92mINFO [0m:      	                  (7, 1.0),
+[92mINFO [0m:      	                  (8, 1.0),
+[92mINFO [0m:      	                  (9, 1.0),
+[92mINFO [0m:      	                  (10, 1.0)],
+[92mINFO [0m:      	 'rmse': [(0, 1.2127822637557983),
+[92mINFO [0m:      	          (1, 1.1229091882705688),
+[92mINFO [0m:      	          (2, 1.0648051500320435),
+[92mINFO [0m:      	          (3, 0.9948756694793701),
+[92mINFO [0m:      	          (4, 0.9752315282821655),
+[92mINFO [0m:      	          (5, 0.967940092086792),
+[92mINFO [0m:      	          (6, 0.9641222953796387),
+[92mINFO [0m:      	          (7, 0.9610443711280823),
+[92mINFO [0m:      	          (8, 0.9607445001602173),
+[92mINFO [0m:      	          (9, 0.9608882069587708),
+[92mINFO [0m:      	          (10, 0.9604212641716003)]}
+[92mINFO [0m:      
+[2m[36m(ClientAppActor pid=14868)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 15x across cluster][0m

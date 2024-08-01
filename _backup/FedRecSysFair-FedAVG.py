@@ -39,61 +39,46 @@ def verificar_trainloaders(trainloaders):
             # break  # Remova ou comente esta linha para verificar todos os trainloaders
 
 
-def load_datasets(num_clients: int, filename: str, seed: int = 42):
-    # Configurando a semente para garantir reprodutibilidade
-    torch.manual_seed(seed)
-    np.random.seed(seed)
-    random.seed(seed)
-
+def load_datasets(num_clients: int, filename: str):
     # Carregar dados do arquivo Excel
     df = pd.read_excel(filename, index_col=0)
     dados = df.fillna(0).values
     X, y = np.nonzero(dados)
     ratings = dados[X, y]
-    
     # Criar dicionário para agrupar avaliações por usuário
     cliente_avaliacoes = {usuario: [] for usuario in np.unique(X)}
     for usuario, item, rating in zip(X, y, ratings):
         cliente_avaliacoes[usuario].append((usuario, item, rating))
-    
     trainloaders = []
     valloaders = []
-
-    # Criar uma lista para armazenar dados de todos os clientes
-    all_data = []  # Para extração posterior do teste
-
+    testloader_data = []
     for cliente_id in sorted(cliente_avaliacoes.keys()):
         dados_cliente = np.array(cliente_avaliacoes[cliente_id])
-        all_data.append(dados_cliente)  # armazenar dados de todos os clientes para posterior amostragem
+        X_train = dados_cliente[:, :2]
+        y_train = dados_cliente[:, 2]
+        dataset = TensorDataset(torch.from_numpy(X_train).float(), torch.from_numpy(y_train).float())
+        len_val = len(dataset) // 10
+        len_train = len(dataset) - len_val
+        ds_train, ds_val = random_split(dataset, [len_train, len_val], torch.Generator().manual_seed(42))
 
-    # Os dados de todos os clientes são concatenados em um único array
-    all_data = np.concatenate(all_data)
+        batch_size = 32 if cliente_id <= 14 else 16 # Configurando o tamanho do lote de acordo com o nível de atividade dos usuários
+        train_loader = DataLoader(ds_train, batch_size=batch_size, shuffle=True)
+        val_loader = DataLoader(ds_val, batch_size=batch_size, shuffle=False)
 
-    # Definir a semente novamente antes do embaralhamento
-    np.random.seed(seed)  # Garantindo que o embaralhamento seja reprodutível
-    np.random.shuffle(all_data)  # Embaralha os dados
+        trainloaders.append(train_loader)
+        valloaders.append(val_loader)
+        testloader_data.extend(dados_cliente) # Adicionar dados de teste do cliente à lista de testes
 
-    # Dividir os dados em conjuntos de teste (10%), treinamento (80%) e validação (10%)
-    num_test_samples = len(all_data) // 10   # 10% dos dados para teste
-    num_val_samples = len(all_data) // 10     # 10% dos dados para validação
-    num_train_samples = len(all_data) - num_test_samples - num_val_samples  # 80% os dados restantes para treinamento
+    # Supondo que queiramos usar apenas 10% dos dados acumulados para o teste
+    num_test_samples = len(testloader_data)
+    test_data_sample = random.sample(testloader_data, num_test_samples // 8) # 10: deixei 8 para que o último lote tenha 30 exemplos para calcular recall e f1
 
-    # Criar os datasets
-    train_data = all_data[:num_train_samples]
-    val_data = all_data[num_train_samples:num_train_samples + num_val_samples]
-    test_data = all_data[num_train_samples + num_val_samples:]
+    X_test_all = np.array(test_data_sample)[:, :2]
+    y_test_all = np.array(test_data_sample)[:, 2]
+    test_dataset = TensorDataset(torch.from_numpy(X_test_all).float(), torch.from_numpy(y_test_all).float())
+    testloader = DataLoader(test_dataset, batch_size=32, shuffle=True)
 
-    # Criar DataLoader para os datasets de treinamento, validação e teste
-    train_dataset = TensorDataset(torch.from_numpy(train_data[:, :2]).float(), torch.from_numpy(train_data[:, 2]).float())
-    val_dataset = TensorDataset(torch.from_numpy(val_data[:, :2]).float(), torch.from_numpy(val_data[:, 2]).float())
-    test_dataset = TensorDataset(torch.from_numpy(test_data[:, :2]).float(), torch.from_numpy(test_data[:, 2]).float())
-    
-    # Configurando os DataLoaders
-    train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False)
-    test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
-
-    return df, [train_loader], [val_loader], test_loader
+    return df, trainloaders, valloaders, testloader
 
 
 avaliacoes_df, trainloaders, valloaders, testloader = load_datasets(NUM_CLIENTS, filename="X.xlsx")

@@ -1,5 +1,8 @@
+# Neste script a estratégia de agregação é ponderar os pesos na proporção das Perdas Individuais
+
 # !pip install -q flwr[simulation] torch torchvision
 
+from collections import OrderedDict
 import random
 from typing import Dict, List, Optional, Tuple
 
@@ -11,6 +14,8 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader, random_split, TensorDataset
 from collections import OrderedDict
 from AlgorithmUserFairness import GroupLossVariance
+
+
 import flwr as fl
 
 DEVICE = torch.device("cpu")  # Try "cuda" to train on GPU
@@ -25,7 +30,8 @@ datasets = None
 # Função para imprimir o conteúdo de cada DataLoader
 def verificar_trainloaders(trainloaders):
     for i, trainloader in enumerate(trainloaders):
-        if i == 0 or i == 299:
+        #if i == 0 or i == 299:
+        if i == 0:
             print(f"Trainloader {i+1} (Cliente {i+1}):")
             for data in trainloader:
                 inputs, labels = data
@@ -39,61 +45,46 @@ def verificar_trainloaders(trainloaders):
             # break  # Remova ou comente esta linha para verificar todos os trainloaders
 
 
-def load_datasets(num_clients: int, filename: str, seed: int = 42):
-    # Configurando a semente para garantir reprodutibilidade
-    torch.manual_seed(seed)
-    np.random.seed(seed)
-    random.seed(seed)
-
+def load_datasets(num_clients: int, filename: str):
     # Carregar dados do arquivo Excel
     df = pd.read_excel(filename, index_col=0)
     dados = df.fillna(0).values
     X, y = np.nonzero(dados)
     ratings = dados[X, y]
-    
     # Criar dicionário para agrupar avaliações por usuário
     cliente_avaliacoes = {usuario: [] for usuario in np.unique(X)}
     for usuario, item, rating in zip(X, y, ratings):
         cliente_avaliacoes[usuario].append((usuario, item, rating))
-    
     trainloaders = []
     valloaders = []
-
-    # Criar uma lista para armazenar dados de todos os clientes
-    all_data = []  # Para extração posterior do teste
-
+    testloader_data = []
     for cliente_id in sorted(cliente_avaliacoes.keys()):
         dados_cliente = np.array(cliente_avaliacoes[cliente_id])
-        all_data.append(dados_cliente)  # armazenar dados de todos os clientes para posterior amostragem
+        X_train = dados_cliente[:, :2]
+        y_train = dados_cliente[:, 2]
+        dataset = TensorDataset(torch.from_numpy(X_train).float(), torch.from_numpy(y_train).float())
+        len_val = len(dataset) // 10
+        len_train = len(dataset) - len_val
+        ds_train, ds_val = random_split(dataset, [len_train, len_val], torch.Generator().manual_seed(42))
 
-    # Os dados de todos os clientes são concatenados em um único array
-    all_data = np.concatenate(all_data)
+        batch_size = 32 if cliente_id <= 14 else 16 # Configurando o tamanho do lote de acordo com o nível de atividade dos usuários
+        train_loader = DataLoader(ds_train, batch_size=batch_size, shuffle=True)
+        val_loader = DataLoader(ds_val, batch_size=batch_size, shuffle=False)
 
-    # Definir a semente novamente antes do embaralhamento
-    np.random.seed(seed)  # Garantindo que o embaralhamento seja reprodutível
-    np.random.shuffle(all_data)  # Embaralha os dados
+        trainloaders.append(train_loader)
+        valloaders.append(val_loader)
+        testloader_data.extend(dados_cliente) # Adicionar dados de teste do cliente à lista de testes
 
-    # Dividir os dados em conjuntos de teste (10%), treinamento (80%) e validação (10%)
-    num_test_samples = len(all_data) // 10   # 10% dos dados para teste
-    num_val_samples = len(all_data) // 10     # 10% dos dados para validação
-    num_train_samples = len(all_data) - num_test_samples - num_val_samples  # 80% os dados restantes para treinamento
+    # Supondo que queiramos usar apenas 10% dos dados acumulados para o teste
+    num_test_samples = len(testloader_data)
+    test_data_sample = random.sample(testloader_data, num_test_samples // 8) # 10: deixei 8 para que o último lote tenha 30 exemplos para calcular recall e f1
 
-    # Criar os datasets
-    train_data = all_data[:num_train_samples]
-    val_data = all_data[num_train_samples:num_train_samples + num_val_samples]
-    test_data = all_data[num_train_samples + num_val_samples:]
+    X_test_all = np.array(test_data_sample)[:, :2]
+    y_test_all = np.array(test_data_sample)[:, 2]
+    test_dataset = TensorDataset(torch.from_numpy(X_test_all).float(), torch.from_numpy(y_test_all).float())
+    testloader = DataLoader(test_dataset, batch_size=32, shuffle=True)
 
-    # Criar DataLoader para os datasets de treinamento, validação e teste
-    train_dataset = TensorDataset(torch.from_numpy(train_data[:, :2]).float(), torch.from_numpy(train_data[:, 2]).float())
-    val_dataset = TensorDataset(torch.from_numpy(val_data[:, :2]).float(), torch.from_numpy(val_data[:, 2]).float())
-    test_dataset = TensorDataset(torch.from_numpy(test_data[:, :2]).float(), torch.from_numpy(test_data[:, 2]).float())
-    
-    # Configurando os DataLoaders
-    train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False)
-    test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
-
-    return df, [train_loader], [val_loader], test_loader
+    return df, trainloaders, valloaders, testloader
 
 
 avaliacoes_df, trainloaders, valloaders, testloader = load_datasets(NUM_CLIENTS, filename="X.xlsx")
@@ -288,67 +279,266 @@ class FlowerClient(fl.client.NumPyClient):
 
 
 def client_fn(cid) -> FlowerClient:
-    print(f"client_fn({cid})")
     net = Net(300, 1000).to(DEVICE)
     trainloader = trainloaders[int(cid)]
+    print(f"\n\nTamanho do trainloader do Cliente {cid}: {len(trainloader)}\n\n")
+
     valloader = valloaders[int(cid)]
     flower_client = FlowerClient(cid, net, trainloader, valloader)
     return flower_client.to_client()
 
 
-def evaluate(
-    server_round: int,
-    parameters: fl.common.NDArrays,
-    config: Dict[str, fl.common.Scalar],
-) -> Optional[Tuple[float, Dict[str, fl.common.Scalar]]]:
-    net = Net(300, 1000).to(DEVICE)
-    set_parameters(net, parameters)  # Atualize o modelo com os parâmetros mais recentes.
-    loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = test(net, testloader, server=True)
-    metrics = {"rmse": rmse, "accuracy": accuracy, "precision_at_10": precision_at_10, "recall_at_10": recall_at_10, "RgrpActivity": RgrpActivity, "RgrpGender": RgrpGender, "RgrpAge": RgrpAge, "RgrpActivity_Losses": RgrpActivity_Losses, "RgrpGender_Losses": RgrpGender_Losses, "RgrpAge_Losses": RgrpAge_Losses}  # Agrupar RMSE e accuracy em um dicionário
-    print(f"Server-side evaluation :: Round {server_round}")
-    print(f"loss {loss} / RMSE {rmse} / accuracy {accuracy} / Precision@10 {precision_at_10} / Recall@10 {recall_at_10}")
-    print(f"RgrpActivity {RgrpActivity} / RgrpGender {RgrpGender} / RgrpAge {RgrpAge}")
-    print(f"RgrpActivity_Losses {RgrpActivity_Losses} / RgrpGender_Losses {RgrpGender_Losses} / RgrpAge_Losses {RgrpAge_Losses}")
-    return loss, metrics
+#---------------------------------------------------------------
+# DEFININDO UMA ESTRATÉGIA DE AGREGAÇÃO CUSTOMIZADA
 
-
-def fit_config(server_round: int):
-    """
-    Retorne o dicionário de configuração de treinamento para cada rodada.
-    Faça duas rodadas de treinamento com uma época local e aumente para duas épocas locais posteriormente.
-    """
-    config = {
-        "server_round": server_round,  # The current round of federated learning
-        "local_epochs": 20, # "local_epochs": 1 if server_round < 2 else 2,  #
-        "lotes_por_rodada": server_round,
-        "learning_rate": 0.01,
-    }
-    return config
-
-
-strategy = fl.server.strategy.FedAvg(
-    fraction_fit=1, # 100% dos clientes serão selecionados para participar da etapa de treinamento em cada rodada
-    fraction_evaluate=1, # 100% dos clientes serão usados para avaliação em cada rodada
-    min_fit_clients=NUM_CLIENTS, # número mínimo de clientes que devem participar do treinamento em cada rodada
-    min_evaluate_clients=NUM_CLIENTS, # número mínimo de clientes necessários para a avaliação em cada rodada
-    min_available_clients=NUM_CLIENTS, # número mínimo de clientes que devem estar disponíveis para a simulação
-    initial_parameters=fl.common.ndarrays_to_parameters(get_parameters(Net(300, 1000))), # parâmetros iniciais do modelo global antes de começar o aprendizado federado
-    evaluate_fn=evaluate, # função personalizada para avaliação do modelo global
-    on_fit_config_fn=fit_config,  # função personalizada para configurar os clientes antes do treinamento
+from typing import Callable, Union, Optional, List, Dict, Tuple
+import flwr as fl
+from flwr.server.strategy import Strategy
+from flwr.server.client_proxy import ClientProxy
+from flwr.server.client_manager import ClientManager
+from flwr.common import (
+    Parameters,
+    FitIns,
+    FitRes,
+    EvaluateIns,
+    EvaluateRes,
+    MetricsAggregationFn,
+    NDArrays,
+    Scalar,
+    parameters_to_ndarrays,
+    ndarrays_to_parameters,
 )
+from flwr.server.strategy.aggregate import aggregate, weighted_loss_avg
 
-# strategy = fl.server.strategy.FedAvg(
-#     fraction_fit=1, # 100% dos clientes serão selecionados para participar da etapa de treinamento em cada rodada
-#     fraction_evaluate=1, # 100% dos clientes serão usados para avaliação em cada rodada
-#     min_fit_clients=2, # número mínimo de clientes que devem participar do treinamento em cada rodada
-#     min_evaluate_clients=2, # número mínimo de clientes necessários para a avaliação em cada rodada
-#     min_available_clients=2, # número mínimo de clientes que devem estar disponíveis para a simulação
-#     initial_parameters=fl.common.ndarrays_to_parameters(get_parameters(Net(300, 1000))), # parâmetros iniciais do modelo global antes de começar o aprendizado federado
-#     evaluate_fn=evaluate, # função personalizada para avaliação do modelo global
-#     on_fit_config_fn=fit_config,  # função personalizada para configurar os clientes antes do treinamento
-# )
+class FedCustom(Strategy):
+    def __init__(
+        self,
+        fraction_fit: float = 1.0,
+        fraction_evaluate: float = 1.0,
+        min_fit_clients: int = NUM_CLIENTS,
+        min_evaluate_clients: int = NUM_CLIENTS,
+        min_available_clients: int = NUM_CLIENTS,
+    ) -> None:
+        super().__init__()
+        self.fraction_fit = fraction_fit  # Fração de clientes para treinamento
+        self.fraction_evaluate = fraction_evaluate  # Fração de clientes para avaliação
+        self.min_fit_clients = min_fit_clients  # Mínimo de clientes para treinamento
+        self.min_evaluate_clients = min_evaluate_clients  # Mínimo para avaliação
+        self.min_available_clients = min_available_clients  # Mínimo de clientes disponíveis
+
+    def __repr__(self) -> str:
+        return "FedCustom"  # Representação da estratégia
+
+    def initialize_parameters(
+        self, client_manager: ClientManager
+    ) -> Optional[Parameters]:
+        """Inicializar os parâmetros do modelo global."""
+        # Cria uma instância do modelo para obter os parâmetros iniciais
+        net = Net(300, 1000)
+        ndarrays = get_parameters(net)
+        # Converte os parâmetros para o formato necessário pelo Flower
+        return fl.common.ndarrays_to_parameters(ndarrays)
+
+    def configure_fit(
+        self, server_round: int, parameters: Parameters, client_manager: ClientManager
+    ) -> List[Tuple[ClientProxy, FitIns]]:
+        """Configurar a próxima rodada de treinamento."""
+
+        # Selecionar clientes
+        sample_size, min_num_clients = self.num_fit_clients(
+            client_manager.num_available()
+        )  # Define quantos clientes participarão do treinamento
+        clients = client_manager.sample(
+            num_clients=sample_size, min_num_clients=min_num_clients
+        )  # Amostra de clientes para a rodada
+
+        # Criar configurações personalizadas para treinamento
+        n_clients = len(clients)
+        # half_clients = n_clients // 2  # Divide os clientes em duas metades
+        favorecidos = 15
+        desfavorecidos = 285
+
+        lotes_por_rodada = server_round
+
+        config_g1 = {
+            "server_round": server_round,
+            "local_epochs": 20,
+            "learning_rate": 0.01,
+            "lotes_por_rodada": lotes_por_rodada
+        }
+
+        config_g2 = {
+            "server_round": server_round,
+            "local_epochs": 20,
+            "learning_rate": 0.01,
+            "lotes_por_rodada": lotes_por_rodada,
+        }
+
+        # Define configurações de treinamento para cada cliente
+        fit_configurations = []
+        for idx, client in enumerate(clients):
+            if idx < favorecidos:
+                # Primeira metade usa a configuração padrão
+                fit_configurations.append((client, FitIns(parameters, config_g1)))
+            else:
+                # Segunda metade usa a configuração com taxa de aprendizado maior
+                fit_configurations.append(
+                    (client, FitIns(parameters, config_g2))
+                )
+        return fit_configurations
+
+    # # Agregando pelo número de exemplos processados pelo cliente
+    # def aggregate_fit(
+    #     self,
+    #     server_round: int,
+    #     results: List[Tuple[ClientProxy, FitRes]],
+    #     failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]],
+    # ) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
+    #     """Aggregate training results using weighted average."""
+    #     total_examples = sum(fit_res.num_examples for _, fit_res in results)
+    #     print(f"Número total de exemplos agregados: {total_examples}")
+    #     # Convert results to a list of arrays and associated weights (contributions)
+    #     weights_results = [
+    #         (parameters_to_ndarrays(fit_res.parameters), fit_res.num_examples)
+    #         for _, fit_res in results
+    #     ]
+    #     # Calculate aggregated parameters using weighted average
+    #     parameters_aggregated = ndarrays_to_parameters(aggregate(weights_results))
+    #     # Dictionary for aggregated metrics (empty for now)
+    #     metrics_aggregated = {}
+    #     # Debugging: Iterate over the results to print the number of examples and weight for each client
+    #     for client_index, (client, fit_res) in enumerate(results):
+    #         num_examples = fit_res.num_examples
+    #         weight = num_examples / total_examples  # Calculating the weight based on number of examples
+    #         print(f"Cliente {client_index}: Número de exemplos = {num_examples}, Peso = {weight}")
+    #     # Return the aggregated parameters and metrics
+    #     return parameters_aggregated, metrics_aggregated
+
+    # Agregando pela perda (loss) do cliente
+    def aggregate_fit(
+        self,
+        server_round: int,
+        results: List[Tuple[ClientProxy, FitRes]],
+        failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]],
+    ) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
+        """Aggregate training results using weighted average."""
+
+        total_examples = sum(fit_res.num_examples for _, fit_res in results)
+        print(f"Número total de exemplos agregados: {total_examples}")
+        
+        total_loss = sum(fit_res.metrics.get('loss', 0) for _, fit_res in results)
+        print(f"Soma total de perdas (loss) agregadas: {total_loss}")
+        # Convert results to a list of arrays and associated weights (contributions)
+        weights_results = [
+            (parameters_to_ndarrays(fit_res.parameters), fit_res.metrics.get('loss', 0))
+            for _, fit_res in results
+        ]
+        # Calculate aggregated parameters using weighted average
+        parameters_aggregated = ndarrays_to_parameters(aggregate(weights_results))
+        # Dictionary for aggregated metrics (empty for now)
+        metrics_aggregated = {}
+        # Debugging: Iterate over the results to print the number of examples and weight for each client
+        for client_index, (client, fit_res) in enumerate(results):
+            loss = fit_res.metrics.get('loss', 0)
+            weight = loss / total_loss  # Calculating the weight based on loss
+            print(f"Cliente {client.cid}: Perda = {loss}, Peso = {weight}")
+        # Return the aggregated parameters and metrics
+        return parameters_aggregated, metrics_aggregated
 
 
+    def configure_evaluate(
+        self, server_round: int, parameters: Parameters, client_manager: ClientManager
+    ) -> List[Tuple[ClientProxy, EvaluateIns]]:
+        """Configurar a próxima rodada de avaliação."""
+        
+        # Se a fração de avaliação for zero, não há avaliação
+        if self.fraction_evaluate == 0.0:
+            return []
+        
+        # Cria configuração de avaliação
+        config = {}
+        evaluate_ins = EvaluateIns(parameters, config)
+
+        # Selecionar clientes para avaliação
+        sample_size, min_num_clients = self.num_evaluation_clients(
+            client_manager.num_available()
+        )
+        clients = client_manager.sample(
+            num_clients=sample_size, min_num_clients=min_num_clients
+        )
+
+        # Retorna pares cliente/configuração para avaliação
+        return [(client, evaluate_ins) for client in clients]
+
+    def aggregate_evaluate(
+        self,
+        server_round: int,
+        results: List[Tuple[ClientProxy, EvaluateRes]],
+        failures: List[Union[Tuple[ClientProxy, EvaluateRes], BaseException]],
+    ) -> Tuple[Optional[float], Dict[str, Scalar]]:
+        
+        
+        if not results:  # Se não houver resultados, retorne nada
+            return None, {}
+        
+        # # # Calcular a perda média ponderada
+        # # loss_aggregated = weighted_loss_avg(
+        # #     [
+        # #         (evaluate_res.num_examples, evaluate_res.loss)
+        # #         for _, evaluate_res in results
+        # #     ]
+        # # )
+
+        # # Calcula a perda média ponderada e exibe o número de amostras de cada cliente
+        # examples_and_loss = [
+        #     (evaluate_res.num_examples, evaluate_res.loss)
+        #     for _, evaluate_res in results
+        # ]
+
+        # loss_aggregated = weighted_loss_avg(examples_and_loss)
+
+        # # Exibindo o número de amostras consideradas por cada cliente
+        # # Certifique-se de ter a lista de clientes e resultados para obter o ID do cliente corretamente
+        # for result, (num_samples, _) in zip(results, examples_and_loss):
+        #     client_proxy = result[0]  # O primeiro item da tupla deve ser o ClientProxy
+        #     client_id = client_proxy.cid  # Obter o ID do cliente real
+        #     print(f"Cliente {client_id}: Número de amostras consideradas = {num_samples}")
+
+        
+        # Dicionário para métricas agregadas (vazio por enquanto)
+        metrics_aggregated = {}
+        loss_aggregated = None
+        
+        # Retorna a perda agregada e métricas
+        return loss_aggregated, metrics_aggregated
+
+
+    def evaluate(self, server_round: int, parameters: Parameters) -> Optional[Tuple[float, Dict[str, Scalar]]]:
+        net = Net(300, 1000).to(DEVICE)
+        set_parameters(net, parameters_to_ndarrays(parameters))
+        loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = test(net, testloader, server=True)
+        metrics = {"rmse": rmse, "accuracy": accuracy, "precision_at_10": precision_at_10, "recall_at_10": recall_at_10, "RgrpActivity": RgrpActivity, "RgrpGender": RgrpGender, "RgrpAge": RgrpAge, "RgrpActivity_Losses": RgrpActivity_Losses, "RgrpGender_Losses": RgrpGender_Losses, "RgrpAge_Losses": RgrpAge_Losses}  # Agrupar RMSE e accuracy em um dicionário
+        print(f"Server-side evaluation :: Round {server_round}")
+        print(f"loss {loss} / RMSE {rmse} / accuracy {accuracy} / Precision@10 {precision_at_10} / Recall@10 {recall_at_10}")
+        print(f"RgrpActivity {RgrpActivity} / RgrpGender {RgrpGender} / RgrpAge {RgrpAge}")
+        print(f"RgrpActivity_Losses {RgrpActivity_Losses} / RgrpGender_Losses {RgrpGender_Losses} / RgrpAge_Losses {RgrpAge_Losses}")
+        return loss, metrics
+    
+        
+    def num_fit_clients(self, num_available_clients: int) -> Tuple[int, int]:
+        """Retorna o tamanho da amostra e o número necessário de clientes para treinamento."""
+        
+        num_clients = int(num_available_clients * self.fraction_fit)
+        return max(num_clients, self.min_fit_clients), self.min_available_clients
+
+    def num_evaluation_clients(self, num_available_clients: int) -> Tuple[int, int]:
+        """Usar uma fração dos clientes disponíveis para avaliação."""
+        
+        num_clients = int(num_available_clients * self.fraction_evaluate)
+        return max(num_clients, self.min_evaluate_clients), self.min_available_clients
+
+
+#-----------------------------------------------------------------
 
 # Especifique os recursos do cliente se precisar de GPU (o padrão é 1 CPU e 0 GPU).
 client_resources = None
@@ -358,8 +548,7 @@ if DEVICE.type == "cuda":
 fl.simulation.start_simulation(
     client_fn=client_fn,
     num_clients=NUM_CLIENTS,
-    config=fl.server.ServerConfig(num_rounds=24),  # Apenas três rodadas
-    strategy=strategy,
+    config=fl.server.ServerConfig(num_rounds=24),
+    strategy=FedCustom(),  # <-- pass the new strategy here
     client_resources=client_resources,
 )
-

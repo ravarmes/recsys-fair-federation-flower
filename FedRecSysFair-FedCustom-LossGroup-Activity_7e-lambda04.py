@@ -322,16 +322,10 @@ class FedCustom(Strategy):
     #     adjusted_loss = loss + fairness_penalty
     #     return adjusted_loss
 
-    def fairness_regularization(self, server_round, loss, global_mean_loss, global_groups_variance, lambda_fairness):
+    def fairness_regularization(self, loss, global_mean_loss, global_groups_variance, lambda_fairness):
         diff_loss_global_mean = loss - global_mean_loss
-        mean_global_groups_variance = np.sqrt(np.mean(global_groups_variance ** 2))
-        # Usando um quadrado da diferença para aumentar a penalização
-        scaling_factor = mean_global_groups_variance if mean_global_groups_variance != 0 else 1
-        fairness_penalty = diff_loss_global_mean ** 2 * (lambda_fairness + scaling_factor)
-        # Aplicando um limite à penalidade
-        #fairness_penalty = min(MAX_PENALTY, fairness_penalty)
-        adjusted_loss = loss + fairness_penalty
-        return adjusted_loss
+        fairness_penalty = diff_loss_global_mean * (lambda_fairness + global_groups_variance * 1000)
+        return loss + fairness_penalty
 
     def configure_fit(self, server_round: int, parameters: Parameters, client_manager: ClientManager) -> List[Tuple[ClientProxy, FitIns]]:
         sample_size, min_num_clients = self.num_fit_clients(client_manager.num_available())
@@ -441,7 +435,7 @@ if DEVICE.type == "cuda":
 fl.simulation.start_simulation(
     client_fn=client_fn,
     num_clients=NUM_CLIENTS,
-    config=fl.server.ServerConfig(num_rounds=10),
+    config=fl.server.ServerConfig(num_rounds=24),
     strategy=FedCustom(),
     client_resources=client_resources,
 )

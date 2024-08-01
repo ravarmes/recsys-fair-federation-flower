@@ -323,16 +323,60 @@ class FedCustom(Strategy):
     #     adjusted_loss = loss + fairness_penalty
     #     return adjusted_loss
 
-    def fairness_regularization(self, server_round, loss, global_mean_loss, global_groups_variance, lambda_fairness):
+    # def fairness_regularization(self, server_round, loss, global_mean_loss, global_groups_variance, lambda_fairness):
+    #     diff_loss_global_mean = loss - global_mean_loss
+    #     mean_global_groups_variance = np.sqrt(np.mean(global_groups_variance ** 2))
+    #     # Usando um quadrado da diferença para aumentar a penalização
+    #     scaling_factor = mean_global_groups_variance if mean_global_groups_variance != 0 else 1
+    #     fairness_penalty = diff_loss_global_mean ** 2 * (lambda_fairness + scaling_factor)
+    #     # Aplicando um limite à penalidade
+    #     #fairness_penalty = min(MAX_PENALTY, fairness_penalty)
+    #     adjusted_loss = loss + fairness_penalty
+    #     return adjusted_loss
+
+    def fairness_regularization(self, loss, global_mean_loss, global_groups_variance, lambda_fairness):
         diff_loss_global_mean = loss - global_mean_loss
-        mean_global_groups_variance = np.sqrt(np.mean(global_groups_variance ** 2))
-        # Usando um quadrado da diferença para aumentar a penalização
-        scaling_factor = mean_global_groups_variance if mean_global_groups_variance != 0 else 1
-        fairness_penalty = diff_loss_global_mean ** 2 * (lambda_fairness + scaling_factor)
-        # Aplicando um limite à penalidade
-        #fairness_penalty = min(MAX_PENALTY, fairness_penalty)
-        adjusted_loss = loss + fairness_penalty
-        return adjusted_loss
+        fairness_penalty = diff_loss_global_mean * (lambda_fairness + global_groups_variance * 1000)
+        return loss + fairness_penalty
+
+    # def fairness_regularization(self, server_round, loss, global_mean_loss, global_groups_variance, lambda_fairness):
+    #     # Calcular a diferença entre a perda e a perda média global
+    #     diff_loss_global_mean = loss - global_mean_loss
+        
+    #     # Printar os valores das variáveis
+    #     print(f"Valores fornecidos:")
+    #     print(f"loss: {loss}")
+    #     print(f"global_mean_loss: {global_mean_loss}")
+    #     print(f"global_groups_variance: {global_groups_variance}")
+    #     print(f"lambda_fairness: {lambda_fairness}")
+        
+    #     # Printar o cálculo da diferença
+    #     print(f"\nCálculo da diferença entre a perda e a perda média global:")
+    #     print(f"diff_loss_global_mean = loss - global_mean_loss")
+    #     print(f"diff_loss_global_mean = {loss} - {global_mean_loss}")
+    #     print(f"diff_loss_global_mean = {diff_loss_global_mean}")
+        
+    #     # Calcular a penalidade de justiça
+    #     fairness_penalty = diff_loss_global_mean * (lambda_fairness + global_groups_variance)
+        
+    #     # Printar o cálculo da penalidade de justiça
+    #     print(f"\nCálculo da penalidade de justiça:")
+    #     print(f"fairness_penalty = diff_loss_global_mean * (lambda_fairness + global_groups_variance)")
+    #     print(f"fairness_penalty = {diff_loss_global_mean} * ({lambda_fairness} + {global_groups_variance})")
+    #     print(f"fairness_penalty = {fairness_penalty}")
+        
+    #     # Calcular a perda ajustada
+    #     adjusted_loss = loss + fairness_penalty
+        
+    #     # Printar o cálculo da perda ajustada
+    #     print(f"\nCálculo da perda ajustada:")
+    #     print(f"adjusted_loss = loss + fairness_penalty")
+    #     print(f"adjusted_loss = {loss} + {fairness_penalty}")
+    #     print(f"adjusted_loss = {adjusted_loss}")
+        
+    #     # Retornar a perda ajustada com a penalidade de justiça
+    #     return adjusted_loss
+
 
 
     def configure_fit(self, server_round: int, parameters: Parameters, client_manager: ClientManager) -> List[Tuple[ClientProxy, FitIns]]:
@@ -443,7 +487,7 @@ if DEVICE.type == "cuda":
 fl.simulation.start_simulation(
     client_fn=client_fn,
     num_clients=NUM_CLIENTS,
-    config=fl.server.ServerConfig(num_rounds=10),
+    config=fl.server.ServerConfig(num_rounds=24),
     strategy=FedCustom(),
     client_resources=client_resources,
 )

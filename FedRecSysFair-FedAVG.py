@@ -2,7 +2,6 @@
 
 import random
 from typing import Dict, List, Optional, Tuple
-
 import pandas as pd
 import numpy as np
 import torch
@@ -39,11 +38,19 @@ def verificar_trainloaders(trainloaders):
             # break  # Remova ou comente esta linha para verificar todos os trainloaders
 
 
-def load_datasets(num_clients: int, filename: str, seed: int = 42):
-    # Configurando a semente para garantir reprodutibilidade
-    torch.manual_seed(seed)
+def set_random_seed(seed: int):
+    """Função para configurar as sementes para reprodutibilidade."""
     np.random.seed(seed)
     random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)  # Para GPUs com múltiplas GPUs
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+
+def load_datasets(num_clients: int, filename: str, seed: int = 42):
+    # Configura a semente para garantir reprodutibilidade
+    set_random_seed(seed)
 
     # Carregar dados do arquivo Excel
     df = pd.read_excel(filename, index_col=0)
@@ -58,48 +65,54 @@ def load_datasets(num_clients: int, filename: str, seed: int = 42):
     
     trainloaders = []
     valloaders = []
-
-    # Separar dados para teste, treino e validação
-    all_test_data = []
-
+    testloader_data = []
+    
     for cliente_id in sorted(cliente_avaliacoes.keys()):
         dados_cliente = np.array(cliente_avaliacoes[cliente_id])
         X_train = dados_cliente[:, :2]
         y_train = dados_cliente[:, 2]
         dataset = TensorDataset(torch.from_numpy(X_train).float(), torch.from_numpy(y_train).float())
         
-        # Divisão de dados 80% treinamento, 10% validação, 10% teste
-        len_test = len(dataset) // 10     # 10% para teste
-        len_val = len(dataset) // 10       # 10% para validação
-        len_train = len(dataset) - len_val - len_test  # 80% para treinamento
-        
-        # Realizando as divisões
-        ds_train, ds_val = random_split(dataset, [len_train, len_val], 
-                                         generator=torch.Generator().manual_seed(seed))
-        
-        batch_size = 32 if cliente_id <= 14 else 16  # Configurando o tamanho do lote
+        len_val = len(dataset) // 10
+        len_train = len(dataset) - len_val
+        ds_train, ds_val = random_split(dataset, [len_train, len_val], generator=torch.Generator().manual_seed(seed))
+
+        batch_size = 32 if cliente_id <= 14 else 16  # Configurando o tamanho do lote de acordo com o nível de atividade dos usuários
         train_loader = DataLoader(ds_train, batch_size=batch_size, shuffle=True)
         val_loader = DataLoader(ds_val, batch_size=batch_size, shuffle=False)
-        
+
         trainloaders.append(train_loader)
         valloaders.append(val_loader)
+        
+        # Adicionar dados de cada cliente para seleção de teste
+        testloader_data.extend(dados_cliente)
 
-        # Armazenar dados de teste para amostragem do conjunto de teste final
-        test_data = dados_cliente[-len_test:]  # Sempre pegar o último bloco
-        all_test_data.extend(test_data)
+    # Supondo que queiramos usar apenas 10% dos dados acumulados para o teste
+    num_test_samples = len(testloader_data)
+    test_data_sample = random.sample(testloader_data, num_test_samples // 8)  # 10% dos dados para teste
 
-    # Amostrando dados finais para o conjunto de teste
-    num_test_samples = len(all_test_data) // 10  # 10% dos dados acumulados para teste
-    test_data_sample = random.sample(all_test_data, num_test_samples)  # Amostre 10% aleatoriamente
+    # Separar dados de teste para evitar sobreposição
+    test_data_set = set(map(tuple, test_data_sample))
+    
+    # Modificação para acessar os tensor do dataset original
+    train_val_data_set = set(
+        map(tuple, sum([loader.dataset.dataset.tensors[0].numpy().tolist() for loader in trainloaders + valloaders], []))
+    )
 
-    # Criação do DataLoader para o conjunto de teste
-    X_test_all = np.array(test_data_sample)[:, :2]
-    y_test_all = np.array(test_data_sample)[:, 2]
+    # Garantir que os dados de teste não estejam nos dados de treinamento e validação
+    final_test_data = [dados for dados in testloader_data if tuple(dados) not in train_val_data_set]
+    
+    if len(final_test_data) > 0:
+        final_test_sample = random.sample(final_test_data, min(len(final_test_data), num_test_samples // 8))
+    else:
+        final_test_sample = []
+
+    X_test_all = np.array(final_test_sample)[:, :2]
+    y_test_all = np.array(final_test_sample)[:, 2]
     test_dataset = TensorDataset(torch.from_numpy(X_test_all).float(), torch.from_numpy(y_test_all).float())
     testloader = DataLoader(test_dataset, batch_size=32, shuffle=True)
 
     return df, trainloaders, valloaders, testloader
-
 
 
 
@@ -324,6 +337,10 @@ def fit_config(server_round: int):
     Retorne o dicionário de configuração de treinamento para cada rodada.
     Faça duas rodadas de treinamento com uma época local e aumente para duas épocas locais posteriormente.
     """
+
+    # Define a seed for reproducibility
+    set_random_seed(42)  # Você pode escolher qualquer valor de semente desejado
+
     config = {
         "server_round": server_round,  # The current round of federated learning
         "local_epochs": 20, # "local_epochs": 1 if server_round < 2 else 2,  #
@@ -332,6 +349,8 @@ def fit_config(server_round: int):
     }
     return config
 
+# Inicialize o modelo global com pesos aleatórios antes da estratégia
+set_random_seed(42)  # Configuração da semente antes da inicialização
 
 strategy = fl.server.strategy.FedAvg(
     fraction_fit=1, # 100% dos clientes serão selecionados para participar da etapa de treinamento em cada rodada

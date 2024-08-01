@@ -311,17 +311,29 @@ class FedCustom(Strategy):
     def adaptive_learning_rate(self, initial_lr, decay_factor, round_num):
         return initial_lr / (1 + decay_factor * round_num)
 
+    # def fairness_regularization(self, server_round, loss, global_mean_loss, global_groups_variance, lambda_fairness):
+    #     diff_loss_global_mean = loss - global_mean_loss
+        
+    #     mean_diff_loss = np.sqrt(np.mean(diff_loss_global_mean ** 2))
+    #     mean_global_groups_variance = np.sqrt(np.mean(global_groups_variance ** 2))
+    #     scaling_factor = mean_diff_loss / mean_global_groups_variance if mean_global_groups_variance != 0 else 1
+    #     scaled_global_groups_variance = global_groups_variance * scaling_factor
+    #     fairness_penalty = diff_loss_global_mean * (lambda_fairness + scaled_global_groups_variance)
+    #     fairness_penalty = max(fairness_penalty, -diff_loss_global_mean)
+    #     adjusted_loss = loss + fairness_penalty
+    #     return adjusted_loss
+
     def fairness_regularization(self, server_round, loss, global_mean_loss, global_groups_variance, lambda_fairness):
         diff_loss_global_mean = loss - global_mean_loss
-        
-        mean_diff_loss = np.sqrt(np.mean(diff_loss_global_mean ** 2))
         mean_global_groups_variance = np.sqrt(np.mean(global_groups_variance ** 2))
-        scaling_factor = mean_diff_loss / mean_global_groups_variance if mean_global_groups_variance != 0 else 1
-        scaled_global_groups_variance = global_groups_variance * scaling_factor
-        fairness_penalty = diff_loss_global_mean * (lambda_fairness + scaled_global_groups_variance)
-        fairness_penalty = max(fairness_penalty, -diff_loss_global_mean)
+        # Usando um quadrado da diferença para aumentar a penalização
+        scaling_factor = mean_global_groups_variance if mean_global_groups_variance != 0 else 1
+        fairness_penalty = diff_loss_global_mean ** 2 * (lambda_fairness + scaling_factor)
+        # Aplicando um limite à penalidade
+        #fairness_penalty = min(MAX_PENALTY, fairness_penalty)
         adjusted_loss = loss + fairness_penalty
         return adjusted_loss
+
 
     def configure_fit(self, server_round: int, parameters: Parameters, client_manager: ClientManager) -> List[Tuple[ClientProxy, FitIns]]:
         sample_size, min_num_clients = self.num_fit_clients(client_manager.num_available())

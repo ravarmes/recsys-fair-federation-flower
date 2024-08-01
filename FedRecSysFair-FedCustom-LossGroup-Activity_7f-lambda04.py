@@ -449,6 +449,27 @@ class FedCustom(fl.server.strategy.Strategy):
             fairness_loss = self.fairness_regularization(server_round, local_loss, global_mean_loss, global_groups_variance, lambda_fairness=0.4)
             fairness_losses.append((parameters_to_ndarrays(fit_res.parameters), fairness_loss))
 
+        # Realizar agregação com ajuste e normalização dos pesos
+        def adjust_and_normalize_weights(weights):
+            # Separar pesos e escalas
+            scales = [weight[1] for weight in weights]
+            min_scale = min(scales)
+
+            # Adicionar constante para ter pesos não negativos
+            if min_scale < 0:
+                weights = [(params, scale - min_scale) for params, scale in weights]
+            
+            # Recalcular total_weight após ajuste
+            total_weight = sum(weight for _, weight in weights)
+
+            # Normalizar os pesos novamente
+            if total_weight > 0:
+                weights = [(params, weight / total_weight) for params, weight in weights]
+
+            return weights
+
+        adjusted_fairness_losses = adjust_and_normalize_weights(fairness_losses)
+
         def aggregate(weights):
             total_weight = sum(weight for _, weight in weights)
             weighted_avg = [np.zeros_like(weight) for weight in weights[0][0]]
@@ -457,8 +478,8 @@ class FedCustom(fl.server.strategy.Strategy):
                     weighted_avg[i] += (weight[i] * (scale / total_weight))
             return weighted_avg
 
-        parameters_aggregated = ndarrays_to_parameters(aggregate(fairness_losses))
-        
+        parameters_aggregated = ndarrays_to_parameters(aggregate(adjusted_fairness_losses))
+
         metrics_aggregated = {}
         for client_index, (client, fit_res) in enumerate(results):
             loss = fit_res.metrics.get('loss', 0)

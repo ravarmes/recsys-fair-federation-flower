@@ -382,7 +382,8 @@ class FedCustom(fl.server.strategy.Strategy):
         # Cálculo da penalidade de fairness
         diff_loss_global_mean = loss - global_mean_loss
         fairness_penalty = diff_loss_global_mean * (lambda_fairness + normalized_variance)
-        loss_ajusted = loss + fairness_penalty
+        # loss_ajusted = loss + fairness_penalty
+        loss_ajusted = max(0, loss + fairness_penalty)
 
         # # Depuração
         # # Abrindo o arquivo de log
@@ -416,6 +417,7 @@ class FedCustom(fl.server.strategy.Strategy):
 
         return [(client, FitIns(parameters, config)) for client in clients]
 
+
     def aggregate_fit(self, server_round: int, results: List[Tuple[ClientProxy, FitRes]], failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]]) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
         """Agrega os parâmetros dos modelos treinados pelos clientes."""
         G_ACTIVITY = {1: list(range(0, 15)), 2: list(range(15, 300))}
@@ -444,7 +446,7 @@ class FedCustom(fl.server.strategy.Strategy):
         fairness_losses = []
         for client_index, (client, fit_res) in enumerate(results):
             local_loss = fit_res.metrics.get('loss', 0)
-            fairness_loss = self.fairness_regularization(server_round, local_loss, global_mean_loss, global_groups_variance, lambda_fairness=0.2)
+            fairness_loss = self.fairness_regularization(server_round, local_loss, global_mean_loss, global_groups_variance, lambda_fairness=0.4)
             fairness_losses.append((parameters_to_ndarrays(fit_res.parameters), fairness_loss))
 
         def aggregate(weights):
@@ -466,6 +468,7 @@ class FedCustom(fl.server.strategy.Strategy):
             self.all_weights.append(weight)
         
         return parameters_aggregated, metrics_aggregated
+
 
     def configure_evaluate(self, server_round: int, parameters: Parameters, client_manager: ClientManager) -> List[Tuple[ClientProxy, EvaluateIns]]:
         """Configura a avaliação dos clientes."""

@@ -334,7 +334,7 @@ class FedCustom(Strategy):
     #     adjusted_loss = loss + fairness_penalty
     #     return adjusted_loss
 
-    def fairness_regularization(self, loss, global_mean_loss, global_groups_variance, lambda_fairness):
+    def fairness_regularization(self, server_round, loss, global_mean_loss, global_groups_variance, lambda_fairness):
         diff_loss_global_mean = loss - global_mean_loss
         fairness_penalty = diff_loss_global_mean * (lambda_fairness + global_groups_variance * 1000)
         return loss + fairness_penalty

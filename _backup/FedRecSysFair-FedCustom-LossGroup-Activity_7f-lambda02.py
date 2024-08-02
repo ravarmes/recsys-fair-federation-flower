@@ -52,6 +52,87 @@ def verificar_trainloaders(trainloaders):
             print("============== Fim do DataLoader ============")
             print()
 
+def verificar_datasets(trainloaders, valloaders, testloader):
+    """Verifica e imprime o conteúdo de cada DataLoader."""
+    print("============== Trainloaders ============\n")
+    for i, trainloader in enumerate(trainloaders):
+        if i == 0:
+            print(f"Trainloader {i+1} (Cliente {i+1}):")
+            for data in trainloader:
+                inputs, labels = data
+                print("Inputs (Usuário, Item):", inputs)
+                print("Labels (Avaliações):", labels)
+                print() 
+            print("============== Fim do DataLoader ============")
+            print()
+
+
+    print("\n\n============== Valloader ============\n")
+    for i, valloader in enumerate(valloaders):
+        if i == 0:
+            print(f"Valloader {i+1} (Cliente {i+1}):")
+            for data in valloader:
+                inputs, labels = data
+                print("Inputs (Usuário, Item):", inputs)
+                print("Labels (Avaliações):", labels)
+                print() 
+            print("============== Fim do DataLoader ============")
+            print()           
+
+    print("\n\n============== Testloader ============\n")
+    for data in testloader:
+        inputs, labels = data
+        print("Inputs (Usuário, Item):", inputs)
+        print("Labels (Avaliações):", labels)
+        print() 
+    print("============== Fim do DataLoader ============")
+    print()
+
+def verificar_datasets_file(trainloaders, valloaders, testloader):
+    """Verifica e imprime o conteúdo de cada DataLoader no arquivo datasets.txt."""
+    
+    # Abre o arquivo em modo de escrita
+    with open('datasets.txt', 'w', encoding='utf-8') as file:
+        def custom_print(*args, **kwargs):
+            # Redireciona a função print para escrever no arquivo
+            print(*args, file=file, **kwargs)
+        
+        custom_print("============== Trainloaders ============\n")
+        for i, trainloader in enumerate(trainloaders):
+            if i == 0:
+                custom_print(f"Trainloader {i+1} (Cliente {i+1}):")
+                for data in trainloader:
+                    inputs, labels = data
+                    custom_print("Inputs (Usuário, Item):", inputs)
+                    custom_print("Labels (Avaliações):", labels)
+                    custom_print() 
+                custom_print("============== Fim do DataLoader ============")
+                custom_print()
+
+
+        custom_print("\n\n============== Valloader ============\n")
+        for i, valloader in enumerate(valloaders):
+            if i == 0:
+                custom_print(f"Valloader {i+1} (Cliente {i+1}):")
+                for data in valloader:
+                    inputs, labels = data
+                    custom_print("Inputs (Usuário, Item):", inputs)
+                    custom_print("Labels (Avaliações):", labels)
+                    custom_print() 
+                custom_print("============== Fim do DataLoader ============")
+                custom_print()           
+
+        custom_print("\n\n============== Testloader ============\n")
+        for data in testloader:
+            inputs, labels = data
+            custom_print("Inputs (Usuário, Item):", inputs)
+            custom_print("Labels (Avaliações):", labels)
+            custom_print() 
+        custom_print("============== Fim do DataLoader ============")
+        custom_print()
+
+
+
 def set_random_seed(seed: int):
     """Função para configurar as sementes para reprodutibilidade."""
     np.random.seed(seed)
@@ -130,6 +211,7 @@ def load_datasets(num_clients: int, filename: str, seed: int = 42):
 
 avaliacoes_df, trainloaders, valloaders, testloader = load_datasets(NUM_CLIENTS, filename="X.xlsx")
 # verificar_trainloaders(trainloaders)
+verificar_datasets_file(trainloaders, valloaders, testloader)
 
 
 class Net(nn.Module):

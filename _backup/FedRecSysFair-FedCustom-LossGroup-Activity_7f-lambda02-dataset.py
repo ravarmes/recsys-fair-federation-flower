@@ -52,15 +52,99 @@ def verificar_trainloaders(trainloaders):
             print("============== Fim do DataLoader ============")
             print()
 
-def set_random_seed(seed: int):
-    """Função para configurar as sementes para reprodutibilidade."""
-    np.random.seed(seed)
+def verificar_datasets(trainloaders, valloaders, testloader):
+    """Verifica e imprime o conteúdo de cada DataLoader."""
+    print("============== Trainloaders ============\n")
+    for i, trainloader in enumerate(trainloaders):
+        if i == 0:
+            print(f"Trainloader {i+1} (Cliente {i+1}):")
+            for data in trainloader:
+                inputs, labels = data
+                print("Inputs (Usuário, Item):", inputs)
+                print("Labels (Avaliações):", labels)
+                print() 
+            print("============== Fim do DataLoader ============")
+            print()
+
+
+    print("\n\n============== Valloader ============\n")
+    for i, valloader in enumerate(valloaders):
+        if i == 0:
+            print(f"Valloader {i+1} (Cliente {i+1}):")
+            for data in valloader:
+                inputs, labels = data
+                print("Inputs (Usuário, Item):", inputs)
+                print("Labels (Avaliações):", labels)
+                print() 
+            print("============== Fim do DataLoader ============")
+            print()           
+
+    print("\n\n============== Testloader ============\n")
+    for data in testloader:
+        inputs, labels = data
+        print("Inputs (Usuário, Item):", inputs)
+        print("Labels (Avaliações):", labels)
+        print() 
+    print("============== Fim do DataLoader ============")
+    print()
+
+def verificar_datasets_file(trainloaders, valloaders, testloader):
+    """Verifica e imprime o conteúdo de cada DataLoader no arquivo datasets.txt."""
+    
+    # Abre o arquivo em modo de escrita
+    with open('datasets.txt', 'w', encoding='utf-8') as file:
+        def custom_print(*args, **kwargs):
+            # Redireciona a função print para escrever no arquivo
+            print(*args, file=file, **kwargs)
+        
+        custom_print("============== Trainloaders ============\n")
+        for i, trainloader in enumerate(trainloaders):
+            if i == 0:
+                custom_print(f"Trainloader {i+1} (Cliente {i+1}):")
+                for data in trainloader:
+                    inputs, labels = data
+                    custom_print("Inputs (Usuário, Item):", inputs)
+                    custom_print("Labels (Avaliações):", labels)
+                    custom_print() 
+                custom_print("============== Fim do DataLoader ============")
+                custom_print()
+
+
+        custom_print("\n\n============== Valloader ============\n")
+        for i, valloader in enumerate(valloaders):
+            if i == 0:
+                custom_print(f"Valloader {i+1} (Cliente {i+1}):")
+                for data in valloader:
+                    inputs, labels = data
+                    custom_print("Inputs (Usuário, Item):", inputs)
+                    custom_print("Labels (Avaliações):", labels)
+                    custom_print() 
+                custom_print("============== Fim do DataLoader ============")
+                custom_print()           
+
+        custom_print("\n\n============== Testloader ============\n")
+        for data in testloader:
+            inputs, labels = data
+            custom_print("Inputs (Usuário, Item):", inputs)
+            custom_print("Labels (Avaliações):", labels)
+            custom_print() 
+        custom_print("============== Fim do DataLoader ============")
+        custom_print()
+
+
+
+import numpy as np
+import pandas as pd
+import torch
+from torch.utils.data import DataLoader, TensorDataset, random_split
+import random
+
+def set_random_seed(seed):
     random.seed(seed)
+    np.random.seed(seed)
     torch.manual_seed(seed)
-    torch.cuda.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)  # Para GPUs com múltiplas GPUs
-    torch.backends.cudnn.deterministic = True
-    torch.backends.cudnn.benchmark = False
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
 
 def load_datasets(num_clients: int, filename: str, seed: int = 42):
     """Carrega e divide datasets para os clientes."""
@@ -76,60 +160,89 @@ def load_datasets(num_clients: int, filename: str, seed: int = 42):
     cliente_avaliacoes = {usuario: [] for usuario in np.unique(X)}
     for usuario, item, rating in zip(X, y, ratings):
         cliente_avaliacoes[usuario].append((usuario, item, rating))
+
+    train_data = []
+    val_data = []
+    all_train_val_data = set()
     
+    for cliente_id, avaliacoes in cliente_avaliacoes.items():
+        random.shuffle(avaliacoes)
+        num_avaliacoes = len(avaliacoes)
+        
+        # Dividir os dados (80% treino, 10% validação, 10% teste)
+        num_train = int(0.8 * num_avaliacoes)
+        num_val = int(0.1 * num_avaliacoes)
+        
+        train = avaliacoes[:num_train]
+        val = avaliacoes[num_train:num_train + num_val]
+        test = avaliacoes[num_train + num_val:]
+        
+        # Armazenar dados de treino e validação
+        train_data.extend(train)
+        val_data.extend(val)
+
+        # Manter um conjunto de todos os dados de treino e validação para verificação
+        all_train_val_data.update(train)
+        all_train_val_data.update(val)
+    
+    # Garantir que os dados de teste não estejam no conjunto de treino e validação
+    test_data = []
+    for cliente_id, avaliacoes in cliente_avaliacoes.items():
+        for avaliacao in avaliacoes:
+            if tuple(avaliacao) not in all_train_val_data:
+                test_data.append(avaliacao)
+    
+    # Convertendo dados para tensores
+    train_data = np.array(train_data)
+    val_data = np.array(val_data)
+    test_data = np.array(test_data)
+
+    train_X = train_data[:, :2]
+    train_y = train_data[:, 2]
+    val_X = val_data[:, :2]
+    val_y = val_data[:, 2]
+    test_X = test_data[:, :2]
+    test_y = test_data[:, 2]
+    
+    # Criar datasets para DataLoader
+    train_dataset = TensorDataset(torch.from_numpy(train_X).float(), torch.from_numpy(train_y).float())
+    val_dataset = TensorDataset(torch.from_numpy(val_X).float(), torch.from_numpy(val_y).float())
+    test_dataset = TensorDataset(torch.from_numpy(test_X).float(), torch.from_numpy(test_y).float())
+    
+    # Dividir train_dataset por clientes
     trainloaders = []
     valloaders = []
-    testloader_data = []
-    
-    for cliente_id in sorted(cliente_avaliacoes.keys()):
-        dados_cliente = np.array(cliente_avaliacoes[cliente_id])
-        X_train = dados_cliente[:, :2]
-        y_train = dados_cliente[:, 2]
-        dataset = TensorDataset(torch.from_numpy(X_train).float(), torch.from_numpy(y_train).float())
-        
-        len_val = len(dataset) // 10
-        len_train = len(dataset) - len_val
-        ds_train, ds_val = random_split(dataset, [len_train, len_val], generator=torch.Generator().manual_seed(seed))
+    for cliente_id in cliente_avaliacoes.keys():
+        # Pegar dados do cliente específicos
+        cliente_indices = [i for i in range(len(train_X)) if train_X[i, 0] == cliente_id]
+        cliente_val_indices = [i for i in range(len(val_X)) if val_X[i, 0] == cliente_id]
 
-        batch_size = 32 if cliente_id <= 14 else 16  # Definindo o tamanho do lote de acordo com o nível de atividade dos usuários
-        train_loader = DataLoader(ds_train, batch_size=batch_size, shuffle=True)
-        val_loader = DataLoader(ds_val, batch_size=batch_size, shuffle=False)
+        cliente_train_dataset = TensorDataset(
+            train_dataset.tensors[0][cliente_indices], 
+            train_dataset.tensors[1][cliente_indices]
+        )
+        
+        cliente_val_dataset = TensorDataset(
+            val_dataset.tensors[0][cliente_val_indices], 
+            val_dataset.tensors[1][cliente_val_indices]
+        )
+
+        batch_size = 32 if cliente_id <= 14 else 16
+        
+        train_loader = DataLoader(cliente_train_dataset, batch_size=batch_size, shuffle=True)
+        val_loader = DataLoader(cliente_val_dataset, batch_size=batch_size, shuffle=False)
 
         trainloaders.append(train_loader)
         valloaders.append(val_loader)
-        
-        # Adicionar dados de cada cliente para seleção de teste
-        testloader_data.extend(dados_cliente)
-
-    # Supondo que queiramos usar apenas 10% dos dados acumulados para o teste
-    num_test_samples = len(testloader_data)
-    test_data_sample = random.sample(testloader_data, num_test_samples // 8)  # 10% dos dados para teste
-
-    # Separar dados de teste para evitar sobreposição
-    test_data_set = set(map(tuple, test_data_sample))
-
-    # Modificação para acessar os tensores do dataset original
-    train_val_data_set = set(
-        map(tuple, sum([loader.dataset.dataset.tensors[0].numpy().tolist() for loader in trainloaders + valloaders], []))
-    )
-
-    # Garantir que os dados de teste não estejam nos dados de treinamento e validação
-    final_test_data = [dados for dados in testloader_data if tuple(dados) not in train_val_data_set]
     
-    if len(final_test_data) > 0:
-        final_test_sample = random.sample(final_test_data, min(len(final_test_data), num_test_samples // 8))
-    else:
-        final_test_sample = []
-
-    X_test_all = np.array(final_test_sample)[:, :2]
-    y_test_all = np.array(final_test_sample)[:, 2]
-    test_dataset = TensorDataset(torch.from_numpy(X_test_all).float(), torch.from_numpy(y_test_all).float())
     testloader = DataLoader(test_dataset, batch_size=32, shuffle=True)
 
     return df, trainloaders, valloaders, testloader
 
+
 avaliacoes_df, trainloaders, valloaders, testloader = load_datasets(NUM_CLIENTS, filename="X.xlsx")
 # verificar_trainloaders(trainloaders)
+verificar_datasets_file(trainloaders, valloaders, testloader)
 
 
 class Net(nn.Module):
@@ -382,7 +495,8 @@ class FedCustom(fl.server.strategy.Strategy):
         # Cálculo da penalidade de fairness
         diff_loss_global_mean = loss - global_mean_loss
         fairness_penalty = diff_loss_global_mean * (lambda_fairness + normalized_variance)
-        loss_ajusted = loss + fairness_penalty
+        # loss_ajusted = loss + fairness_penalty
+        loss_ajusted = max(0, loss + fairness_penalty)
 
         # # Depuração
         # # Abrindo o arquivo de log
@@ -416,6 +530,7 @@ class FedCustom(fl.server.strategy.Strategy):
 
         return [(client, FitIns(parameters, config)) for client in clients]
 
+
     def aggregate_fit(self, server_round: int, results: List[Tuple[ClientProxy, FitRes]], failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]]) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
         """Agrega os parâmetros dos modelos treinados pelos clientes."""
         G_ACTIVITY = {1: list(range(0, 15)), 2: list(range(15, 300))}
@@ -444,8 +559,29 @@ class FedCustom(fl.server.strategy.Strategy):
         fairness_losses = []
         for client_index, (client, fit_res) in enumerate(results):
             local_loss = fit_res.metrics.get('loss', 0)
-            fairness_loss = self.fairness_regularization(server_round, local_loss, global_mean_loss, global_groups_variance, lambda_fairness=0.6)
+            fairness_loss = self.fairness_regularization(server_round, local_loss, global_mean_loss, global_groups_variance, lambda_fairness=0.2)
             fairness_losses.append((parameters_to_ndarrays(fit_res.parameters), fairness_loss))
+
+        # Realizar agregação com ajuste e normalização dos pesos
+        def adjust_and_normalize_weights(weights):
+            # Separar pesos e escalas
+            scales = [weight[1] for weight in weights]
+            min_scale = min(scales)
+
+            # Adicionar constante para ter pesos não negativos
+            if min_scale < 0:
+                weights = [(params, scale - min_scale) for params, scale in weights]
+            
+            # Recalcular total_weight após ajuste
+            total_weight = sum(weight for _, weight in weights)
+
+            # Normalizar os pesos novamente
+            if total_weight > 0:
+                weights = [(params, weight / total_weight) for params, weight in weights]
+
+            return weights
+
+        adjusted_fairness_losses = adjust_and_normalize_weights(fairness_losses)
 
         def aggregate(weights):
             total_weight = sum(weight for _, weight in weights)
@@ -455,8 +591,8 @@ class FedCustom(fl.server.strategy.Strategy):
                     weighted_avg[i] += (weight[i] * (scale / total_weight))
             return weighted_avg
 
-        parameters_aggregated = ndarrays_to_parameters(aggregate(fairness_losses))
-        
+        parameters_aggregated = ndarrays_to_parameters(aggregate(adjusted_fairness_losses))
+
         metrics_aggregated = {}
         for client_index, (client, fit_res) in enumerate(results):
             loss = fit_res.metrics.get('loss', 0)
@@ -466,6 +602,7 @@ class FedCustom(fl.server.strategy.Strategy):
             self.all_weights.append(weight)
         
         return parameters_aggregated, metrics_aggregated
+
 
     def configure_evaluate(self, server_round: int, parameters: Parameters, client_manager: ClientManager) -> List[Tuple[ClientProxy, EvaluateIns]]:
         """Configura a avaliação dos clientes."""
@@ -519,7 +656,7 @@ if DEVICE.type == "cuda":
 fl.simulation.start_simulation(
     client_fn=client_fn,
     num_clients=NUM_CLIENTS,
-    config=fl.server.ServerConfig(num_rounds=24),
+    config=fl.server.ServerConfig(num_rounds=3),
     strategy=FedCustom(),
     client_resources=client_resources,
 )

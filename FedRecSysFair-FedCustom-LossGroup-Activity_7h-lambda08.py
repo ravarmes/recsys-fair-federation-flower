@@ -424,7 +424,7 @@ class FedCustom(fl.server.strategy.Strategy):
         return initial_lr / (1 + decay_factor * round_num)
 
     def fairness_regularization(self, loss, global_mean_loss, global_groups_variance, group_mean_loss, lambda_fairness):
-        fairness_penalty = group_mean_loss * (lambda_fairness + global_groups_variance * 100)
+        fairness_penalty = group_mean_loss * (lambda_fairness + global_groups_variance * 10)
         return loss + fairness_penalty
 
     def configure_fit(self, server_round: int, parameters: Parameters, client_manager: ClientManager) -> List[Tuple[ClientProxy, FitIns]]:

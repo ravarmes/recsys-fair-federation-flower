@@ -423,8 +423,10 @@ class FedCustom(fl.server.strategy.Strategy):
         """Calcula a taxa de aprendizado adaptativa."""
         return initial_lr / (1 + decay_factor * round_num)
 
+    # Função de Regulação com Introdução de Componentes de Perda Adicionais
     def fairness_regularization(self, client_index, loss, global_groups_variance, group_mean_loss, lambda_fairness, scale_factor=10):
         fairness_penalty = (group_mean_loss) * scale_factor * (lambda_fairness + global_groups_variance * scale_factor)
+        additional_regularization = torch.norm(torch.grad(loss), p=2)
         if client_index == 0 or client_index == 100:
             print("\n\nfairness_regularization -------------------------------")
             print("client_index: ", client_index)
@@ -434,7 +436,8 @@ class FedCustom(fl.server.strategy.Strategy):
             print("group_mean_loss: ", group_mean_loss)
             print("fairness_penalty: ", fairness_penalty)
             print("loss + fairness_penalty: ", loss + fairness_penalty)
-        return loss + fairness_penalty
+        return loss + fairness_penalty + additional_regularization
+
 
 
     def configure_fit(self, server_round: int, parameters: Parameters, client_manager: ClientManager) -> List[Tuple[ClientProxy, FitIns]]:

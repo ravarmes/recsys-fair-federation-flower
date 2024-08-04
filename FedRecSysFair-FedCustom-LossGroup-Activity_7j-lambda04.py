@@ -423,8 +423,10 @@ class FedCustom(fl.server.strategy.Strategy):
         """Calcula a taxa de aprendizado adaptativa."""
         return initial_lr / (1 + decay_factor * round_num)
 
-    def fairness_regularization(self, client_index, loss, global_groups_variance, group_mean_loss, lambda_fairness, scale_factor=10):
-        fairness_penalty = (group_mean_loss) * scale_factor * (lambda_fairness + global_groups_variance * scale_factor)
+    # Função de Regulação com Normalização das Perdas
+    def fairness_regularization(self, client_index, loss, global_groups_variance, group_mean_loss, lambda_fairness):
+        normalized_loss = loss / (1 + global_groups_variance)
+        fairness_penalty = (group_mean_loss) * (lambda_fairness)
         if client_index == 0 or client_index == 100:
             print("\n\nfairness_regularization -------------------------------")
             print("client_index: ", client_index)
@@ -434,7 +436,7 @@ class FedCustom(fl.server.strategy.Strategy):
             print("group_mean_loss: ", group_mean_loss)
             print("fairness_penalty: ", fairness_penalty)
             print("loss + fairness_penalty: ", loss + fairness_penalty)
-        return loss + fairness_penalty
+        return normalized_loss + fairness_penalty
 
 
     def configure_fit(self, server_round: int, parameters: Parameters, client_manager: ClientManager) -> List[Tuple[ClientProxy, FitIns]]:
@@ -484,7 +486,7 @@ class FedCustom(fl.server.strategy.Strategy):
             client_group = next(group for group, client_indexes in G_ACTIVITY.items() if client_index in client_indexes)
             group_mean_loss = self.loss_avg_per_group[client_group]
             
-            fairness_loss = self.fairness_regularization(client_index, local_loss, global_groups_variance, group_mean_loss, lambda_fairness=0.2)
+            fairness_loss = self.fairness_regularization(client_index, local_loss, global_groups_variance, group_mean_loss, lambda_fairness=0.4)
             fairness_losses.append((parameters_to_ndarrays(fit_res.parameters), fairness_loss))
 
         def aggregate(weights):

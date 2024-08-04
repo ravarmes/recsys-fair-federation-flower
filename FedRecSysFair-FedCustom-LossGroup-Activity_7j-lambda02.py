@@ -424,9 +424,9 @@ class FedCustom(fl.server.strategy.Strategy):
         return initial_lr / (1 + decay_factor * round_num)
 
     # Função de Regulação com Normalização das Perdas
-    def fairness_regularization(self, client_index, loss, global_groups_variance, group_mean_loss, lambda_fairness, scale_factor=10):
+    def fairness_regularization(self, client_index, loss, global_groups_variance, group_mean_loss, lambda_fairness):
         normalized_loss = loss / (1 + global_groups_variance)
-        fairness_penalty = (group_mean_loss) * scale_factor * (lambda_fairness + global_groups_variance * scale_factor)
+        fairness_penalty = (group_mean_loss) * (lambda_fairness)
         if client_index == 0 or client_index == 100:
             print("\n\nfairness_regularization -------------------------------")
             print("client_index: ", client_index)

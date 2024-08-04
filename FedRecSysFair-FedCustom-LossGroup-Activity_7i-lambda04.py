@@ -423,8 +423,8 @@ class FedCustom(fl.server.strategy.Strategy):
         """Calcula a taxa de aprendizado adaptativa."""
         return initial_lr / (1 + decay_factor * round_num)
 
-    def fairness_regularization(self, client_index, loss, global_groups_variance, group_mean_loss, lambda_fairness):
-        fairness_penalty = (group_mean_loss ** 2) * (lambda_fairness + global_groups_variance * 10)
+    def fairness_regularization(self, client_index, loss, global_groups_variance, group_mean_loss, lambda_fairness, scale_factor=10):
+        fairness_penalty = (group_mean_loss) * scale_factor * (lambda_fairness + global_groups_variance * scale_factor)
         if client_index == 0 or client_index == 100:
             print("\n\nfairness_regularization -------------------------------")
             print("client_index: ", client_index)
@@ -432,6 +432,7 @@ class FedCustom(fl.server.strategy.Strategy):
             print("lambda_fairness: ", lambda_fairness)
             print("global_groups_variance: ", global_groups_variance)
             print("group_mean_loss: ", group_mean_loss)
+            print("fairness_penalty: ", fairness_penalty)
             print("loss + fairness_penalty: ", loss + fairness_penalty)
         return loss + fairness_penalty
 

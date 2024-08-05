@@ -2,7 +2,7 @@ import os
 
 # ACTIVITY
 
-os.system("python FedRecSysFair-FedCustom-LossGroup-Activity_7f-lambda02.py 2> FedRecSysFair-FedCustom-LossGroup-Activity_7f-lambda02-1.txt")
+# os.system("python FedRecSysFair-FedCustom-LossGroup-Activity_7f-lambda02.py 2> FedRecSysFair-FedCustom-LossGroup-Activity_7f-lambda02-1.txt")
 # os.system("python FedRecSysFair-FedCustom-LossGroup-Activity_7f-lambda02.py 2> FedRecSysFair-FedCustom-LossGroup-Activity_7f-lambda02-2.txt")
 # os.system("python FedRecSysFair-FedCustom-LossGroup-Activity_7f-lambda02.py 2> FedRecSysFair-FedCustom-LossGroup-Activity_7f-lambda02-3.txt")
 

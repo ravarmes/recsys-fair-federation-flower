@@ -461,18 +461,18 @@ class FedCustom(fl.server.strategy.Strategy):
         fairness_penalty = (group_mean_loss) * (lambda_fairness + normalized_variance)
 
 
-        # if client_index == 0 or client_index == 100:
-        with open("fairness_debug.log", "a") as log_file:
-            log_file.write("\n\nfairness_regularization -------------------------------\n")
-            log_file.write(f"server_round: {server_round}\n")
-            log_file.write(f"client_index: {client_index}\n")
-            log_file.write(f"loss: {loss}\n")
-            log_file.write(f"lambda_fairness: {lambda_fairness}\n")
-            log_file.write(f"global_groups_variance: {global_groups_variance}\n")
-            log_file.write(f"normalized_variance: {normalized_variance}\n")
-            log_file.write(f"group_mean_loss: {group_mean_loss}\n")
-            log_file.write(f"fairness_penalty: {fairness_penalty}\n")
-            log_file.write(f"loss + fairness_penalty: {loss + fairness_penalty}\n")
+        # # if client_index == 0 or client_index == 100:
+        # with open("fairness_debug.log", "a") as log_file:
+        #     log_file.write("\n\nfairness_regularization -------------------------------\n")
+        #     log_file.write(f"server_round: {server_round}\n")
+        #     log_file.write(f"client_index: {client_index}\n")
+        #     log_file.write(f"loss: {loss}\n")
+        #     log_file.write(f"lambda_fairness: {lambda_fairness}\n")
+        #     log_file.write(f"global_groups_variance: {global_groups_variance}\n")
+        #     log_file.write(f"normalized_variance: {normalized_variance}\n")
+        #     log_file.write(f"group_mean_loss: {group_mean_loss}\n")
+        #     log_file.write(f"fairness_penalty: {fairness_penalty}\n")
+        #     log_file.write(f"loss + fairness_penalty: {loss + fairness_penalty}\n")
 
         return loss + fairness_penalty
 

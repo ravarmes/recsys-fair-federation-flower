@@ -440,40 +440,7 @@ class FedCustom(fl.server.strategy.Strategy):
 
     # Função de Regulação com Normalização das Perdas
     def fairness_regularization(self, server_round, client_index, loss, group_mean_loss, global_groups_variance, lambda_fairness):
-        
-        """Calcula a penalidade de fairness, normalizando global_groups_variance."""
-        # Normalizar global_groups_variance para o intervalo [0.2, 0.8]
-        # Considerando que o valor mínimo de global_groups_variance é 1e-5 e o máximo é 0.001
-        min_var = 0.0001
-        max_var = 0.0010
-        
-        if global_groups_variance < min_var:
-            normalized_variance = 0.2  # Se estiver abaixo do mínimo, atribui o mínimo
-        elif global_groups_variance > max_var:
-            normalized_variance = 0.8  # Se estiver acima do máximo, atribui o máximo
-        else:
-            # Normalização para o intervalo [0, 1]
-            normalized_range = (global_groups_variance - min_var) / (max_var - min_var)
-            # Escalonar para [0.2, 0.8]
-            normalized_variance = 0.2 + normalized_range * (0.8 - 0.2)
-
-        # fairness_penalty = (loss + group_mean_loss) * (lambda_fairness + normalized_variance)
         fairness_penalty = 0
-
-
-        # # if client_index == 0 or client_index == 100:
-        # with open("fairness_debug.log", "a") as log_file:
-        #     log_file.write("\n\nfairness_regularization -------------------------------\n")
-        #     log_file.write(f"server_round: {server_round}\n")
-        #     log_file.write(f"client_index: {client_index}\n")
-        #     log_file.write(f"loss: {loss}\n")
-        #     log_file.write(f"lambda_fairness: {lambda_fairness}\n")
-        #     log_file.write(f"global_groups_variance: {global_groups_variance}\n")
-        #     log_file.write(f"normalized_variance: {normalized_variance}\n")
-        #     log_file.write(f"group_mean_loss: {group_mean_loss}\n")
-        #     log_file.write(f"fairness_penalty: {fairness_penalty}\n")
-        #     log_file.write(f"loss + fairness_penalty: {loss + fairness_penalty}\n")
-
         return loss + fairness_penalty
 
 

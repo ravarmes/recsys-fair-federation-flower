@@ -457,8 +457,8 @@ class FedCustom(fl.server.strategy.Strategy):
             # Escalonar para [0.2, 0.8]
             normalized_variance = 0.2 + normalized_range * (0.8 - 0.2)
 
-        fairness_penalty = (loss + group_mean_loss) * (lambda_fairness + normalized_variance)
-        # fairness_penalty = 0
+        # fairness_penalty = (loss + group_mean_loss) * (lambda_fairness + normalized_variance)
+        fairness_penalty = 0
 
 
         # # if client_index == 0 or client_index == 100:

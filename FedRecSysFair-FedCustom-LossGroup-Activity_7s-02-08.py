@@ -439,13 +439,13 @@ class FedCustom(fl.server.strategy.Strategy):
 
 
     # Função de Regulação com Normalização das Perdas
-    def fairness_regularization(self, server_round, client_index, loss, global_mean_loss, global_groups_variance, lambda_fairness):
+    def fairness_regularization(self, server_round, client_index, loss, group_mean_loss, global_groups_variance, lambda_fairness):
         
         """Calcula a penalidade de fairness, normalizando global_groups_variance."""
         # Normalizar global_groups_variance para o intervalo [0.2, 0.8]
         # Considerando que o valor mínimo de global_groups_variance é 1e-5 e o máximo é 0.001
-        min_var = 0.0001
-        max_var = 0.0010
+        min_var = 0.00001
+        max_var = 0.00100
         
         if global_groups_variance < min_var:
             normalized_variance = 0.2  # Se estiver abaixo do mínimo, atribui o mínimo
@@ -457,7 +457,10 @@ class FedCustom(fl.server.strategy.Strategy):
             # Escalonar para [0.2, 0.8]
             normalized_variance = 0.2 + normalized_range * (0.8 - 0.2)
 
-        fairness_penalty = (global_mean_loss) * (normalized_variance)
+        fairness_penalty = (group_mean_loss) * (normalized_variance)
+
+        # diff_loss_global_mean = loss - global_mean_loss
+        # fairness_penalty = diff_loss_global_mean * (lambda_fairness + normalized_variance)
 
         # # if client_index == 0 or client_index == 100:
         # with open("fairness_debug.log", "a") as log_file:
@@ -510,15 +513,21 @@ class FedCustom(fl.server.strategy.Strategy):
         print(f"Número total de exemplos agregados: {total_examples}")
 
         global_groups_variance = np.var(list(self.loss_avg_per_group.values()))
-        global_mean_loss = np.mean(list(self.loss_avg_per_group.values()))
+        # Não precisamos mais deste calculo para a global_mean_loss
+        # global_mean_loss = np.mean(list(self.loss_avg_per_group.values()))
 
         print(f"global_groups_variance: {global_groups_variance}")
-        print(f"global_mean_loss: {global_mean_loss}")
 
         fairness_losses = []
         for client_index, (client, fit_res) in enumerate(results):
             local_loss = fit_res.metrics.get('loss', 0)
-            fairness_loss = self.fairness_regularization(server_round, client_index, local_loss, global_mean_loss, global_groups_variance, lambda_fairness=0.2)
+
+            # Identifica o grupo do cliente atual
+            group_id = next(group for group, client_indexes in G_ACTIVITY.items() if client_index in client_indexes)
+            group_mean_loss = self.loss_avg_per_group[group_id]
+
+            # Usar group_mean_loss na chamada para fairness_regularization
+            fairness_loss = self.fairness_regularization(server_round, client_index, local_loss, group_mean_loss, global_groups_variance, lambda_fairness=0.2)
             fairness_losses.append((parameters_to_ndarrays(fit_res.parameters), fairness_loss))
 
         def aggregate(weights):

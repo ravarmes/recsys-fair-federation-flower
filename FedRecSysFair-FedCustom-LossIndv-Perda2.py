@@ -447,6 +447,8 @@ class FedCustom(Strategy):
                     (client, FitIns(parameters, config_g2))
                 )
         return fit_configurations
+    
+    
 
     def aggregate_fit(
         self,
@@ -454,7 +456,7 @@ class FedCustom(Strategy):
         results: List[Tuple[ClientProxy, FitRes]],
         failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]],
     ) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
-        """Aggregate training results using weighted average."""
+        """Aggregate training results using weighted average where higher loss gives higher weight."""
 
         total_examples = sum(fit_res.num_examples for _, fit_res in results)
         print(f"Número total de exemplos agregados: {total_examples}")
@@ -466,11 +468,10 @@ class FedCustom(Strategy):
             for _, fit_res in results
         ]
 
-
         def aggregate(weights: List[Tuple[List[np.ndarray], float]]) -> List[np.ndarray]:
             """Compute weighted average by layers based on losses."""
-            # Calculate the total weight based on losses (note: lower loss means higher weight)
-            total_weight = sum(1 / loss for _, loss in weights)
+            # Calculate the total weight based on losses (note: higher loss means higher weight)
+            total_weight = sum(loss for _, loss in weights)
             
             # Extract number of layers from the first weights entry (assuming all models have the same structure)
             num_layers = len(weights[0][0])
@@ -480,7 +481,7 @@ class FedCustom(Strategy):
 
             # Accumulate weighted weights for each layer
             for model_weights, loss in weights:
-                weight = (1 / loss) / total_weight  # Calculate weight based on loss
+                weight = loss / total_weight  # Calculate weight based on loss
                 for i in range(num_layers):
                     if weighted_weights[i].shape != model_weights[i].shape:
                         raise ValueError(f"Shape mismatch at layer {i}: expected {weighted_weights[i].shape}, got {model_weights[i].shape}")
@@ -489,8 +490,6 @@ class FedCustom(Strategy):
             
             return weighted_weights
 
-
-
         parameters_aggregated = ndarrays_to_parameters(aggregate(weights_results))
         metrics_aggregated = {}
         for client_index, (client, fit_res) in enumerate(results):
@@ -498,6 +497,7 @@ class FedCustom(Strategy):
             weight = loss / total_loss
             print(f"Cliente {client.cid}: Perda = {loss}, Peso = {weight}")
         return parameters_aggregated, metrics_aggregated
+
 
     def configure_evaluate(
         self, server_round: int, parameters: Parameters, client_manager: ClientManager

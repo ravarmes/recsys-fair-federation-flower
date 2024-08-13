@@ -13,9 +13,9 @@ import os
 # # ACTIVITY
 
 
-os.system("python FedRecSysFair-FedCustom-LossGroup-Activity_7s-02-08.py 2> FedRecSysFair-FedCustom-LossGroup-Activity_7s-02-08-1.txt")
-os.system("python FedRecSysFair-FedCustom-LossGroup-Activity_7s-02-08.py 2> FedRecSysFair-FedCustom-LossGroup-Activity_7s-02-08-2.txt")
-os.system("python FedRecSysFair-FedCustom-LossGroup-Activity_7s-02-08.py 2> FedRecSysFair-FedCustom-LossGroup-Activity_7s-02-08-3.txt")
+os.system("python FedRecSysFair-FedCustom-LossGroup-Activity_7s-02-08.py 2> FedRecSysFair-FedCustom-LossGroup-Activity_7s-02-08-4.txt")
+os.system("python FedRecSysFair-FedCustom-LossGroup-Activity_7s-02-08.py 2> FedRecSysFair-FedCustom-LossGroup-Activity_7s-02-08-5.txt")
+os.system("python FedRecSysFair-FedCustom-LossGroup-Activity_7s-02-08.py 2> FedRecSysFair-FedCustom-LossGroup-Activity_7s-02-08-6.txt")
 # os.system("python FedRecSysFair-FedCustom-LossGroup-Activity_7s-02-08.py 2> FedRecSysFair-FedCustom-LossGroup-Activity_7s-02-08-4.txt")
 # os.system("python FedRecSysFair-FedCustom-LossGroup-Activity_7s-02-08.py 2> FedRecSysFair-FedCustom-LossGroup-Activity_7s-02-08-5.txt")
 

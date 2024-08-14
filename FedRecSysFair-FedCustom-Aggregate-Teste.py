@@ -430,6 +430,7 @@ class FedCustom(fl.server.strategy.Strategy):
         return "FedCustom"
 
     def initialize_parameters(self, client_manager: ClientManager) -> Optional[Parameters]:
+        print("\n\n----------------------------------def initialize_parameters------------------------------------\n\n")
         net = Net(300, 1000)
         ndarrays = get_parameters(net)
         return fl.common.ndarrays_to_parameters(ndarrays)
@@ -441,7 +442,7 @@ class FedCustom(fl.server.strategy.Strategy):
 
     # Função de Regulação com Normalização das Perdas
     def fairness_regularization(self, server_round, client_index, loss, group_mean_loss, global_groups_variance):
-        return loss
+        return loss + 1
 
 
     def configure_fit(self, server_round: int, parameters: Parameters, client_manager: ClientManager) -> List[Tuple[ClientProxy, FitIns]]:
@@ -460,9 +461,17 @@ class FedCustom(fl.server.strategy.Strategy):
 
 
     def aggregate_fit(self, server_round: int, results: List[Tuple[ClientProxy, FitRes]], failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]]) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
+        print("\n\n----------------------------------def aggregate_fit------------------------------------\n\n")
         """Agrega os parâmetros dos modelos treinados pelos clientes."""
         G_ACTIVITY = {1: list(range(0, 15)), 2: list(range(15, 300))}
         total_loss = sum(fit_res.metrics.get('loss', 0) for _, fit_res in results)
+
+        # Imprimir todos os valores de loss dos resultados
+        print("\nANTES DA REGULAÇÃO DE JUSTIÇA")
+        print("Valores de loss para cada cliente:")
+        for index, (client, fit_res) in enumerate(results):
+            loss = fit_res.metrics.get('loss', 0)
+            print(f"Cliente {index}: Loss = {loss}")
 
         group_losses = {}
         group_counts = {}
@@ -500,13 +509,30 @@ class FedCustom(fl.server.strategy.Strategy):
                 for _, fit_res in results
             ]
 
-        def weighted_loss_avg(results: List[Tuple[int, float]]) -> float:
-            """Aggregate evaluation results obtained from multiple clients."""
+        print("\n\nDEPOIS DA REGULAÇÃO DE JUSTIÇA")
+        print("Valores de loss para cada cliente:")
+        for index, (client, fit_res) in enumerate(results):
+            loss = fit_res.metrics.get('loss', 0)
+            print(f"Cliente {index}: Loss = {loss}")
+
+        def aggregate(results: List[Tuple[NDArrays, int]]) -> NDArrays:
+            """Compute weighted average."""
+            # Calculate the total number of examples used during training
             num_examples_total = sum(num_examples for (_, num_examples) in results)
-            weighted_losses = [num_examples * loss for num_examples, loss in results]
-            return sum(weighted_losses) / num_examples_total
-        
-        parameters_aggregated = ndarrays_to_parameters(weighted_loss_avg(weights_results))
+
+            # Create a list of weights, each multiplied by the related number of examples
+            weighted_weights = [
+                [layer * num_examples for layer in weights] for weights, num_examples in results
+            ]
+
+            # Compute average weights of each layer
+            weights_prime: NDArrays = [
+                reduce(np.add, layer_updates) / num_examples_total
+                for layer_updates in zip(*weighted_weights)
+            ]
+            return weights_prime
+
+        parameters_aggregated = ndarrays_to_parameters(aggregate(weights_results))
 
         metrics_aggregated = {}
         for client_index, (client, fit_res) in enumerate(results):
@@ -540,6 +566,8 @@ class FedCustom(fl.server.strategy.Strategy):
         return loss_aggregated, metrics_aggregated
 
     def evaluate(self, server_round: int, parameters: Parameters) -> Optional[Tuple[float, Dict[str, Scalar]]]:
+        print("\n\n----------------------------------def evaluate------------------------------------\n\n")
+
         """Avalia o modelo global na rodada atual."""
         net = Net(300, 1000).to(DEVICE)
         set_parameters(net, parameters_to_ndarrays(parameters))
@@ -571,7 +599,7 @@ if DEVICE.type == "cuda":
 fl.simulation.start_simulation(
     client_fn=client_fn,
     num_clients=NUM_CLIENTS,
-    config=fl.server.ServerConfig(num_rounds=24),
+    config=fl.server.ServerConfig(num_rounds=2),
     strategy=FedCustom(),
     client_resources=client_resources,
 )

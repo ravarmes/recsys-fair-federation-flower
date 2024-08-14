@@ -211,7 +211,7 @@ def load_datasets(num_clients: int, filename: str, seed: int = 42):
 
 avaliacoes_df, trainloaders, valloaders, testloader = load_datasets(NUM_CLIENTS, filename="X.xlsx")
 # verificar_trainloaders(trainloaders)
-# verificar_datasets_file(trainloaders, valloaders, testloader)
+verificar_datasets_file(trainloaders, valloaders, testloader)
 
 
 class Net(nn.Module):
@@ -334,10 +334,10 @@ def calculate_Rgrp(net):
     omega = ~avaliacoes_df.isnull()
     G_ACTIVITY = {1: list(range(0, 15)), 2: list(range(15, 300))}
     G_GENDER = {1: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 30, 32, 33, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 64, 65, 66, 67, 68, 69, 70, 71, 72, 74, 75, 76, 77, 78, 79, 80, 82, 83, 84, 85, 86, 87, 88, 89, 90, 93, 94, 95, 96, 99, 100, 102, 103, 105, 107, 108, 109, 110, 111, 112, 115, 117, 118, 120, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 146, 147, 148, 149, 151, 152, 153, 154, 156, 159, 160, 161, 162, 164, 165, 166, 168, 169, 170, 172, 174, 175, 176, 177, 178, 181, 182, 183, 184, 186, 187, 188, 189, 191, 194, 196, 198, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 218, 219, 220, 222, 223, 224, 226, 227, 229, 230, 231, 232, 233, 234, 237, 238, 239, 240, 245, 246, 247, 248, 249, 250, 251, 252, 255, 256, 257, 258, 259, 260, 261, 262, 263, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 293, 294, 295, 296, 297, 298, 299],
-                2: [14, 25, 31, 34, 35, 42, 63, 73, 81, 91, 92, 97, 98, 101, 104, 106, 113, 114, 116, 119, 121, 122, 133, 144, 145, 150, 155, 157, 158, 163, 167, 171, 173, 179, 180, 185, 190, 192, 193, 195, 197, 199, 213, 214, 215, 216, 217, 221, 225, 228, 235, 236, 241, 242, 243, 244, 253, 254, 264, 290]}
-    G_AGE = {1: [14, 132, 194, 262, 273], 
-             2: [8, 23, 26, 33, 48, 50, 61, 64, 70, 71, 76, 82, 86, 90, 92, 94, 96, 101, 107, 124, 126, 129, 134, 140, 149, 157, 158, 159, 163, 168, 171, 174, 175, 189, 191, 201, 207, 209, 215, 216, 222, 231, 237, 244, 246, 251, 255, 265, 270, 275, 282, 288, 290], 
-             3: [3, 6, 7, 9, 10, 11, 15, 16, 21, 22, 24, 28, 29, 31, 32, 34, 35, 37, 39, 40, 41, 42, 43, 44, 45, 51, 53, 55, 56, 59, 60, 63, 65, 66, 69, 72, 73, 74, 75, 79, 80, 81, 85, 89, 93, 97, 102, 103, 104, 106, 108, 109, 110, 111, 116, 118, 119, 120, 122, 128, 130, 131, 133, 135, 136, 138, 139, 141, 142, 143, 145, 147, 151, 155, 161, 164, 169, 170, 173, 176, 179, 181, 183, 186, 187, 188, 190, 192, 193, 195, 196, 198, 200, 202, 203, 204, 205, 206, 211, 212, 213, 217, 219, 220, 223, 225, 226, 229, 230, 232, 233, 234, 236, 238, 240, 241, 249, 252, 253, 254, 258, 260, 261, 264, 267, 268, 269, 276, 277, 279, 280, 283, 285, 286, 287, 289, 291, 293, 294, 295, 296, 298], 
+          2: [14, 25, 31, 34, 35, 42, 63, 73, 81, 91, 92, 97, 98, 101, 104, 106, 113, 114, 116, 119, 121, 122, 133, 144, 145, 150, 155, 157, 158, 163, 167, 171, 173, 179, 180, 185, 190, 192, 193, 195, 197, 199, 213, 214, 215, 216, 217, 221, 225, 228, 235, 236, 241, 242, 243, 244, 253, 254, 264, 290]}
+    G_AGE = {1: [14, 132, 194, 262, 273], 2: [8, 23, 26, 33, 48, 50, 61, 64, 70, 71, 76, 82, 86, 90, 92, 94, 96, 101, 107, 124, 126, 129, 134, 140, 149, 157, 158, 159, 163, 168, 171, 174, 175, 189, 191, 201, 207, 209, 215, 216, 222, 231, 237, 244, 246, 251, 255, 265, 270, 275, 282, 288, 290], 
+             3: [3, 6, 7, 9, 10, 11, 15, 16, 21, 22, 24, 28, 29, 31, 32, 34, 35, 37, 39, 40, 41, 42, 43, 44, 45, 51, 53, 55, 56, 59, 60, 63, 65, 66, 69, 72, 73, 74, 75, 79, 80, 81, 85, 89, 93, 97, 102, 103, 104, 106, 108, 109, 110, 111, 116, 118, 119, 120, 122, 128, 130, 131, 133, 135, 136, 138, 139, 141, 142, 143, 145, 147, 151, 155, 161, 164, 169, 170, 173, 176, 179, 181, 183, 186, 187, 188, 190, 192, 193, 195, 196, 198, 200, 202, 203, 204, 205, 206, 211, 212, 213, 217, 219, 220, 223, 225, 226,
+             229, 230, 232, 233, 234, 236, 238, 240, 241, 249, 252, 253, 254, 258, 260, 261, 264, 267, 268, 269, 276, 277, 279, 280, 283, 285, 286, 287, 289, 291, 293, 294, 295, 296, 298], 
              4: [1, 2, 4, 5, 13, 17, 18, 25, 27, 36, 38, 49, 52, 57, 68, 77, 78, 84, 87, 88, 91, 95, 98, 99, 100, 105, 112, 117, 121, 127, 144, 146, 150, 152, 153, 156, 166, 172, 177, 182, 199, 208, 210, 214, 227, 228, 243, 245, 248, 250, 256, 263, 271, 272, 278, 292, 297, 299], 
              5: [19, 20, 30, 46, 47, 54, 58, 62, 67, 83, 113, 125, 137, 148, 160, 165, 167, 184, 197, 221, 235, 239, 242, 281], 
              6: [0, 114, 115, 123, 178, 180, 185, 224, 247, 257, 266, 274], 
@@ -440,42 +440,7 @@ class FedCustom(fl.server.strategy.Strategy):
 
     # Função de Regulação com Normalização das Perdas
     def fairness_regularization(self, server_round, client_index, loss, group_mean_loss, global_groups_variance):
-        
-        """Calcula a penalidade de fairness, normalizando global_groups_variance."""
-        # Normalizar global_groups_variance para o intervalo [0.2, 0.8]
-        # Considerando que o valor mínimo de global_groups_variance é 1e-5 e o máximo é 0.001
-        min_var = 0.00001
-        max_var = 0.00100
-        
-        if global_groups_variance < min_var:
-            normalized_variance = 0.2  # Se estiver abaixo do mínimo, atribui o mínimo
-        elif global_groups_variance > max_var:
-            normalized_variance = 0.8  # Se estiver acima do máximo, atribui o máximo
-        else:
-            # Normalização para o intervalo [0, 1]
-            normalized_range = (global_groups_variance - min_var) / (max_var - min_var)
-            # Escalonar para [0.2, 0.8]
-            normalized_variance = 0.2 + normalized_range * (0.8 - 0.2)
-
-        fairness_penalty = (group_mean_loss) * (normalized_variance)
-
-        # diff_loss_global_mean = loss - global_mean_loss
-        # fairness_penalty = diff_loss_global_mean * (lambda_fairness + normalized_variance)
-
-        # # if client_index == 0 or client_index == 100:
-        # with open("fairness_debug.log", "a") as log_file:
-        #     log_file.write("\n\nfairness_regularization -------------------------------\n")
-        #     log_file.write(f"server_round: {server_round}\n")
-        #     log_file.write(f"client_index: {client_index}\n")
-        #     log_file.write(f"loss: {loss}\n")
-        #     log_file.write(f"lambda_fairness: {lambda_fairness}\n")
-        #     log_file.write(f"global_groups_variance: {global_groups_variance}\n")
-        #     log_file.write(f"normalized_variance: {normalized_variance}\n")
-        #     log_file.write(f"group_mean_loss: {group_mean_loss}\n")
-        #     log_file.write(f"fairness_penalty: {fairness_penalty}\n")
-        #     log_file.write(f"loss + fairness_penalty: {loss + fairness_penalty}\n")
-
-        return loss + fairness_penalty
+        return loss
 
 
     def configure_fit(self, server_round: int, parameters: Parameters, client_manager: ClientManager) -> List[Tuple[ClientProxy, FitIns]]:
@@ -495,24 +460,18 @@ class FedCustom(fl.server.strategy.Strategy):
 
     def aggregate_fit(self, server_round: int, results: List[Tuple[ClientProxy, FitRes]], failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]]) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
         """Agrega os parâmetros dos modelos treinados pelos clientes."""
-        G_AGE = {1: [14, 132, 194, 262, 273], 
-             2: [8, 23, 26, 33, 48, 50, 61, 64, 70, 71, 76, 82, 86, 90, 92, 94, 96, 101, 107, 124, 126, 129, 134, 140, 149, 157, 158, 159, 163, 168, 171, 174, 175, 189, 191, 201, 207, 209, 215, 216, 222, 231, 237, 244, 246, 251, 255, 265, 270, 275, 282, 288, 290], 
-             3: [3, 6, 7, 9, 10, 11, 15, 16, 21, 22, 24, 28, 29, 31, 32, 34, 35, 37, 39, 40, 41, 42, 43, 44, 45, 51, 53, 55, 56, 59, 60, 63, 65, 66, 69, 72, 73, 74, 75, 79, 80, 81, 85, 89, 93, 97, 102, 103, 104, 106, 108, 109, 110, 111, 116, 118, 119, 120, 122, 128, 130, 131, 133, 135, 136, 138, 139, 141, 142, 143, 145, 147, 151, 155, 161, 164, 169, 170, 173, 176, 179, 181, 183, 186, 187, 188, 190, 192, 193, 195, 196, 198, 200, 202, 203, 204, 205, 206, 211, 212, 213, 217, 219, 220, 223, 225, 226, 229, 230, 232, 233, 234, 236, 238, 240, 241, 249, 252, 253, 254, 258, 260, 261, 264, 267, 268, 269, 276, 277, 279, 280, 283, 285, 286, 287, 289, 291, 293, 294, 295, 296, 298], 
-             4: [1, 2, 4, 5, 13, 17, 18, 25, 27, 36, 38, 49, 52, 57, 68, 77, 78, 84, 87, 88, 91, 95, 98, 99, 100, 105, 112, 117, 121, 127, 144, 146, 150, 152, 153, 156, 166, 172, 177, 182, 199, 208, 210, 214, 227, 228, 243, 245, 248, 250, 256, 263, 271, 272, 278, 292, 297, 299], 
-             5: [19, 20, 30, 46, 47, 54, 58, 62, 67, 83, 113, 125, 137, 148, 160, 165, 167, 184, 197, 221, 235, 239, 242, 281], 
-             6: [0, 114, 115, 123, 178, 180, 185, 224, 247, 257, 266, 274], 
-             7: [12, 154, 162, 218, 259, 284]}
+        G_ACTIVITY = {1: list(range(0, 15)), 2: list(range(15, 300))}
         total_loss = sum(fit_res.metrics.get('loss', 0) for _, fit_res in results)
 
         group_losses = {}
         group_counts = {}
-        for group, client_indexes in G_AGE.items():
+        for group, client_indexes in G_ACTIVITY.items():
             group_loss = sum(fit_res.metrics.get('loss', 0) for index, (client, fit_res) in enumerate(results) if index in client_indexes)
             group_count = sum(1 for index in client_indexes if index < len(results))
             group_losses[group] = group_loss
             group_counts[group] = group_count
 
-        self.loss_avg_per_group = {group: (group_losses[group] / group_counts[group] if group_counts[group] != 0 else 0) for group in G_AGE}
+        self.loss_avg_per_group = {group: (group_losses[group] / group_counts[group] if group_counts[group] != 0 else 0) for group in G_ACTIVITY}
         print(f"Perda Média por Grupo: {self.loss_avg_per_group}")
 
         total_examples = sum(fit_res.num_examples for _, fit_res in results)
@@ -524,7 +483,6 @@ class FedCustom(fl.server.strategy.Strategy):
 
         print(f"global_groups_variance: {global_groups_variance}")
 
-        fairness_losses = []
         for client_index, (client, fit_res) in enumerate(results):
             local_loss = fit_res.metrics.get('loss', 0)
 
@@ -534,26 +492,31 @@ class FedCustom(fl.server.strategy.Strategy):
 
             # Usar group_mean_loss na chamada para fairness_regularization
             fairness_loss = self.fairness_regularization(server_round, client_index, local_loss, group_mean_loss, global_groups_variance)
-            fairness_losses.append((parameters_to_ndarrays(fit_res.parameters), fairness_loss))
+            fit_res.metrics['loss'][client_index] = fairness_loss
 
-        # Nova função aggregate
-        def aggregate(weights: List[Tuple[List[np.ndarray], float]]) -> List[np.ndarray]:
-            """Compute weighted average by layers based on losses."""
-            total_weight = sum(loss for _, loss in weights)
-            num_layers = len(weights[0][0])
-            weighted_weights = [np.zeros_like(layer) for layer in weights[0][0]]
+            weights_results = [
+                (parameters_to_ndarrays(fit_res.parameters), fit_res.metrics.get('loss', 0))
+                for _, fit_res in results
+            ]
 
-            for model_weights, loss in weights:
-                weight = loss / total_weight  # Calculate weight based on loss
-                for i in range(num_layers):
-                    if weighted_weights[i].shape != model_weights[i].shape:
-                        raise ValueError(f"Shape mismatch at layer {i}: expected {weighted_weights[i].shape}, got {model_weights[i].shape}")
+        def aggregate(results: List[Tuple[NDArrays, int]]) -> NDArrays:
+            """Compute weighted average."""
+            # Calculate the total number of examples used during training
+            num_examples_total = sum(num_examples for (_, num_examples) in results)
 
-                    weighted_weights[i] += model_weights[i] * weight
+            # Create a list of weights, each multiplied by the related number of examples
+            weighted_weights = [
+                [layer * num_examples for layer in weights] for weights, num_examples in results
+            ]
 
-            return weighted_weights
+            # Compute average weights of each layer
+            weights_prime: NDArrays = [
+                reduce(np.add, layer_updates) / num_examples_total
+                for layer_updates in zip(*weighted_weights)
+            ]
+            return weights_prime
 
-        parameters_aggregated = ndarrays_to_parameters(aggregate(fairness_losses))
+        parameters_aggregated = ndarrays_to_parameters(aggregate(weights_results))
 
         metrics_aggregated = {}
         for client_index, (client, fit_res) in enumerate(results):

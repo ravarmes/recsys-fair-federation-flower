@@ -1,6 +1,7 @@
 from collections import OrderedDict
 import random
 from typing import Dict, List, Optional, Tuple, Union
+from functools import reduce
 
 import pandas as pd
 import numpy as np
@@ -492,7 +493,8 @@ class FedCustom(fl.server.strategy.Strategy):
 
             # Usar group_mean_loss na chamada para fairness_regularization
             fairness_loss = self.fairness_regularization(server_round, client_index, local_loss, group_mean_loss, global_groups_variance)
-            fit_res.metrics['loss'][client_index] = fairness_loss
+            # fit_res.metrics['loss'][client_index] = fairness_loss
+            fit_res.metrics['loss'] = fairness_loss
 
             weights_results = [
                 (parameters_to_ndarrays(fit_res.parameters), fit_res.metrics.get('loss', 0))

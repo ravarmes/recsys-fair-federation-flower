@@ -211,7 +211,7 @@ def load_datasets(num_clients: int, filename: str, seed: int = 42):
 
 avaliacoes_df, trainloaders, valloaders, testloader = load_datasets(NUM_CLIENTS, filename="X.xlsx")
 # verificar_trainloaders(trainloaders)
-verificar_datasets_file(trainloaders, valloaders, testloader)
+# verificar_datasets_file(trainloaders, valloaders, testloader)
 
 
 class Net(nn.Module):

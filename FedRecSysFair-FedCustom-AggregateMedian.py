@@ -500,24 +500,18 @@ class FedCustom(fl.server.strategy.Strategy):
                 for _, fit_res in results
             ]
 
-        def aggregate(results: List[Tuple[NDArrays, int]]) -> NDArrays:
-            """Compute weighted average."""
-            # Calculate the total number of examples used during training
-            num_examples_total = sum(num_examples for (_, num_examples) in results)
+        def aggregate_median(results: List[Tuple[NDArrays, int]]) -> NDArrays:
+            """Compute median."""
+            # Create a list of weights and ignore the number of examples
+            weights = [weights for weights, _ in results]
 
-            # Create a list of weights, each multiplied by the related number of examples
-            weighted_weights = [
-                [layer * num_examples for layer in weights] for weights, num_examples in results
+            # Compute median weight of each layer
+            median_w: NDArrays = [
+                np.median(np.asarray(layer), axis=0) for layer in zip(*weights)
             ]
+            return median_w
 
-            # Compute average weights of each layer
-            weights_prime: NDArrays = [
-                reduce(np.add, layer_updates) / num_examples_total
-                for layer_updates in zip(*weighted_weights)
-            ]
-            return weights_prime
-
-        parameters_aggregated = ndarrays_to_parameters(aggregate(weights_results))
+        parameters_aggregated = ndarrays_to_parameters(aggregate_median(weights_results))
 
         metrics_aggregated = {}
         for client_index, (client, fit_res) in enumerate(results):

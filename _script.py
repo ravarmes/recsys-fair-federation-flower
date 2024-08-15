@@ -25,17 +25,17 @@ import os
 # FairFed(l) AGE ------------------------------------------------------------------------------
 os.system("python FedRecSysFair-FairFed-Age.py 2> FedRecSysFair-FairFed-Age-1.txt")
 os.system("python FedRecSysFair-FairFed-Age.py 2> FedRecSysFair-FairFed-Age-2.txt")
-os.system("python FedRecSysFair-FairFed-Age.py 2> FedRecSysFair-FairFed-Age-3.txt")
-os.system("python FedRecSysFair-FairFed-Age.py 2> FedRecSysFair-FairFed-Age-4.txt")
-os.system("python FedRecSysFair-FairFed-Age.py 2> FedRecSysFair-FairFed-Age-5.txt")
-os.system("python FedRecSysFair-FairFed-Age.py 2> FedRecSysFair-FairFed-Age-6.txt")
+# os.system("python FedRecSysFair-FairFed-Age.py 2> FedRecSysFair-FairFed-Age-3.txt")
+# os.system("python FedRecSysFair-FairFed-Age.py 2> FedRecSysFair-FairFed-Age-4.txt")
+# os.system("python FedRecSysFair-FairFed-Age.py 2> FedRecSysFair-FairFed-Age-5.txt")
+# os.system("python FedRecSysFair-FairFed-Age.py 2> FedRecSysFair-FairFed-Age-6.txt")
 
 # FairFed(l) GENDER ---------------------------------------------------------------------------
 os.system("python FedRecSysFair-FairFed-Gender.py 2> FedRecSysFair-FairFed-Gender-1.txt")
 os.system("python FedRecSysFair-FairFed-Gender.py 2> FedRecSysFair-FairFed-Gender-2.txt")
-os.system("python FedRecSysFair-FairFed-Gender.py 2> FedRecSysFair-FairFed-Gender-3.txt")
-os.system("python FedRecSysFair-FairFed-Gender.py 2> FedRecSysFair-FairFed-Gender-4.txt")
-os.system("python FedRecSysFair-FairFed-Gender.py 2> FedRecSysFair-FairFed-Gender-5.txt")
-os.system("python FedRecSysFair-FairFed-Gender.py 2> FedRecSysFair-FairFed-Gender-6.txt")
+# os.system("python FedRecSysFair-FairFed-Gender.py 2> FedRecSysFair-FairFed-Gender-3.txt")
+# os.system("python FedRecSysFair-FairFed-Gender.py 2> FedRecSysFair-FairFed-Gender-4.txt")
+# os.system("python FedRecSysFair-FairFed-Gender.py 2> FedRecSysFair-FairFed-Gender-5.txt")
+# os.system("python FedRecSysFair-FairFed-Gender.py 2> FedRecSysFair-FairFed-Gender-6.txt")
 
 

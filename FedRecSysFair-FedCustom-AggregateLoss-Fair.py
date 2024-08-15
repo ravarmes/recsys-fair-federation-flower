@@ -430,7 +430,6 @@ class FedCustom(fl.server.strategy.Strategy):
         return "FedCustom"
 
     def initialize_parameters(self, client_manager: ClientManager) -> Optional[Parameters]:
-        print("\n\n----------------------------------def initialize_parameters------------------------------------\n\n")
         net = Net(300, 1000)
         ndarrays = get_parameters(net)
         return fl.common.ndarrays_to_parameters(ndarrays)
@@ -442,7 +441,31 @@ class FedCustom(fl.server.strategy.Strategy):
 
     # Função de Regulação com Normalização das Perdas
     def fairness_regularization(self, server_round, client_index, loss, group_mean_loss, global_groups_variance):
-        return loss + 1
+        min_var = 0.00001
+        max_var = 0.00100
+        min = 0.2
+        max = 0.8
+        if global_groups_variance < min_var:
+            normalized_variance = min  # Se estiver abaixo do mínimo, atribui o mínimo
+        elif global_groups_variance > max_var:
+            normalized_variance = max  # Se estiver acima do máximo, atribui o máximo
+        else:
+            normalized_range = (global_groups_variance - min_var) / (max_var - min_var) # Normalização para o intervalo [0, 1]
+            normalized_variance = min + normalized_range * (max - min) # Escalonar para [min, max]
+        fairness_penalty = (group_mean_loss) * (normalized_variance)
+
+        with open("FedRecSysFair-FedCustom-AggregateLoss-Fair_debug.log", "a") as log_file:
+            log_file.write("\n\nfairness_regularization -------------------------------\n")
+            log_file.write(f"server_round: {server_round}\n")
+            log_file.write(f"client_index: {client_index}\n")
+            log_file.write(f"loss: {loss}\n")
+            log_file.write(f"global_groups_variance: {global_groups_variance}\n")
+            log_file.write(f"normalized_variance: {normalized_variance}\n")
+            log_file.write(f"group_mean_loss: {group_mean_loss}\n")
+            log_file.write(f"fairness_penalty: {fairness_penalty}\n")
+            log_file.write(f"loss + fairness_penalty: {loss + fairness_penalty}\n")
+
+        return loss + fairness_penalty
 
 
     def configure_fit(self, server_round: int, parameters: Parameters, client_manager: ClientManager) -> List[Tuple[ClientProxy, FitIns]]:
@@ -461,17 +484,9 @@ class FedCustom(fl.server.strategy.Strategy):
 
 
     def aggregate_fit(self, server_round: int, results: List[Tuple[ClientProxy, FitRes]], failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]]) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
-        print("\n\n----------------------------------def aggregate_fit------------------------------------\n\n")
         """Agrega os parâmetros dos modelos treinados pelos clientes."""
         G_ACTIVITY = {1: list(range(0, 15)), 2: list(range(15, 300))}
         total_loss = sum(fit_res.metrics.get('loss', 0) for _, fit_res in results)
-
-        # Imprimir todos os valores de loss dos resultados
-        print("\nANTES DA REGULAÇÃO DE JUSTIÇA")
-        for index, (client, fit_res) in enumerate(results):
-            num_examples = fit_res.num_examples
-            loss = fit_res.metrics.get('loss', 0)
-            print(f"Cliente {client.cid}: Loss = {loss} - num_examples = {num_examples}")
 
         group_losses = {}
         group_counts = {}
@@ -509,26 +524,18 @@ class FedCustom(fl.server.strategy.Strategy):
                 for _, fit_res in results
             ]
 
-        print("\n\nDEPOIS DA REGULAÇÃO DE JUSTIÇA")
-        print("Valores de loss para cada cliente:")
-        for index, (client, fit_res) in enumerate(results):
-            num_examples = fit_res.num_examples
-            loss = fit_res.metrics.get('loss', 0)
-            print(f"Cliente {client.cid}: Loss = {loss} - num_examples = {num_examples}")
-
         def aggregate(results: List[Tuple[NDArrays, int]]) -> NDArrays:
-            """Compute weighted average."""
-            # Calculate the total number of examples used during training
-            num_examples_total = sum(num_examples for (_, num_examples) in results)
+            # Calcula a perda total durante do treinamento
+            loss_total = sum(loss for (_, loss) in results)
 
-            # Create a list of weights, each multiplied by the related number of examples
+            # Crie uma lista de pesos, cada um multiplicado pela perda
             weighted_weights = [
-                [layer * num_examples for layer in weights] for weights, num_examples in results
+                [layer * loss for layer in weights] for weights, loss in results
             ]
 
             # Compute average weights of each layer
             weights_prime: NDArrays = [
-                reduce(np.add, layer_updates) / num_examples_total
+                reduce(np.add, layer_updates) / loss_total
                 for layer_updates in zip(*weighted_weights)
             ]
             return weights_prime
@@ -539,7 +546,8 @@ class FedCustom(fl.server.strategy.Strategy):
         for client_index, (client, fit_res) in enumerate(results):
             loss = fit_res.metrics.get('loss', 0)
             weight = loss / total_loss
-            print(f"Cliente {client.cid}: Perda = {loss}, Peso = {weight}")
+            num_examples = fit_res.num_examples
+            print(f"Cliente {client.cid}: Perda = {loss}, Peso = {weight}, Exemplos = {num_examples}")
             self.all_losses.append(loss)
             self.all_weights.append(weight)
         
@@ -567,8 +575,6 @@ class FedCustom(fl.server.strategy.Strategy):
         return loss_aggregated, metrics_aggregated
 
     def evaluate(self, server_round: int, parameters: Parameters) -> Optional[Tuple[float, Dict[str, Scalar]]]:
-        print("\n\n----------------------------------def evaluate------------------------------------\n\n")
-
         """Avalia o modelo global na rodada atual."""
         net = Net(300, 1000).to(DEVICE)
         set_parameters(net, parameters_to_ndarrays(parameters))
@@ -600,7 +606,7 @@ if DEVICE.type == "cuda":
 fl.simulation.start_simulation(
     client_fn=client_fn,
     num_clients=NUM_CLIENTS,
-    config=fl.server.ServerConfig(num_rounds=2),
+    config=fl.server.ServerConfig(num_rounds=24),
     strategy=FedCustom(),
     client_resources=client_resources,
 )

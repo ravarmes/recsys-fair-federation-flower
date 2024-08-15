@@ -494,7 +494,7 @@ class FedCustom(fl.server.strategy.Strategy):
         if not results:
             return None, {}
         # Do not aggregate if there are failures and failures are not accepted
-        if not self.accept_failures and failures:
+        if not accept_failures and failures:
             return None, {}
 
         if inplace:

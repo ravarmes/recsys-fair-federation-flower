@@ -529,7 +529,7 @@ class FedCustom(fl.server.strategy.Strategy):
             local_loss = fit_res.metrics.get('loss', 0)
 
             # Identifica o grupo do cliente atual
-            group_id = next(group for group, client_indexes in G_ACTIVITY.items() if client_index in client_indexes)
+            group_id = next(group for group, client_indexes in G_AGE.items() if client_index in client_indexes)
             group_mean_loss = self.loss_avg_per_group[group_id]
 
             # Usar group_mean_loss na chamada para fairness_regularization

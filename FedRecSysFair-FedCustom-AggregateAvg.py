@@ -488,13 +488,16 @@ class FedCustom(fl.server.strategy.Strategy):
 
         print(f"global_groups_variance: {global_groups_variance}")
 
+        accept_failures= True
+        inplace = True
+
         if not results:
             return None, {}
-        # # Do not aggregate if there are failures and failures are not accepted
-        # if not self.accept_failures and failures:
-        #     return None, {}
+        # Do not aggregate if there are failures and failures are not accepted
+        if not self.accept_failures and failures:
+            return None, {}
 
-        if self.inplace:
+        if inplace:
             # Does in-place weighted average of results
             aggregated_ndarrays = aggregate_inplace(results)
         else:

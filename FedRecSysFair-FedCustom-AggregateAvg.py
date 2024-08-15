@@ -5,8 +5,7 @@ from functools import reduce
 
 from flwr.server.strategy.aggregate import aggregate, aggregate_inplace, weighted_loss_avg
 from logging import WARNING
-
-
+from flwr.common.logger import log
 
 import pandas as pd
 import numpy as np

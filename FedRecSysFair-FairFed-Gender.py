@@ -441,28 +441,19 @@ class FedCustom(fl.server.strategy.Strategy):
     # Função de Regulação com Normalização das Perdas
     def fairness_regularization(self, server_round, client_index, loss, group_mean_loss, global_groups_variance):
         
-        """Calcula a penalidade de fairness, normalizando global_groups_variance."""
-        # Normalizar global_groups_variance para o intervalo [0.2, 0.8]
-        # Considerando que o valor mínimo de global_groups_variance é 1e-5 e o máximo é 0.001
         min_var = 0.00001
         max_var = 0.00100
-        
+        min = 0.2
+        max = 0.8
         if global_groups_variance < min_var:
-            normalized_variance = 0.2  # Se estiver abaixo do mínimo, atribui o mínimo
+            normalized_variance = min  # Se estiver abaixo do mínimo, atribui o mínimo
         elif global_groups_variance > max_var:
-            normalized_variance = 0.8  # Se estiver acima do máximo, atribui o máximo
+            normalized_variance = max  # Se estiver acima do máximo, atribui o máximo
         else:
-            # Normalização para o intervalo [0, 1]
-            normalized_range = (global_groups_variance - min_var) / (max_var - min_var)
-            # Escalonar para [0.2, 0.8]
-            normalized_variance = 0.2 + normalized_range * (0.8 - 0.2)
-
+            normalized_range = (global_groups_variance - min_var) / (max_var - min_var) # Normalização para o intervalo [0, 1]
+            normalized_variance = min + normalized_range * (max - min) # Escalonar para [min, max]
         fairness_penalty = (group_mean_loss) * (normalized_variance)
 
-        # diff_loss_global_mean = loss - global_mean_loss
-        # fairness_penalty = diff_loss_global_mean * (lambda_fairness + normalized_variance)
-
-        # # if client_index == 0 or client_index == 100:
         # with open("fairness_debug.log", "a") as log_file:
         #     log_file.write("\n\nfairness_regularization -------------------------------\n")
         #     log_file.write(f"server_round: {server_round}\n")

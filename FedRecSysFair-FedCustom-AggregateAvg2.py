@@ -496,16 +496,15 @@ class FedCustom(fl.server.strategy.Strategy):
             fit_res.metrics['loss'] = fairness_loss
 
             weights_results = [
-                (parameters_to_ndarrays(fit_res.parameters), fit_res.metrics.get('loss', 0))
+                (parameters_to_ndarrays(fit_res.parameters), fit_res)
                 for _, fit_res in results
             ]
 
         # def aggregate_inplace(results: List[Tuple[ClientProxy, FitRes]]) -> NDArrays:
-        def aggregate_inplace(results: List[Tuple[NDArrays, int]]) -> NDArrays:
+        def aggregate_inplace(results: List[Tuple[NDArrays, FitRes]]) -> NDArrays:
             """Compute in-place weighted average."""
             # Count total examples
-            # num_examples_total = sum(fit_res.num_examples for (_, fit_res) in results)
-            num_examples_total = sum(fit_res.num_examples for _, fit_res in results)
+            num_examples_total = sum(fit_res.num_examples for (_, fit_res) in results)
 
             # Compute scaling factors for each result
             scaling_factors = [

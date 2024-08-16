@@ -495,8 +495,13 @@ class FedCustom(fl.server.strategy.Strategy):
             fairness_loss = self.fairness_regularization(server_round, client_index, local_loss, group_mean_loss, global_groups_variance)
             fit_res.metrics['loss'] = fairness_loss
 
+            # weights_results = [
+            #     (parameters_to_ndarrays(fit_res.parameters), fit_res.metrics.get('loss', 0))
+            #     for _, fit_res in results
+            # ]
+
             weights_results = [
-                (parameters_to_ndarrays(fit_res.parameters), fit_res.metrics.get('loss', 0))
+                (parameters_to_ndarrays(fit_res.parameters), fit_res.num_examples)
                 for _, fit_res in results
             ]
 

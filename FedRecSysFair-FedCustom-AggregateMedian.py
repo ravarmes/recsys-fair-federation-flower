@@ -479,9 +479,6 @@ class FedCustom(fl.server.strategy.Strategy):
         print(f"Número total de exemplos agregados: {total_examples}")
 
         global_groups_variance = np.var(list(self.loss_avg_per_group.values()))
-        # Não precisamos mais deste calculo para a global_mean_loss
-        # global_mean_loss = np.mean(list(self.loss_avg_per_group.values()))
-
         print(f"global_groups_variance: {global_groups_variance}")
 
         for client_index, (client, fit_res) in enumerate(results):
@@ -495,10 +492,7 @@ class FedCustom(fl.server.strategy.Strategy):
             fairness_loss = self.fairness_regularization(server_round, client_index, local_loss, group_mean_loss, global_groups_variance)
             fit_res.metrics['loss'] = fairness_loss
 
-            weights_results = [
-                (parameters_to_ndarrays(fit_res.parameters), fit_res.metrics.get('loss', 0))
-                for _, fit_res in results
-            ]
+        weights_results = [ (parameters_to_ndarrays(fit_res.parameters), fit_res.num_examples) for _, fit_res in results ]
 
         def aggregate_median(results: List[Tuple[NDArrays, int]]) -> NDArrays:
             """Compute median."""

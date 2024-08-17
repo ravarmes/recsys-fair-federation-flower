@@ -470,7 +470,7 @@ class FedCustom(fl.server.strategy.Strategy):
         total_adjustment = fairness_penalty + fairness_adjustment
 
         # Logging das informações e ajustes
-        with open("FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Activity-Taxa1_debug.log", "a") as log_file:
+        with open("FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Activity-Taxa4_debug.log", "a") as log_file:
             log_file.write("\n\nfairness_regularization -------------------------------\n")
             log_file.write(f"server_round: {server_round}\n")
             log_file.write(f"client_index: {client_index}\n")

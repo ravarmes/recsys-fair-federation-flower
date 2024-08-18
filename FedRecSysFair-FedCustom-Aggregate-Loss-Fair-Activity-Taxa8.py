@@ -454,7 +454,7 @@ class FedCustom(fl.server.strategy.Strategy):
             normalized_variance = min + normalized_range * (max - min) # Escalonar para [min, max]
         fairness_penalty = (group_mean_loss) * (normalized_variance)
 
-        with open("FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Activity-Taxa6_debug.log", "a") as log_file:
+        with open("FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Activity-Taxa8_debug.log", "a") as log_file:
             log_file.write("\n\nfairness_regularization -------------------------------\n")
             log_file.write(f"server_round: {server_round}\n")
             log_file.write(f"client_index: {client_index}\n")

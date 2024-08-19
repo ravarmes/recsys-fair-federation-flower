@@ -54,3 +54,7 @@ import os
 os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Activity-Taxa9.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Activity-Taxa9-5.txt")
 os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age-Taxa9.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age-Taxa9-5.txt")
 os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender-Taxa9.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender-Taxa9-5.txt")
+
+os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Activity-Taxa9.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Activity-Taxa9-6.txt")
+os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age-Taxa9.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age-Taxa9-6.txt")
+os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender-Taxa9.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender-Taxa9-6.txt")

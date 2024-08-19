@@ -439,28 +439,16 @@ class FedCustom(fl.server.strategy.Strategy):
         return initial_lr / (1 + decay_factor * round_num)
 
 
-    # Função de Regulação com Normalização das Perdas
     def fairness_regularization(self, server_round, client_index, loss, group_mean_loss, global_groups_variance):
-        min_var = 0.00001
-        max_var = 0.00100
-        min = 0.2
-        max = 0.8
-        if global_groups_variance < min_var:
-            normalized_variance = min  # Se estiver abaixo do mínimo, atribui o mínimo
-        elif global_groups_variance > max_var:
-            normalized_variance = max  # Se estiver acima do máximo, atribui o máximo
-        else:
-            normalized_range = (global_groups_variance - min_var) / (max_var - min_var) # Normalização para o intervalo [0, 1]
-            normalized_variance = min + normalized_range * (max - min) # Escalonar para [min, max]
-        fairness_penalty = (group_mean_loss) * (normalized_variance)
+        
+        fairness_penalty = (group_mean_loss) * (global_groups_variance)
 
-        with open("FedRecSysFair-FedCustom-AggregateLoss-Fair_debug.log", "a") as log_file:
+        with open("FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender-Taxa9_debug.log", "a") as log_file:
             log_file.write("\n\nfairness_regularization -------------------------------\n")
             log_file.write(f"server_round: {server_round}\n")
             log_file.write(f"client_index: {client_index}\n")
             log_file.write(f"loss: {loss}\n")
             log_file.write(f"global_groups_variance: {global_groups_variance}\n")
-            log_file.write(f"normalized_variance: {normalized_variance}\n")
             log_file.write(f"group_mean_loss: {group_mean_loss}\n")
             log_file.write(f"fairness_penalty: {fairness_penalty}\n")
             log_file.write(f"loss + fairness_penalty: {loss + fairness_penalty}\n")

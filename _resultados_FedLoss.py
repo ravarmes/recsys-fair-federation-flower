@@ -129,10 +129,23 @@ data_rgrp_age_FedLoss_4 = {
     ]
 }
 
+data_rgrp_age_FedLoss_5 = {
+    "Round": list(range(0, 25)),
+    "RgrpAge": [
+        0.0029344020020876695, 0.0033081659259183217, 0.0032200894031929675, 0.004528381242989869,
+        0.005551331454541175, 0.005844842778655555, 0.006143655325409758, 0.006155290918038945,
+        0.005989769417812772, 0.006328040804517822, 0.006249310542208867, 0.006437309902971847,
+        0.006405572080542375, 0.0060758765160813894, 0.0067823179265075135, 0.006644314618842445,
+        0.006934622828382899, 0.007640288508654849, 0.006545474023700361, 0.007356137961120111,
+        0.0071269788735715935, 0.008020054994416501, 0.00845538683782284, 0.0082522001277747,
+        0.00822994961860855
+    ]
+}
+
 data_rgrp_age_FedLoss = {
     "Round": list(range(0, 25)),
     "RgrpAge": [
-        sum(x) / 4 for x in zip(data_rgrp_age_FedLoss_1["RgrpAge"], data_rgrp_age_FedLoss_2["RgrpAge"], data_rgrp_age_FedLoss_3["RgrpAge"], data_rgrp_age_FedLoss_4["RgrpAge"])
+        sum(x) / 5 for x in zip(data_rgrp_age_FedLoss_1["RgrpAge"], data_rgrp_age_FedLoss_2["RgrpAge"], data_rgrp_age_FedLoss_3["RgrpAge"], data_rgrp_age_FedLoss_4["RgrpAge"], data_rgrp_age_FedLoss_5["RgrpAge"])
     ]
 }
 
@@ -232,7 +245,6 @@ data_rgrp_gender_FedLoss_3 = {
         0.0026284313431781518
     ]
 }
-
 
 data_rgrp_gender_FedLoss_4 = {
     "Round": list(range(25)),

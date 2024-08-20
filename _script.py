@@ -27,17 +27,17 @@ import os
 # os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender-6.txt")
 
 
-os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-1.txt")
-os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age-1.txt")
-os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender-1.txt")
+os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-6.txt")
+os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age-6.txt")
+os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender-6.txt")
 
-os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-2.txt")
-os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age-2.txt")
-os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender-2.txt")
+# os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-2.txt")
+# os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age-2.txt")
+# os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender-2.txt")
 
-os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-3.txt")
-os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age-3.txt")
-os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender-3.txt")
+# os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-3.txt")
+# os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age-3.txt")
+# os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender-3.txt")
 
 
 

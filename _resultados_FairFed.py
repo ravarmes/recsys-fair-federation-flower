@@ -39,10 +39,24 @@ data_rgrp_activity_FairFed_3 = {
     ]
 }
 
+data_rgrp_activity_FairFed_4 = {
+    "Round": list(range(25)),
+    "RgrpActivity": [
+        0.0018090796103692394, 0.0005304202118332003, 0.00026713583125577466, 1.7737608367573433e-06,
+        0.00016020380651057597, 0.0002653992113799283, 0.00031899776975062084, 0.0003269914880439305,
+        0.000287308662271812, 0.0002994816371820292, 0.00030060515129572054, 0.0003236842465921457,
+        0.00038143613764681937, 0.0004150864919741183, 0.0005214636559307567, 0.000559765192892982,
+        0.0007572931267993731, 0.000740096464724326, 0.0009251910140346745, 0.0010951600549094747,
+        0.0009767652588559997, 0.001028253060566893, 0.0008422338718280053, 0.0009688371595576011,
+        0.0008672880147318647
+    ]
+}
+
+
 data_rgrp_activity_FairFed = {
     "Round": list(range(0, 25)),
     "RgrpActivity": [
-        sum(x) / 3 for x in zip(data_rgrp_activity_FairFed_1["RgrpActivity"], data_rgrp_activity_FairFed_2["RgrpActivity"], data_rgrp_activity_FairFed_3["RgrpActivity"])
+        sum(x) / 4 for x in zip(data_rgrp_activity_FairFed_1["RgrpActivity"], data_rgrp_activity_FairFed_2["RgrpActivity"], data_rgrp_activity_FairFed_3["RgrpActivity"], data_rgrp_activity_FairFed_4["RgrpActivity"])
     ]
 }
 

@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 # FedAvg --------------------------------------------------------------------------------------
-from _resultados_FedAvg import data_rgrp_activity_FedAvg
+from _resultados_FedAvgExample import data_rgrp_activity_FedAvg
 
 
 data_rgrp_activity_FedCustom_LossIndv = {

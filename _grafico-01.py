@@ -1,21 +1,21 @@
 import matplotlib.pyplot as plt
 
-from _resultados_FedAvg import data_rgrp_activity_FedAvg
-from _resultados_FedAvg import data_rgrp_age_FedAvg
-from _resultados_FedAvg import data_rgrp_gender_FedAvg
-from _resultados_FedAvg import data_rmse_FedAvg
+from _resultados_FedAvgExample import data_rgrp_activity_FedAvg
+from _resultados_FedAvgExample import data_rgrp_age_FedAvg
+from _resultados_FedAvgExample import data_rgrp_gender_FedAvg
+from _resultados_FedAvgExample import data_rmse_FedAvg
 
-from _resultados_FedLoss import data_rgrp_activity_FedLoss
-from _resultados_FedLoss import data_rgrp_age_FedLoss
-from _resultados_FedLoss import data_rgrp_gender_FedLoss
-from _resultados_FedLoss import data_rmse_FedLoss
+from _resultados_FedAvgLoss import data_rgrp_activity_FedLoss
+from _resultados_FedAvgLoss import data_rgrp_age_FedLoss
+from _resultados_FedAvgLoss import data_rgrp_gender_FedLoss
+from _resultados_FedAvgLoss import data_rmse_FedLoss
 
-from _resultados_FairFed import data_rgrp_activity_FairFed
-from _resultados_FairFed import data_rgrp_age_FairFed
-from _resultados_FairFed import data_rgrp_gender_FairFed
-from _resultados_FairFed import data_rmse_activity_FairFed
-from _resultados_FairFed import data_rmse_age_FairFed
-from _resultados_FairFed import data_rmse_gender_FairFed
+from _resultados_FedFair import data_rgrp_activity_FairFed
+from _resultados_FedFair import data_rgrp_age_FairFed
+from _resultados_FedFair import data_rgrp_gender_FairFed
+from _resultados_FedFair import data_rmse_activity_FairFed
+from _resultados_FedFair import data_rmse_age_FairFed
+from _resultados_FedFair import data_rmse_gender_FairFed
 
 
 import matplotlib.pyplot as plt

@@ -441,11 +441,17 @@ class FedCustom(fl.server.strategy.Strategy):
 
     # Função de Regulação com Normalização das Perdas
     def fairness_regularization(self, server_round, client_index, loss, group_mean_loss, global_mean_loss, global_groups_variance):
-        
-        normalized_variance_min = 0.1
-        normalized_variance_max = 0.5
-        p_diff_loss = 0.1
-        p_group_mean = 0.5
+        # Optuna {'normalized_variance_min': 0.17271147902448564, 'normalized_variance_max': 0.7821917395740795, 'p_diff_loss': 0.4773182457641848, 'p_group_mean': 0.4082849103235676}
+
+        # normalized_variance_min = 0.1
+        # normalized_variance_max = 0.5
+        # p_diff_loss = 0.1
+        # p_group_mean = 0.5
+
+        normalized_variance_min = 0.17271147902448564
+        normalized_variance_max = 0.7821917395740795
+        p_diff_loss = 0.4773182457641848
+        p_group_mean = 0.4082849103235676
 
         min_var = 1e-5
         max_var = 0.001
@@ -468,8 +474,10 @@ class FedCustom(fl.server.strategy.Strategy):
             log_file.write(f"server_round: {server_round}\n")
             log_file.write(f"client_index: {client_index}\n")
             log_file.write(f"loss: {loss}\n")
-            log_file.write(f"global_groups_variance: {global_groups_variance}\n")
             log_file.write(f"group_mean_loss: {group_mean_loss}\n")
+            log_file.write(f"global_mean_loss: {global_mean_loss}\n")
+            log_file.write(f"global_groups_variance: {global_groups_variance}\n")
+            log_file.write(f"normalized_variance: {normalized_variance}\n")
             log_file.write(f"fairness_penalty: {fairness_penalty}\n")
             log_file.write(f"loss + fairness_penalty: {loss + fairness_penalty}\n")
 

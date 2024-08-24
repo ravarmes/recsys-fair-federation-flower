@@ -559,9 +559,9 @@ if DEVICE.type == "cuda":
 
 # Listas de parâmetros para a pesquisa de grid
 normalized_variance_min_list = [0.1]
-normalized_variance_max_list = [0.6]
-p_diff_loss_list = [0.7]
-p_group_mean_list = [0.3]
+normalized_variance_max_list = [0.5]
+p_diff_loss_list = [0.1]
+p_group_mean_list = [0.5]
 
 # Realizando a pesquisa de grid
 for normalized_variance_min in normalized_variance_min_list:

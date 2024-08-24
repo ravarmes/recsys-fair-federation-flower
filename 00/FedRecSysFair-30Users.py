@@ -564,10 +564,15 @@ if DEVICE.type == "cuda":
     client_resources = {"num_gpus": 1}
 
 # Listas de parâmetros para a pesquisa de grid
-normalized_variance_min_list = [0.1, 0.2, 0.3, 0.4]
-normalized_variance_max_list = [0.5, 0.6, 0.7, 0.8]
-p_diff_loss_list = [0.1, 0.3, 0.5, 0.7, 0.9]
-p_group_mean_list = [0.1, 0.3, 0.5, 0.7, 0.9]
+# normalized_variance_min_list = [0.1, 0.2, 0.3, 0.4]
+# normalized_variance_max_list = [0.5, 0.6, 0.7, 0.8]
+# p_diff_loss_list = [0.1, 0.3, 0.5, 0.7, 0.9]
+# p_group_mean_list = [0.1, 0.3, 0.5, 0.7, 0.9]
+
+normalized_variance_min_list = [0.3, 0.4]
+normalized_variance_max_list = [0.6, 0.7, 0.8]
+p_diff_loss_list = [0.7, 0.9]
+p_group_mean_list = [0.3, 0.5, 0.7, 0.9]
 
 # Realizando a pesquisa de grid
 for normalized_variance_min in normalized_variance_min_list:

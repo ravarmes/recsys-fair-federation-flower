@@ -610,3 +610,5 @@ study.optimize(objective, n_trials=50)  # Define o número de iterações (trial
 # Imprimir os melhores parâmetros
 best_params = study.best_params
 print(f"Melhores parâmetros encontrados: {best_params}")
+
+# {'normalized_variance_min': 0.17271147902448564, 'normalized_variance_max': 0.7821917395740795, 'p_diff_loss': 0.4773182457641848, 'p_group_mean': 0.4082849103235676}

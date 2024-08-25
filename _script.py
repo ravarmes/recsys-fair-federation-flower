@@ -2,13 +2,16 @@ import os
 
 # FedAvg --------------------------------------------------------------------------------------
 # os.system("python FedRecSysFair-FedCustom-Aggregate-Example.py 2> FedRecSysFair-FedCustom-Aggregate-Example-5.txt")
-os.system("python FedRecSysFair-FedCustom-Aggregate-Example.py 2> FedRecSysFair-FedCustom-Aggregate-Example-6.txt")
+# os.system("python FedRecSysFair-FedCustom-Aggregate-Example.py 2> FedRecSysFair-FedCustom-Aggregate-Example-6.txt")
 # os.system("python FedRecSysFair-FedCustom-Aggregate-Example.py 2> FedRecSysFair-FedCustom-Aggregate-Example-3.txt")
 
 # Fed(l) --------------------------------------------------------------------------------------
-os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-1.txt")
-os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-2.txt")
-os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-3.txt")
+os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-01.txt")
+os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-02.txt")
+os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-03.txt")
+os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-04.txt")
+os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-05.txt")
+
 
 # # FairFed(l) ACTIVITY -------------------------------------------------------------------------
 # os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Activity.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Activity-1.txt")

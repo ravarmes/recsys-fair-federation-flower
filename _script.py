@@ -6,11 +6,11 @@ import os
 # os.system("python FedRecSysFair-FedCustom-Aggregate-Example.py 2> FedRecSysFair-FedCustom-Aggregate-Example-3.txt")
 
 # Fed(l) --------------------------------------------------------------------------------------
-os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-01.txt")
-os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-02.txt")
-os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-03.txt")
-os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-04.txt")
-os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-05.txt")
+os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-06.txt")
+os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-07.txt")
+os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-08.txt")
+# os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-09.txt")
+# os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-10.txt")
 
 
 # # FairFed(l) ACTIVITY -------------------------------------------------------------------------
@@ -19,11 +19,11 @@ os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-Fed
 # os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Activity.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Activity-3.txt")
 
 # # FairFed(l) AGE ------------------------------------------------------------------------------
-# os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age-9.txt")
-# os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age-2.txt")
-# os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age-3.txt")
+os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age-01.txt")
+os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age-02.txt")
+os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age-03.txt")
 
 # # FairFed(l) GENDER ---------------------------------------------------------------------------
-# os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender-1.txt")
-# os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender-2.txt")
-# os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender-3.txt")
+os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender-01.txt")
+os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender-02.txt")
+os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Gender-03.txt")

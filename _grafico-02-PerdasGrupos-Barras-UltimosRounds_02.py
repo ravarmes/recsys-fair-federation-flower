@@ -308,7 +308,7 @@ def add_values_to_bars(ax, bars, decimal_places=2):
 fig, ((ax1, ax2, ax3), (ax4, ax5, ax6), (ax7, ax8, ax9)) = plt.subplots(3, 3, figsize=(15, 12))
 
 # Aumenta o espaçamento entre as barras
-bar_width = 0.2
+bar_width = 0.4
 bar_width_age = 0.4
 
 # Subplot 1 - Atividade
@@ -398,7 +398,8 @@ for idx, label in enumerate(age_labels):
 ax8.set_xticks(np.arange(len(age_labels)))
 ax8.set_xticklabels(age_labels)
 add_values_to_bars(ax8, bars8)
-ax8.set_ylim(0, max([bar.get_height() for bar in bars8]) * 1.2)  # Ajusta a escala y
+#ax8.set_ylim(0, max([bar.get_height() for bar in bars8]) * 1.2)  # Ajusta a escala y
+ax8.set_ylim(0, 1.416)
 
 # Subplot 9 - Gênero
 bars9 = ax9.bar(np.arange(2), 

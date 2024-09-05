@@ -1,0 +1,19 @@
+Estou trabalhando em um sistema de recomendação federado com preocupação de justiça de grupo.
+A ideia é fazer com que os erros dos grupos de usuários sejam o mais semelhantes possíveis.
+Para isso, a estratégia geral é fazer com que usuários de grupos com menores erros (perdas do modelo local) contribuam menos na agregação dos parâmetros no servidor. E usuários de grupos com maiores erros (perdas do modelo local) contribuam mais na agregação dos parâmetros no servidor.
+
+Para isso, eu não quero utilizar simplesmente uma agregação que consideração a perda individual do usuário como peso.
+Mas, quero implementar uma função para regulação de justiça.
+A ideia geral da função é "aumentar" o peso do usuário a depender de seu grupo, bem como, da injustiça de grupo calculada no round.
+Por exemplo:
+
+def fairness_regularization(self, server_round, client_index, loss, global_groups_variance):
+        fairness_penalty = (group_mean_loss * global_groups_variance)
+        return loss + fairness_penalty
+        
+Todavia, os valores de loss (perda individual do usuário) e group_mean_loss (perda do grupo de usuários ao qual o usuário pertence) possuem ordens de grandeza bem diferentes de global_groups_variance (injustiça do grupo, que é igual a variância das perdas dos grupos de usuários).
+
+Como eu poderia alterar a fórmula:
+fairness_penalty = (group_mean_loss * global_groups_variance)
+
+Para que em rounds com maiores injustiças de grupo (global_groups_variance) a penalidade (fairness_penalty) fosse maior. E em rounds com menores injustiças de grupo, a penalidade (fairness_penalty) fosse menor?

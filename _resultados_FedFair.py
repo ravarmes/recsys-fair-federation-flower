@@ -1,3 +1,5 @@
+import numpy as np
+
 # FairFed Activity --------------------------------------------------------------------------------------
 
 data_rgrp_activity_FairFed_1 = {
@@ -72,6 +74,20 @@ data_rgrp_activity_FairFed = {
     ]
 }
 
+data_rgrp_activity_FairFed_sets = [
+    data_rgrp_activity_FairFed_1["RgrpActivity"],
+    data_rgrp_activity_FairFed_2["RgrpActivity"],
+    data_rgrp_activity_FairFed_3["RgrpActivity"],
+    data_rgrp_activity_FairFed_4["RgrpActivity"],
+    data_rgrp_activity_FairFed_5["RgrpActivity"],
+]
+
+data_rgrp_activity_FairFed_array = np.array(data_rgrp_activity_FairFed_sets)
+data_rgrp_activity_FairFed_means = np.mean(data_rgrp_activity_FairFed_array, axis=0)
+data_rgrp_activity_FairFed_std_devs = np.std(data_rgrp_activity_FairFed_array, axis=0)
+data_rgrp_activity_FairFed_confidence_interval = 1.96 * data_rgrp_activity_FairFed_std_devs / np.sqrt(len(data_rgrp_activity_FairFed_sets))
+
+
 # FairFed Age --------------------------------------------------------------------------------------
 
 data_rgrp_age_FairFed_1 = {
@@ -117,19 +133,6 @@ data_rgrp_age_FairFed_3 = {
     ]
 }
 
-# data_rgrp_age_FairFed_4 = {
-#     "Round": list(range(25)),
-#     "RgrpAge": [
-#         0.0029344020020876695, 0.0033094104715613226, 0.0032042282611622537, 0.00438018935180347,
-#         0.005564921305775239, 0.005988246418873141, 0.006133887246944409, 0.006402481396078247,
-#         0.006303289166836348, 0.006431758950914032, 0.006639564405030657, 0.0068654065592031795,
-#         0.006719608103018869, 0.006354693357303599, 0.006742504181149445, 0.00648811057859057,
-#         0.00671902907774929, 0.0063866970313802745, 0.006539509141327143, 0.007066922906893133,
-#         0.0071347485443518455, 0.0070707627434606945, 0.00781334672882508, 0.007430246785892656,
-#         0.006721855272451002
-#     ]
-# }
-
 data_rgrp_age_FairFed_4 = {
     "Round": list(range(25)),
     "RgrpAge": [
@@ -166,6 +169,18 @@ data_rgrp_age_FairFed = {
     ]
 }
 
+data_rgrp_age_FairFed_sets = [
+    data_rgrp_age_FairFed_1["RgrpAge"],
+    data_rgrp_age_FairFed_2["RgrpAge"],
+    data_rgrp_age_FairFed_3["RgrpAge"],
+    data_rgrp_age_FairFed_4["RgrpAge"],
+    data_rgrp_age_FairFed_5["RgrpAge"],
+]
+
+data_rgrp_age_FairFed_array = np.array(data_rgrp_age_FairFed_sets)
+data_rgrp_age_FairFed_means = np.mean(data_rgrp_age_FairFed_array, axis=0)
+data_rgrp_age_FairFed_std_devs = np.std(data_rgrp_age_FairFed_array, axis=0)
+data_rgrp_age_FairFed_confidence_interval = 1.96 * data_rgrp_age_FairFed_std_devs / np.sqrt(len(data_rgrp_age_FairFed_sets))
 
 
 # FairFed Gender --------------------------------------------------------------------------------------
@@ -251,6 +266,19 @@ data_rgrp_gender_FairFed = {
         sum(x) / 5 for x in zip(data_rgrp_gender_FairFed_1["RgrpGender"], data_rgrp_gender_FairFed_2["RgrpGender"], data_rgrp_gender_FairFed_3["RgrpGender"], data_rgrp_gender_FairFed_4["RgrpGender"], data_rgrp_gender_FairFed_5["RgrpGender"])
     ]
 }
+
+data_rgrp_gender_FairFed_sets = [
+    data_rgrp_gender_FairFed_1["RgrpGender"],
+    data_rgrp_gender_FairFed_2["RgrpGender"],
+    data_rgrp_gender_FairFed_3["RgrpGender"],
+    data_rgrp_gender_FairFed_4["RgrpGender"],
+    data_rgrp_gender_FairFed_5["RgrpGender"],
+]
+
+data_rgrp_gender_FairFed_array = np.array(data_rgrp_gender_FairFed_sets)
+data_rgrp_gender_FairFed_means = np.mean(data_rgrp_gender_FairFed_array, axis=0)
+data_rgrp_gender_FairFed_std_devs = np.std(data_rgrp_gender_FairFed_array, axis=0)
+data_rgrp_gender_FairFed_confidence_interval = 1.96 * data_rgrp_gender_FairFed_std_devs / np.sqrt(len(data_rgrp_gender_FairFed_sets))
 
 # ---------------------------------------------------------------------------------------------------
 

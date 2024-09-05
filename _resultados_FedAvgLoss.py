@@ -1,3 +1,5 @@
+import numpy as np
+
 # RGRP
 
 # FedLoss Activity --------------------------------------------------------------------------------------
@@ -60,21 +62,6 @@ data_rgrp_activity_FedLoss_4 = {
     ]
 }
 
-# data_rgrp_activity_FedLoss_5 = {
-#     "Round": list(range(25)),
-#     "RgrpActivity": [
-#         0.0018090796387086477, 0.0005306385184401154, 0.00026596219889502644,
-#         3.722723275796905e-06, 0.00014568327439173684, 0.00023591966016282595,
-#         0.0002801852227795432, 0.0003007088671384937, 0.0002772829100452013,
-#         0.00030955867880258194, 0.00029667167301883357, 0.0003747330334499834,
-#         0.0003490727384209285, 0.00045109942024755664, 0.0004518313448542403,
-#         0.0006046275350623209, 0.0006350732144858131, 0.0006454385756485517,
-#         0.0007955275092795026, 0.0009699514433333917, 0.0009632589335083933,
-#         0.0009609955955648278, 0.0010723010193844664, 0.0010284366760301956,
-#         0.0011905373291103047
-#     ]
-# }
-
 data_rgrp_activity_FedLoss_5 = {
     "Round": list(range(25)),
     "RgrpActivity": [
@@ -121,6 +108,20 @@ data_rgrp_activity_FedLoss = {
     ]
 }
 
+data_rgrp_activity_FedLoss_sets = [
+    data_rgrp_activity_FedLoss_1["RgrpActivity"],
+    # data_rgrp_activity_FedLoss_2["RgrpActivity"],
+    # data_rgrp_activity_FedLoss_3["RgrpActivity"],
+    data_rgrp_activity_FedLoss_4["RgrpActivity"],
+    data_rgrp_activity_FedLoss_5["RgrpActivity"],
+    data_rgrp_activity_FedLoss_6["RgrpActivity"],
+    data_rgrp_activity_FedLoss_7["RgrpActivity"],
+]
+
+data_rgrp_activity_FedLoss_array = np.array(data_rgrp_activity_FedLoss_sets)
+data_rgrp_activity_FedLoss_means = np.mean(data_rgrp_activity_FedLoss_array, axis=0)
+data_rgrp_activity_FedLoss_std_devs = np.std(data_rgrp_activity_FedLoss_array, axis=0)
+data_rgrp_activity_FedLoss_confidence_interval = 1.96 * data_rgrp_activity_FedLoss_std_devs / np.sqrt(len(data_rgrp_activity_FedLoss_sets))
 
 # FedLoss Age -----------------------------------------------------------------------------------------
 
@@ -293,6 +294,27 @@ data_rgrp_age_FedLoss = {
     ]
 }
 
+data_rgrp_age_FedLoss_sets = [
+    # data_rgrp_age_FedLoss_1["RgrpAge"],
+    data_rgrp_age_FedLoss_2["RgrpAge"],
+    data_rgrp_age_FedLoss_3["RgrpAge"],
+    data_rgrp_age_FedLoss_4["RgrpAge"],
+    data_rgrp_age_FedLoss_5["RgrpAge"],
+    data_rgrp_age_FedLoss_6["RgrpAge"],
+    # data_rgrp_age_FedLoss_7["RgrpAge"],
+    # data_rgrp_age_FedLoss_8["RgrpAge"],
+    # data_rgrp_age_FedLoss_9["RgrpAge"],
+    # data_rgrp_age_FedLoss_10["RgrpAge"],
+    # data_rgrp_age_FedLoss_11["RgrpAge"],
+    # data_rgrp_age_FedLoss_12["RgrpAge"],
+]
+
+data_rgrp_age_FedLoss_array = np.array(data_rgrp_age_FedLoss_sets)
+data_rgrp_age_FedLoss_means = np.mean(data_rgrp_age_FedLoss_array, axis=0)
+data_rgrp_age_FedLoss_std_devs = np.std(data_rgrp_age_FedLoss_array, axis=0)
+data_rgrp_age_FedLoss_confidence_interval = 1.96 * data_rgrp_age_FedLoss_std_devs / np.sqrt(len(data_rgrp_age_FedLoss_sets))
+
+
 # FedLoss Gender -----------------------------------------------------------------------------------------
 
 data_rgrp_gender_FedLoss_1 = { 
@@ -409,6 +431,21 @@ data_rgrp_gender_FedLoss = {
     ]
 }
 
+data_rgrp_gender_FedLoss_sets = [
+    data_rgrp_gender_FedLoss_1["RgrpGender"],
+    data_rgrp_gender_FedLoss_2["RgrpGender"],
+    data_rgrp_gender_FedLoss_3["RgrpGender"],
+    data_rgrp_gender_FedLoss_4["RgrpGender"],
+    # data_rgrp_gender_FedLoss_5["RgrpGender"],
+    data_rgrp_gender_FedLoss_6["RgrpGender"],
+    # data_rgrp_gender_FedLoss_7["RgrpGender"],
+    # data_rgrp_gender_FedLoss_8["RgrpGender"],
+]
+
+data_rgrp_gender_FedLoss_array = np.array(data_rgrp_gender_FedLoss_sets)
+data_rgrp_gender_FedLoss_means = np.mean(data_rgrp_gender_FedLoss_array, axis=0)
+data_rgrp_gender_FedLoss_std_devs = np.std(data_rgrp_gender_FedLoss_array, axis=0)
+data_rgrp_gender_FedLoss_confidence_interval = 1.96 * data_rgrp_gender_FedLoss_std_devs / np.sqrt(len(data_rgrp_gender_FedLoss_sets))
 
 # ------------------------------------------------------------------------------------------------------
 

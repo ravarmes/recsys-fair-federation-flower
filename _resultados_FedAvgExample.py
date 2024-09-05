@@ -1,3 +1,5 @@
+import numpy as np
+
 # RGRP
 
 # FedAvg Activity --------------------------------------------------------------------------------------
@@ -84,6 +86,19 @@ data_rgrp_activity_FedAvg = {
     ]
 }
 
+data_rgrp_activity_FedAvg_sets = [
+    data_rgrp_activity_FedAvg_1["RgrpActivity"],
+    data_rgrp_activity_FedAvg_2["RgrpActivity"],
+    data_rgrp_activity_FedAvg_3["RgrpActivity"],
+    data_rgrp_activity_FedAvg_4["RgrpActivity"],
+    data_rgrp_activity_FedAvg_5["RgrpActivity"],
+]
+
+data_rgrp_activity_FedAvg_array = np.array(data_rgrp_activity_FedAvg_sets)
+data_rgrp_activity_FedAvg_means = np.mean(data_rgrp_activity_FedAvg_array, axis=0)
+data_rgrp_activity_FedAvg_std_devs = np.std(data_rgrp_activity_FedAvg_array, axis=0)
+data_rgrp_activity_FedAvg_confidence_interval = 1.96 * data_rgrp_activity_FedAvg_std_devs / np.sqrt(len(data_rgrp_activity_FedAvg_sets))
+
 # FedAvg Age -----------------------------------------------------------------------------------------
 
 data_rgrp_age_FedAvg_1 = {
@@ -166,6 +181,19 @@ data_rgrp_age_FedAvg = {
         sum(x) / 5 for x in zip(data_rgrp_age_FedAvg_1["RgrpAge"], data_rgrp_age_FedAvg_2["RgrpAge"], data_rgrp_age_FedAvg_3["RgrpAge"], data_rgrp_age_FedAvg_4["RgrpAge"], data_rgrp_age_FedAvg_5["RgrpAge"])
     ]
 }
+
+data_rgrp_age_FedAvg_sets = [
+    data_rgrp_age_FedAvg_1["RgrpAge"],
+    data_rgrp_age_FedAvg_2["RgrpAge"],
+    data_rgrp_age_FedAvg_3["RgrpAge"],
+    data_rgrp_age_FedAvg_4["RgrpAge"],
+    data_rgrp_age_FedAvg_5["RgrpAge"],
+]
+
+data_rgrp_age_FedAvg_array = np.array(data_rgrp_age_FedAvg_sets)
+data_rgrp_age_FedAvg_means = np.mean(data_rgrp_age_FedAvg_array, axis=0)
+data_rgrp_age_FedAvg_std_devs = np.std(data_rgrp_age_FedAvg_array, axis=0)
+data_rgrp_age_FedAvg_confidence_interval = 1.96 * data_rgrp_age_FedAvg_std_devs / np.sqrt(len(data_rgrp_age_FedAvg_sets))
 
 # FedAvg Gender --------------------------------------------------------------------------------------
 
@@ -250,6 +278,20 @@ data_rgrp_gender_FedAvg = {
         sum(x) / 5 for x in zip(data_rgrp_gender_FedAvg_1["RgrpGender"], data_rgrp_gender_FedAvg_2["RgrpGender"], data_rgrp_gender_FedAvg_3["RgrpGender"], data_rgrp_gender_FedAvg_4["RgrpGender"], data_rgrp_gender_FedAvg_5["RgrpGender"])
     ]
 }
+
+data_rgrp_gender_FedAvg_sets = [
+    data_rgrp_gender_FedAvg_1["RgrpGender"],
+    data_rgrp_gender_FedAvg_2["RgrpGender"],
+    data_rgrp_gender_FedAvg_3["RgrpGender"],
+    data_rgrp_gender_FedAvg_4["RgrpGender"],
+    data_rgrp_gender_FedAvg_5["RgrpGender"],
+]
+
+data_rgrp_gender_FedAvg_array = np.array(data_rgrp_gender_FedAvg_sets)
+data_rgrp_gender_FedAvg_means = np.mean(data_rgrp_gender_FedAvg_array, axis=0)
+data_rgrp_gender_FedAvg_std_devs = np.std(data_rgrp_gender_FedAvg_array, axis=0)
+data_rgrp_gender_FedAvg_confidence_interval = 1.96 * data_rgrp_gender_FedAvg_std_devs / np.sqrt(len(data_rgrp_gender_FedAvg_sets))
+
 
 # ------------------------------------------------------------------------------------------------------
 

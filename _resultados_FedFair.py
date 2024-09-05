@@ -362,10 +362,26 @@ data_rgrp_gender_FairFed_9 = {
     ]
 }
 
+data_rgrp_gender_FairFed_10 = {
+    "Round": list(range(25)),
+    "RgrpGender": [
+        9.03641172599859e-05, 0.0001115414722522095, 0.00029022488086111355,
+        0.0012882357619894123, 0.00204829409043162, 0.002426130942717391,
+        0.0025859161228615705, 0.002652384017823221, 0.002697878627600319,
+        0.0027703025071303088, 0.0028781097757914044, 0.002714576521876458,
+        0.0027772844896100293, 0.002857250849020154, 0.0028109624954966474,
+        0.002582919704779806, 0.002414580753548397, 0.0025881960724280797,
+        0.0026339541319947424, 0.0024064516414459758, 0.002460036826791584,
+        0.002490157670352639, 0.002331303054744745, 0.0020586557824181935,
+        0.002289115373574486
+    ]
+}
+
+
 data_rgrp_gender_FairFed = {
     "Round": list(range(0, 25)),
     "RgrpGender": [
-        sum(x) / 9 for x in zip(data_rgrp_gender_FairFed_1["RgrpGender"], data_rgrp_gender_FairFed_2["RgrpGender"], data_rgrp_gender_FairFed_3["RgrpGender"], data_rgrp_gender_FairFed_4["RgrpGender"], data_rgrp_gender_FairFed_5["RgrpGender"], data_rgrp_gender_FairFed_6["RgrpGender"], data_rgrp_gender_FairFed_7["RgrpGender"], data_rgrp_gender_FairFed_8["RgrpGender"], data_rgrp_gender_FairFed_9["RgrpGender"])
+        sum(x) / 10 for x in zip(data_rgrp_gender_FairFed_1["RgrpGender"], data_rgrp_gender_FairFed_2["RgrpGender"], data_rgrp_gender_FairFed_3["RgrpGender"], data_rgrp_gender_FairFed_4["RgrpGender"], data_rgrp_gender_FairFed_5["RgrpGender"], data_rgrp_gender_FairFed_6["RgrpGender"], data_rgrp_gender_FairFed_7["RgrpGender"], data_rgrp_gender_FairFed_8["RgrpGender"], data_rgrp_gender_FairFed_9["RgrpGender"], data_rgrp_gender_FairFed_10["RgrpGender"])
     ]
 }
 
@@ -379,6 +395,7 @@ data_rgrp_gender_FairFed_sets = [
     data_rgrp_gender_FairFed_7["RgrpGender"],
     data_rgrp_gender_FairFed_8["RgrpGender"],
     data_rgrp_gender_FairFed_9["RgrpGender"],
+    data_rgrp_gender_FairFed_10["RgrpGender"],
 ]
 
 data_rgrp_gender_FairFed_array = np.array(data_rgrp_gender_FairFed_sets)

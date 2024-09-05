@@ -1,4 +1,5 @@
 import numpy as np
+from itertools import combinations
 
 data_rgrp_age_FairFed_1 = {
     "Round": list(range(25)),
@@ -71,11 +72,49 @@ data_rgrp_age_FairFed_5 = {
     ]
 }
 
+data_rgrp_age_FairFed_6 = {
+    "Round": list(range(25)),
+    "RgrpAge": [
+        0.0029344020020876695, 0.0033094988232945624, 0.0031994667382166143, 0.004446891416585683,
+        0.005599592990248538, 0.005794205597898063, 0.006181825553722571, 0.006182135367861857,
+        0.006339613617043113, 0.006225766632951352, 0.006118844169542659, 0.006132506040641471,
+        0.0061931473407791015, 0.006626790614891191, 0.006726375047540861, 0.006507510004824044,
+        0.007355439924167805, 0.0068095968953052815, 0.0073447862510265865, 0.006117083423177189,
+        0.007479174999462025, 0.007664736902007714, 0.007021240727983073, 0.006983391672254242,
+        0.005830974810778917
+    ]
+}
+
+data_rgrp_age_FairFed_7 = {
+    "Round": list(range(25)),
+    "RgrpAge": [
+        0.0029344020020876695, 0.003309542248459478, 0.0031947048625274948, 0.004404422270599928,
+        0.005593372516356612, 0.005768223355713133, 0.006127231415233208, 0.006152602471767983,
+        0.006234683549655825, 0.0062902333433556, 0.006373068172587184, 0.006206469652410463,
+        0.006207585589297805, 0.006540081129486659, 0.006899706601267244, 0.006243237889779229,
+        0.006354136850406772, 0.007600541059957151, 0.007060760541214846, 0.0070878806917541014,
+        0.007698707295211555, 0.006783133860791336, 0.006435540334145062, 0.006012830606283511,
+        0.005569509256272947
+    ]
+}
+
+data_rgrp_age_FairFed_8 = {
+    "Round": list(range(25)),
+    "RgrpAge": [
+        0.0029344020020876695, 0.003311834110208633, 0.003183204488496468, 0.004532450784396993,
+        0.00571669416278268, 0.005872260576092274, 0.006131629490971834, 0.006117087942672199,
+        0.006004495250679425, 0.006450359957807309, 0.006426939508063062, 0.006334759160943129,
+        0.006507658364344451, 0.006888241185311297, 0.007317925060226592, 0.006819260791600645,
+        0.00624722767972256, 0.007126144896328025, 0.007201404702704005, 0.005696670227865233,
+        0.006197147772714707, 0.0059687628998810445, 0.006082774829434639, 0.006272336507455249,
+        0.006478213660068546
+    ]
+}
 
 data_rgrp_age_FairFed = {
     "Round": list(range(0, 25)),
     "RgrpAge": [
-        sum(x) / 5 for x in zip(data_rgrp_age_FairFed_1["RgrpAge"], data_rgrp_age_FairFed_2["RgrpAge"], data_rgrp_age_FairFed_3["RgrpAge"], data_rgrp_age_FairFed_4["RgrpAge"], data_rgrp_age_FairFed_5["RgrpAge"])
+        sum(x) / 8 for x in zip(data_rgrp_age_FairFed_1["RgrpAge"], data_rgrp_age_FairFed_2["RgrpAge"], data_rgrp_age_FairFed_3["RgrpAge"], data_rgrp_age_FairFed_4["RgrpAge"], data_rgrp_age_FairFed_5["RgrpAge"])
     ]
 }
 
@@ -85,16 +124,15 @@ data_rgrp_age_FairFed_sets = [
     data_rgrp_age_FairFed_3["RgrpAge"],
     data_rgrp_age_FairFed_4["RgrpAge"],
     data_rgrp_age_FairFed_5["RgrpAge"],
+    data_rgrp_age_FairFed_6["RgrpAge"],
+    data_rgrp_age_FairFed_7["RgrpAge"],
+    data_rgrp_age_FairFed_8["RgrpAge"],
 ]
 
 data_rgrp_age_FairFed_array = np.array(data_rgrp_age_FairFed_sets)
 data_rgrp_age_FairFed_means = np.mean(data_rgrp_age_FairFed_array, axis=0)
 data_rgrp_age_FairFed_std_devs = np.std(data_rgrp_age_FairFed_array, axis=0)
 data_rgrp_age_FairFed_confidence_interval = 1.96 * data_rgrp_age_FairFed_std_devs / np.sqrt(len(data_rgrp_age_FairFed_sets))
-
-import numpy as np
-from itertools import combinations
-
 
 def calculate_confidence_interval(data_sets, confidence=1.96):
     # Convert the list of selected sets into a numpy array
@@ -107,7 +145,7 @@ def calculate_confidence_interval(data_sets, confidence=1.96):
     return np.mean(confidence_interval)  # or some form of aggregated measure
 
 # Number of sets to select in a combination
-num_sets_to_select = 3
+num_sets_to_select = 5
 
 # Generate all possible combinations of the sets
 all_combinations = combinations(range(len(data_rgrp_age_FairFed_sets)), num_sets_to_select)

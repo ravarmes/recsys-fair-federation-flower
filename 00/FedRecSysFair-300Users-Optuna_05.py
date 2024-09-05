@@ -42,8 +42,8 @@ torch.backends.cudnn.benchmark = False
 DEVICE = torch.device("cpu")  # Use "cuda" para GPU
 print(f"Training on {DEVICE} using PyTorch {torch.__version__} and Flower {fl.__version__}")
 
-NUM_CLIENTS = 30
-NUM_ROUNDS = 5
+NUM_CLIENTS = 300
+NUM_ROUNDS = 24
 
 RESULTS = []
 
@@ -151,7 +151,7 @@ def load_datasets(num_clients: int, filename: str, seed: int = 42):
 
     return df, trainloaders, valloaders, testloader
 
-avaliacoes_df, trainloaders, valloaders, testloader = load_datasets(NUM_CLIENTS, filename="X-30.xlsx")
+avaliacoes_df, trainloaders, valloaders, testloader = load_datasets(NUM_CLIENTS, filename="X.xlsx")
 # verificar_datasets_file(trainloaders, valloaders, testloader)
 
 class Net(nn.Module):
@@ -273,21 +273,15 @@ def calculate_Rgrp(net):
     recomendacoes_df = net.predict_all(NUM_CLIENTS, 1000)
     omega = ~avaliacoes_df.isnull()
     G_ACTIVITY = {1: list(range(0, 15)), 2: list(range(15, NUM_CLIENTS))}
-    
-    G_GENDER = {
-        1: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29],
-        2: [14, 25]
-    }
-
-    G_AGE = {
-        1: [28, 29, 14],
-        2: [8, 23, 26],
-        3: [3, 6, 7, 9, 10, 11, 15, 16, 21],
-        4: [1, 2, 4, 5, 13, 17, 18],
-        5: [19, 20],
-        6: [0, 25, 27],
-        7: [12, 22, 24]
-    }
+    G_GENDER = {1: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 30, 32, 33, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 64, 65, 66, 67, 68, 69, 70, 71, 72, 74, 75, 76, 77, 78, 79, 80, 82, 83, 84, 85, 86, 87, 88, 89, 90, 93, 94, 95, 96, 99, 100, 102, 103, 105, 107, 108, 109, 110, 111, 112, 115, 117, 118, 120, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 146, 147, 148, 149, 151, 152, 153, 154, 156, 159, 160, 161, 162, 164, 165, 166, 168, 169, 170, 172, 174, 175, 176, 177, 178, 181, 182, 183, 184, 186, 187, 188, 189, 191, 194, 196, 198, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 218, 219, 220, 222, 223, 224, 226, 227, 229, 230, 231, 232, 233, 234, 237, 238, 239, 240, 245, 246, 247, 248, 249, 250, 251, 252, 255, 256, 257, 258, 259, 260, 261, 262, 263, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 293, 294, 295, 296, 297, 298, 299],
+          2: [14, 25, 31, 34, 35, 42, 63, 73, 81, 91, 92, 97, 98, 101, 104, 106, 113, 114, 116, 119, 121, 122, 133, 144, 145, 150, 155, 157, 158, 163, 167, 171, 173, 179, 180, 185, 190, 192, 193, 195, 197, 199, 213, 214, 215, 216, 217, 221, 225, 228, 235, 236, 241, 242, 243, 244, 253, 254, 264, 290]}
+    G_AGE = {1: [14, 132, 194, 262, 273], 2: [8, 23, 26, 33, 48, 50, 61, 64, 70, 71, 76, 82, 86, 90, 92, 94, 96, 101, 107, 124, 126, 129, 134, 140, 149, 157, 158, 159, 163, 168, 171, 174, 175, 189, 191, 201, 207, 209, 215, 216, 222, 231, 237, 244, 246, 251, 255, 265, 270, 275, 282, 288, 290], 
+             3: [3, 6, 7, 9, 10, 11, 15, 16, 21, 22, 24, 28, 29, 31, 32, 34, 35, 37, 39, 40, 41, 42, 43, 44, 45, 51, 53, 55, 56, 59, 60, 63, 65, 66, 69, 72, 73, 74, 75, 79, 80, 81, 85, 89, 93, 97, 102, 103, 104, 106, 108, 109, 110, 111, 116, 118, 119, 120, 122, 128, 130, 131, 133, 135, 136, 138, 139, 141, 142, 143, 145, 147, 151, 155, 161, 164, 169, 170, 173, 176, 179, 181, 183, 186, 187, 188, 190, 192, 193, 195, 196, 198, 200, 202, 203, 204, 205, 206, 211, 212, 213, 217, 219, 220, 223, 225, 226,
+             229, 230, 232, 233, 234, 236, 238, 240, 241, 249, 252, 253, 254, 258, 260, 261, 264, 267, 268, 269, 276, 277, 279, 280, 283, 285, 286, 287, 289, 291, 293, 294, 295, 296, 298], 
+             4: [1, 2, 4, 5, 13, 17, 18, 25, 27, 36, 38, 49, 52, 57, 68, 77, 78, 84, 87, 88, 91, 95, 98, 99, 100, 105, 112, 117, 121, 127, 144, 146, 150, 152, 153, 156, 166, 172, 177, 182, 199, 208, 210, 214, 227, 228, 243, 245, 248, 250, 256, 263, 271, 272, 278, 292, 297, 299], 
+             5: [19, 20, 30, 46, 47, 54, 58, 62, 67, 83, 113, 125, 137, 148, 160, 165, 167, 184, 197, 221, 235, 239, 242, 281], 
+             6: [0, 114, 115, 123, 178, 180, 185, 224, 247, 257, 266, 274], 
+             7: [12, 154, 162, 218, 259, 284]}
 
     glv = GroupLossVariance(avaliacoes_df, omega, G_ACTIVITY, 1)
     RgrpActivity = glv.evaluate(recomendacoes_df)
@@ -442,7 +436,7 @@ class FedCustom(fl.server.strategy.Strategy):
             group_id = next(group for group, client_indexes in G_ACTIVITY.items() if client_index in client_indexes)
             group_mean_loss = self.loss_avg_per_group[group_id]
 
-            fairness_loss = self.fairness_regularization(server_round, client_index, local_loss, global_mean_loss, group_mean_loss, global_groups_variance, self.factor_variance)
+            fairness_loss = self.fairness_regularization(server_round, client_index, local_loss, global_mean_loss, group_mean_loss, global_groups_variance)
             fit_res.metrics['loss'] = fairness_loss
 
         weights_results = [
@@ -519,16 +513,23 @@ class FedCustom(fl.server.strategy.Strategy):
         # Verificar se a configuração já existe na lista RESULTS
         config_exists = False
         for result in RESULTS:
-            if (result['factor_variance'] == self.factor_variance):
+            if (result['normalized_variance_min'] == self.normalized_variance_min and
+                result['normalized_variance_max'] == self.normalized_variance_max and
+                result['p_diff_loss'] == self.p_diff_loss and
+                result['p_group_mean'] == self.p_group_mean):
                 
                 # Adicionar nova tupla (server_round, RgrpActivity) na lista RgrpActivity
                 result['RgrpActivity'].append((server_round, RgrpActivity))
                 config_exists = True
                 break
 
+        # Se a configuração não existir, criar um novo item na lista RESULTS
         if not config_exists:
             RESULTS.append({
-                'factor_variance': self.factor_variance,
+                'normalized_variance_min': self.normalized_variance_min,
+                'normalized_variance_max': self.normalized_variance_max,
+                'p_diff_loss': self.p_diff_loss,
+                'p_group_mean': self.p_group_mean,
                 'RgrpActivity': [(server_round, RgrpActivity)]
             })
 
@@ -587,10 +588,10 @@ def objective(trial):
 
 # Criar o estudo de otimização
 study = optuna.create_study(direction="minimize")
-study.optimize(objective, n_trials=50)  # Define o número de iterações (trials)
+study.optimize(objective, n_trials=10)  # Define o número de iterações (trials)
 
 # Imprimir os melhores parâmetros
 best_params = study.best_params
 print(f"Melhores parâmetros encontrados: {best_params}")
 
-# Melhores parâmetros encontrados: {'factor_variance': 867.9540957096126}
+# {'normalized_variance_min': 0.17271147902448564, 'normalized_variance_max': 0.7821917395740795, 'p_diff_loss': 0.4773182457641848, 'p_group_mean': 0.4082849103235676}

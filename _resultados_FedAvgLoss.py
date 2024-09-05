@@ -109,9 +109,9 @@ data_rgrp_activity_FedLoss = {
 }
 
 data_rgrp_activity_FedLoss_sets = [
-    data_rgrp_activity_FedLoss_1["RgrpActivity"],
+    # data_rgrp_activity_FedLoss_1["RgrpActivity"],
     # data_rgrp_activity_FedLoss_2["RgrpActivity"],
-    # data_rgrp_activity_FedLoss_3["RgrpActivity"],
+    data_rgrp_activity_FedLoss_3["RgrpActivity"],
     data_rgrp_activity_FedLoss_4["RgrpActivity"],
     data_rgrp_activity_FedLoss_5["RgrpActivity"],
     data_rgrp_activity_FedLoss_6["RgrpActivity"],
@@ -295,18 +295,18 @@ data_rgrp_age_FedLoss = {
 }
 
 data_rgrp_age_FedLoss_sets = [
-    # data_rgrp_age_FedLoss_1["RgrpAge"],
+    data_rgrp_age_FedLoss_1["RgrpAge"],
     data_rgrp_age_FedLoss_2["RgrpAge"],
     data_rgrp_age_FedLoss_3["RgrpAge"],
     data_rgrp_age_FedLoss_4["RgrpAge"],
-    data_rgrp_age_FedLoss_5["RgrpAge"],
+    # data_rgrp_age_FedLoss_5["RgrpAge"],
     data_rgrp_age_FedLoss_6["RgrpAge"],
     # data_rgrp_age_FedLoss_7["RgrpAge"],
     # data_rgrp_age_FedLoss_8["RgrpAge"],
     # data_rgrp_age_FedLoss_9["RgrpAge"],
     # data_rgrp_age_FedLoss_10["RgrpAge"],
     # data_rgrp_age_FedLoss_11["RgrpAge"],
-    # data_rgrp_age_FedLoss_12["RgrpAge"],
+    data_rgrp_age_FedLoss_12["RgrpAge"],
 ]
 
 data_rgrp_age_FedLoss_array = np.array(data_rgrp_age_FedLoss_sets)

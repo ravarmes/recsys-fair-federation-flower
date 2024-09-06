@@ -200,11 +200,37 @@ data_rgrp_age_FairFed_8 = {
     ]
 }
 
+data_rgrp_age_FairFed_9 = {
+    "Round": list(range(25)),
+    "RgrpAge": [
+        0.0029344020020876695, 0.003309542248459478, 0.0031947048625274948, 0.004404422270599928,
+        0.005593372516356612, 0.005768223355713133, 0.006127231415233208, 0.006152602471767983,
+        0.006234683549655825, 0.0062902333433556, 0.006373068172587184, 0.006206469652410463,
+        0.006207585589297805, 0.006540081129486659, 0.006899706601267244, 0.006243237889779229,
+        0.006354136850406772, 0.007600541059957151, 0.007060760541214846, 0.0070878806917541014,
+        0.007698707295211555, 0.006783133860791336, 0.006435540334145062, 0.006012830606283511,
+        0.005569509256272947
+    ]
+}
+
+data_rgrp_age_FairFed_10 = {
+    "Round": list(range(25)),
+    "RgrpAge": [
+        0.0029344020020876695, 0.00330857618582836, 0.003211732478170037, 0.004488357833512333,
+        0.005466312401590924, 0.0058537087628154644, 0.0060658926461524655, 0.006179033431782101,
+        0.006331471348869714, 0.006325578976554842, 0.006296789613494891, 0.006228342178567888,
+        0.006602342335117288, 0.006818797083727746, 0.006150466867513318, 0.006941489590248609,
+        0.007549599851504533, 0.006172722028381475, 0.006263905977988323, 0.006180535070138303,
+        0.006073304436191014, 0.006814173353962835, 0.00673462820204578, 0.006410032390832575,
+        0.006227059933515716
+    ]
+}
+
 
 data_rgrp_age_FairFed = {
     "Round": list(range(0, 25)),
     "RgrpAge": [
-        sum(x) / 8 for x in zip(data_rgrp_age_FairFed_1["RgrpAge"], data_rgrp_age_FairFed_2["RgrpAge"], data_rgrp_age_FairFed_3["RgrpAge"], data_rgrp_age_FairFed_4["RgrpAge"], data_rgrp_age_FairFed_5["RgrpAge"])
+        sum(x) / 8 for x in zip(data_rgrp_age_FairFed_1["RgrpAge"], data_rgrp_age_FairFed_2["RgrpAge"], data_rgrp_age_FairFed_3["RgrpAge"], data_rgrp_age_FairFed_4["RgrpAge"], data_rgrp_age_FairFed_5["RgrpAge"], data_rgrp_age_FairFed_6["RgrpAge"], data_rgrp_age_FairFed_7["RgrpAge"], data_rgrp_age_FairFed_8["RgrpAge"], data_rgrp_age_FairFed_9["RgrpAge"], data_rgrp_age_FairFed_10["RgrpAge"])
     ]
 }
 
@@ -217,6 +243,8 @@ data_rgrp_age_FairFed_sets = [
     data_rgrp_age_FairFed_6["RgrpAge"],
     data_rgrp_age_FairFed_7["RgrpAge"],
     data_rgrp_age_FairFed_8["RgrpAge"],
+    data_rgrp_age_FairFed_9["RgrpAge"],
+    data_rgrp_age_FairFed_10["RgrpAge"],
 ]
 
 data_rgrp_age_FairFed_array = np.array(data_rgrp_age_FairFed_sets)

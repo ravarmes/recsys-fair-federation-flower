@@ -533,15 +533,15 @@ class FedCustom(fl.server.strategy.Strategy):
         for result in RESULTS:
             if (result['factor_variance'] == self.factor_variance):
                 
-                # Adicionar nova tupla (server_round, RgrpActivity) na lista RgrpActivity
-                result['RgrpActivity'].append((server_round, RgrpActivity))
+                # Adicionar nova tupla (server_round, RgrpAge) na lista RgrpAge
+                result['RgrpAge'].append((server_round, RgrpAge))
                 config_exists = True
                 break
 
         if not config_exists:
             RESULTS.append({
                 'factor_variance': self.factor_variance,
-                'RgrpActivity': [(server_round, RgrpActivity)]
+                'RgrpAge': [(server_round, RgrpAge)]
             })
 
         return loss, metrics
@@ -581,29 +581,29 @@ def objective(trial):
     )
 
     loss = None
-    RgrpActivity = None
+    RgrpAge = None
     if RESULTS:
         last_result = RESULTS[-1]
-        loss = last_result.get("RgrpActivity", -1)
-        RgrpActivity = next(x[1] for x in loss if x[0] == NUM_ROUNDS)
+        loss = last_result.get("RgrpAge", -1)
+        RgrpAge = next(x[1] for x in loss if x[0] == NUM_ROUNDS)
 
     # nome_do_arquivo = 'triais.txt'
     # with open(nome_do_arquivo, 'a') as arquivo:
     #     arquivo.write(f"trial: {trial}\n")
     #     arquivo.write(f"RESULTS: {RESULTS}\")\n")
-    #     arquivo.write(f"RgrpActivity: {RgrpActivity}\n")
+    #     arquivo.write(f"RgrpAge: {RgrpAge}\n")
     # print(f"O código foi escrito no arquivo {nome_do_arquivo}")
 
     # O Optuna irá tentar minimizar o valor de retorno
-    return RgrpActivity
+    return RgrpAge
 
 # Criar o estudo de otimização
 study = optuna.create_study(direction="minimize")
-study.optimize(objective, n_trials=50)  # Define o número de iterações (trials)
+study.optimize(objective, n_trials=20)  # Define o número de iterações (trials)
 
 # Imprimir os melhores parâmetros
 best_params = study.best_params
 print(f"Melhores parâmetros encontrados: {best_params}")
 
 # Melhores parâmetros encontrados: {'factor_variance': 867.9540957096126} Activity
-# Melhores parâmetros encontrados: {'factor_variance': 20.006658566384075} Age
+# Melhores parâmetros encontrados: {'factor_variance': 8617.89384281819} Age

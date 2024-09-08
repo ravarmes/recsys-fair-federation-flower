@@ -599,11 +599,12 @@ def objective(trial):
 
 # Criar o estudo de otimização
 study = optuna.create_study(direction="minimize")
-study.optimize(objective, n_trials=20)  # Define o número de iterações (trials)
+study.optimize(objective, n_trials=100)  # Define o número de iterações (trials)
 
 # Imprimir os melhores parâmetros
 best_params = study.best_params
 print(f"Melhores parâmetros encontrados: {best_params}")
 
 # Melhores parâmetros encontrados: {'factor_variance': 867.9540957096126} Activity
-# Melhores parâmetros encontrados: {'factor_variance': 8617.89384281819} Age
+# Melhores parâmetros encontrados: {'factor_variance': 8617.89384281819} Age (Trial = 20)
+# Melhores parâmetros encontrados: {'factor_variance': 8246.625572947512} Age (Trial = 100)

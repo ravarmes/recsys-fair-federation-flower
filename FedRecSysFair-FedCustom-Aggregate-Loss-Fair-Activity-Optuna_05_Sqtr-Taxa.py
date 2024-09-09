@@ -484,7 +484,8 @@ class FedCustom(fl.server.strategy.Strategy):
         # Garantir que a penalidade não se torne negativa
         adaptive_penalty_weight = max(adaptive_penalty_weight, 0)
 
-        factor_variance = 867.9540957096126
+        # factor_variance = 867.9540957096126
+        factor_variance = 8246.625572947512
         scaled_variance = global_groups_variance * factor_variance
         fairness_penalty = np.sqrt(scaled_variance) * group_mean_loss * adaptive_penalty_weight
 

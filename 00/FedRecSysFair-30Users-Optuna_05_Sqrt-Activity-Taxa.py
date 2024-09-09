@@ -365,6 +365,7 @@ class FedCustom(fl.server.strategy.Strategy):
         self.p_diff_loss = p_diff_loss
         self.p_group_mean = p_group_mean
         self.factor_variance = factor_variance
+        self.previous_global_loss = 0
 
     def __repr__(self) -> str:
         return "FedCustom"
@@ -617,3 +618,4 @@ best_params = study.best_params
 print(f"Melhores parâmetros encontrados: {best_params}")
 
 # Melhores parâmetros encontrados: {'factor_variance': 867.9540957096126}
+# Melhores parâmetros encontrados: {'factor_variance': 4808.880666194077}

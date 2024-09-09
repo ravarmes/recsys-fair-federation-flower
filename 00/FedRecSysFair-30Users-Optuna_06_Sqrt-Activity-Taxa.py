@@ -357,6 +357,7 @@ class FedCustom(fl.server.strategy.Strategy):
         self.all_losses = []
         self.all_weights = []
         self.global_groups_variance = 1
+        self.previous_global_loss = 0
         
         # Armazenar os hiperparâmetros como atributos da classe
         self.factor_variance = factor_variance

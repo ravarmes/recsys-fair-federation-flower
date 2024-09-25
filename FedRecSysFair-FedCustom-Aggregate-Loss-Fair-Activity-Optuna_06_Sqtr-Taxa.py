@@ -440,10 +440,11 @@ class FedCustom(fl.server.strategy.Strategy):
         return initial_lr / (1 + decay_factor * round_num)
 
     def fairness_regularization(self, server_round, client_index, loss, global_mean_loss, group_mean_loss, global_groups_variance):
-        # Parâmetros de ajuste para a penalidade de justiça
-        base_penalty_weight = 0.1  # Peso base para a penalidade de justiça
-        decay_rate = 0.01  # Taxa de decaimento para a penalidade de justiça
-        
+        # Melhores parâmetros encontrados: {'factor_variance': 8102.992635237738, 'base_penalty_weight': 0.999962624063252, 'decay_rate': 0.04115873833331292}
+        factor_variance = 8102.992635237738
+        base_penalty_weight = 0.999962624063252  # Peso base para a penalidade de justiça
+        decay_rate = 0.04115873833331292  # Taxa de decaimento para a penalidade de justiça
+
         # Calcular a variação da perda global desde o round anterior
         # (Você precisa armazenar a perda global do round anterior para isso)
         if server_round > 0:
@@ -461,7 +462,6 @@ class FedCustom(fl.server.strategy.Strategy):
         # Garantir que a penalidade não se torne negativa
         adaptive_penalty_weight = max(adaptive_penalty_weight, 0)
 
-        factor_variance = 867.9540957096126
         scaled_variance = global_groups_variance * factor_variance
         fairness_penalty = np.sqrt(scaled_variance) * group_mean_loss * adaptive_penalty_weight
 

@@ -2,21 +2,18 @@ import os
 
 # FedAvg --------------------------------------------------------------------------------------
 # os.system("python FedAvg-Example-16-8.py 2> FedAvg-Example-16-8-1.txt")
-os.system("python FedAvg-Example-16-8.py 2> FedAvg-Example-16-8-2.txt")
+# os.system("python FedAvg-Example-16-8.py 2> FedAvg-Example-16-8-2.txt")
 # os.system("python FedRecSysFair-FedCustom-Aggregate-Example.py 2> FedRecSysFair-FedCustom-Aggregate-Example-3.txt")
 
 # Fed(l) --------------------------------------------------------------------------------------
-# os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-17.txt")
-# os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-18.txt")
-# os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-19.txt")
-# os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-20.txt")
-# os.system("python FedRecSysFair-FedCustom-Aggregate-Loss.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-21.txt")
+os.system("python FedAvg-Loss-16-8.py 2> FedAvg-Loss-16-8-01.txt")
+os.system("python FedAvg-Loss-16-8.py 2> FedAvg-Loss-16-8-02.txt")
 
 
 # # FairFed(l) ACTIVITY -------------------------------------------------------------------------
-# os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Activity.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Activity-1.txt")
-# os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Activity.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Activity-2.txt")
-# os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Activity.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Activity-3.txt")
+os.system("python FedFair-Loss-Activity-16-8.py 2> FedFair-Loss-Activity-16-8-01.txt")
+os.system("python FedFair-Loss-Activity-16-8.py 2> FedFair-Loss-Activity-16-8-02.txt")
+
 
 # # FairFed(l) AGE ------------------------------------------------------------------------------
 # os.system("python FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age.py 2> FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Age-26.txt")

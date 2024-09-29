@@ -1,0 +1,105 @@
+Estou trabalhando em um sistema de recomendação federado com preocupação de justiça de grupo.
+A ideia é fazer com que os erros dos grupos de usuários sejam o mais semelhantes possíveis.
+Para isso, a estratégia geral é fazer com que usuários de grupos com menores erros (perdas do modelo local) contribuam menos na agregação dos parâmetros no servidor. E usuários de grupos com maiores erros (perdas do modelo local) contribuam mais na agregação dos parâmetros no servidor.
+
+Para isso, eu não quero utilizar simplesmente uma agregação que consideração a perda individual do usuário como peso.
+Mas, quero implementar uma função para regulação de justiça.
+A ideia geral da função é "aumentar" o peso do usuário a depender de seu grupo, bem como, da injustiça de grupo calculada no round.
+Por exemplo:
+
+def fairness_regularization(self, server_round, client_index, loss, global_groups_variance):
+        fairness_penalty = (group_mean_loss * global_groups_variance)
+        return loss + fairness_penalty
+        
+Importante ressaltar que os valores de loss (perda individual do usuário) e group_mean_loss (perda do grupo de usuários ao qual o usuário pertence) possuem ordens de grandeza bem diferentes de global_groups_variance (injustiça do grupo, que é igual a variância das perdas dos grupos de usuários).
+
+Eu preciso alterar a função fairness_regularization incluindo uma taxa de aprendizagem de maneira que estivesse utilizando a estratégia de descida do gradiente.
+
+Esta função fairness_regularization está sendo invocada por um método mais geral, utilizado para agregar os pesos dos clientes:
+
+def aggregate_fit(self, server_round: int, results: List[Tuple[ClientProxy, FitRes]], failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]]) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
+        """Agrega os parâmetros dos modelos treinados pelos clientes."""
+        G_ACTIVITY = {1: list(range(0, 15)), 2: list(range(15, 300))}
+        total_loss = sum(fit_res.metrics.get('loss', 0) for _, fit_res in results)
+
+        group_losses = {}
+        group_counts = {}
+        for group, client_indexes in G_ACTIVITY.items():
+            group_loss = sum(fit_res.metrics.get('loss', 0) for index, (client, fit_res) in enumerate(results) if index in client_indexes)
+            group_count = sum(1 for index in client_indexes if index < len(results))
+            group_losses[group] = group_loss
+            group_counts[group] = group_count
+
+        self.loss_avg_per_group = {group: (group_losses[group] / group_counts[group] if group_counts[group] != 0 else 0) for group in G_ACTIVITY}
+        print(f"Perda Média por Grupo: {self.loss_avg_per_group}")
+
+        total_examples = sum(fit_res.num_examples for _, fit_res in results)
+        print(f"Número total de exemplos agregados: {total_examples}")
+
+        global_groups_variance = np.var(list(self.loss_avg_per_group.values()))
+        print(f"global_groups_variance: {global_groups_variance}")
+
+        for client_index, (client, fit_res) in enumerate(results):
+            local_loss = fit_res.metrics.get('loss', 0)
+
+            # Identifica o grupo do cliente atual
+            group_id = next(group for group, client_indexes in G_ACTIVITY.items() if client_index in client_indexes)
+            group_mean_loss = self.loss_avg_per_group[group_id]
+
+            # Usar group_mean_loss na chamada para fairness_regularization
+            fairness_loss = self.fairness_regularization(server_round, client_index, local_loss, group_mean_loss, global_groups_variance)
+            fit_res.metrics['loss'] = fairness_loss
+
+        weights_results = [
+            (parameters_to_ndarrays(fit_res.parameters), fit_res.metrics.get('loss', 0)) for _, fit_res in results
+        ]
+
+        def aggregate(results: List[Tuple[NDArrays, float]]) -> NDArrays:
+            # Calcula a perda total durante do treinamento
+            loss_total = sum(loss for (_, loss) in results)
+
+            # Crie uma lista de pesos, cada um multiplicado pela perda
+            weighted_weights = [
+                [layer * loss for layer in weights] for weights, loss in results
+            ]
+
+            # Compute average weights of each layer
+            weights_prime: NDArrays = [
+                reduce(np.add, layer_updates) / loss_total
+                for layer_updates in zip(*weighted_weights)
+            ]
+            return weights_prime
+
+        parameters_aggregated = ndarrays_to_parameters(aggregate(weights_results))
+
+        metrics_aggregated = {}
+        for client_index, (client, fit_res) in enumerate(results):
+            loss = fit_res.metrics.get('loss', 0)
+            weight = loss / total_loss
+            num_examples = fit_res.num_examples
+            print(f"Cliente {client.cid}: Perda = {loss}, Peso = {weight}, Exemplos = {num_examples}")
+            self.all_losses.append(loss)
+            self.all_weights.append(weight)
+        
+        return parameters_aggregated, metrics_aggregated
+
+
+
+Após a agregação dos pesos, a variável RgrpActivity vai medir a injustiça dos grupos, considerando o agrupamento por nível de atividade:
+    
+    def evaluate(self, server_round: int, parameters: Parameters) -> Optional[Tuple[float, Dict[str, Scalar]]]:
+        """Avalia o modelo global na rodada atual."""
+        net = Net(300, 1000).to(DEVICE)
+        set_parameters(net, parameters_to_ndarrays(parameters))
+        loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = test(net, testloader, server=True)
+        metrics = {"rmse": rmse, "accuracy": accuracy, "precision_at_10": precision_at_10, "recall_at_10": recall_at_10, "RgrpActivity": RgrpActivity, "RgrpGender": RgrpGender, "RgrpAge": RgrpAge, "RgrpActivity_Losses": RgrpActivity_Losses, "RgrpGender_Losses": RgrpGender_Losses, "RgrpAge_Losses": RgrpAge_Losses}
+        
+        print(f"Server-side evaluation :: Round {server_round}")
+        print(f"loss {loss} / RMSE {rmse} / accuracy {accuracy} / Precision@10 {precision_at_10} / Recall@10 {recall_at_10}")
+        print(f"RgrpActivity {RgrpActivity} / RgrpGender {RgrpGender} / RgrpAge {RgrpAge}")
+        print(f"RgrpActivity_Losses {RgrpActivity_Losses} / RgrpGender_Losses {RgrpGender_Losses} / RgrpAge_Losses {RgrpAge_Losses}")
+        return loss, metrics
+
+O meu objetivo com a função fairness_regularization é alterar os pesos dos clientes de maneira que a RgrpActivity seja o menor possível.
+
+Assim sendo, como eu poderia alterar o código da função fairness_regularization para incluir uma taxa de aprendizado, de maneira que estivesse baseada na descida do gradiente, considerando a busca pelo menor RgrpActivity?

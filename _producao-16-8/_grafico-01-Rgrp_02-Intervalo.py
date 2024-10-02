@@ -33,7 +33,7 @@ ax1.fill_between(data_rgrp_activity_FairFed["Round"], data_rgrp_activity_FairFed
 
 ax1.set_ylabel(r"$R_{grp}$", fontsize=14)
 ax1.set_title(r"Atividade")
-ax1.legend(loc='lower right')
+ax1.legend(loc='lower center')
 
 # Subplot 2
 ax2.plot(data_rgrp_age_FedAvg["Round"], data_rgrp_age_FedAvg_means, label=r"FedAvg($n$)", linestyle='-')
@@ -46,7 +46,7 @@ ax2.fill_between(data_rgrp_age_FairFed["Round"], data_rgrp_age_FairFed_means - d
 
 #ax2.set_ylabel(r"$R_{grp}$", fontsize=14)
 ax2.set_title(r"Idade")
-ax2.legend(loc='lower right')
+ax2.legend(loc='lower center')
 
 
 # Subplot 3
@@ -60,7 +60,7 @@ ax3.fill_between(data_rgrp_gender_FairFed["Round"], data_rgrp_gender_FairFed_mea
 
 #ax3.set_ylabel(r"$R_{grp}$", fontsize=14)
 ax3.set_title(r"Gênero")
-ax3.legend(loc='lower right')
+ax3.legend(loc='lower center')
 
 
 # Subplot 4

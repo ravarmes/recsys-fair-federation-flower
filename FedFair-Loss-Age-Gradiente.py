@@ -414,7 +414,7 @@ class FedCustom(fl.server.strategy.Strategy):
     """Estratégia personalizada para agregação de modelos."""
     def __init__(self, fraction_fit: float = 1.0, fraction_evaluate: float = 1.0, 
                  min_fit_clients: int = NUM_CLIENTS, min_evaluate_clients: int = NUM_CLIENTS, 
-                 min_available_clients: int = NUM_CLIENTS, initial_learning_rate=0.2) -> None:
+                 min_available_clients: int = NUM_CLIENTS, initial_learning_rate=0.3) -> None:
         super().__init__()
         self.fraction_fit = fraction_fit
         self.fraction_evaluate = fraction_evaluate

@@ -397,8 +397,19 @@ class FedCustom(fl.server.strategy.Strategy):
             log_file.write(f"loss + fairness_penalty: {loss + fairness_penalty}\n")
 
         return adjusted_loss
+    
 
-        
+    def evaluate_and_adjust_learning_rate(self, new_rgrp_activity):
+        if self.previous_rgrp_activity is not None:
+            if new_rgrp_activity > self.previous_rgrp_activity:
+                # Aumentar a taxa de aprendizado se a injustiça aumenta
+                self.learning_rate *= 1.05
+            elif new_rgrp_activity < self.previous_rgrp_activity:
+                # Diminuir a taxa de aprendizado se a injustiça diminui
+                self.learning_rate *= 0.95
+
+        self.previous_rgrp_activity = new_rgrp_activity
+
 
 
     def configure_fit(self, server_round: int, parameters: Parameters, client_manager: ClientManager) -> List[Tuple[ClientProxy, FitIns]]:
@@ -513,6 +524,9 @@ class FedCustom(fl.server.strategy.Strategy):
             "RgrpAge_Losses": RgrpAge_Losses
         }
 
+        # Ajustar a taxa de aprendizado com base na nova RgrpActivity
+        self.evaluate_and_adjust_learning_rate(metrics["RgrpActivity"])
+
         print(f"Server-side evaluation :: Round {server_round}")
         print(f"Loss {loss} / RMSE {rmse} / Accuracy {accuracy} / Precision@10 {precision_at_10} / Recall@10 {recall_at_10}")
         print(f"RgrpActivity {RgrpActivity} / RgrpGender {RgrpGender} / RgrpAge {RgrpAge}")
@@ -555,7 +569,7 @@ import flwr as fl
 
 def objective(trial):
     # Sugestão de hiperparâmetros pelo Optuna
-    learning_rate = trial.suggest_float("learning_rate", 0.1, 100)
+    learning_rate = trial.suggest_float("learning_rate", 0.01, 10)
 
     strategy = FedCustom(
         initial_learning_rate = learning_rate,

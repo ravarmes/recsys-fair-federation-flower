@@ -306,7 +306,7 @@ data_rgrp_age_FedLoss_6 = {
 data_rgrp_age_FedLoss = {
     "Round": list(range(0, 49)),
     "RgrpAge": [
-        sum(x) / 6 for x in zip(data_rgrp_age_FedLoss_1["RgrpAge"], data_rgrp_age_FedLoss_2["RgrpAge"], data_rgrp_age_FedLoss_3["RgrpAge"], data_rgrp_age_FedLoss_4["RgrpAge"], data_rgrp_age_FedLoss_5["RgrpAge"], data_rgrp_age_FedLoss_6["RgrpAge"]
+        sum(x) / 3 for x in zip(data_rgrp_age_FedLoss_1["RgrpAge"], data_rgrp_age_FedLoss_2["RgrpAge"], data_rgrp_age_FedLoss_4["RgrpAge"]
         )
     ]
 }

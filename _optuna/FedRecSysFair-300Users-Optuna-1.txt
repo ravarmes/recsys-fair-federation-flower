@@ -1,0 +1,134 @@
+2024-08-24 19:03:41.376466: I tensorflow/core/util/port.cc:113] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2024-08-24 19:03:42.145491: I tensorflow/core/util/port.cc:113] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+[I 2024-08-24 19:03:47,688] A new study created in memory with name: no-name-9ff1c859-673d-4cd3-8e42-869f96c38cc2
+[92mINFO [0m:      Starting Flower simulation, config: num_rounds=24, no round_timeout
+2024-08-24 19:03:50,157	INFO worker.py:1621 -- Started a local Ray instance.
+[92mINFO [0m:      Flower VCE: Ray initialized with resources: {'memory': 7194193920.0, 'node:127.0.0.1': 1.0, 'object_store_memory': 3597096960.0, 'node:__internal_head__': 1.0, 'CPU': 8.0, 'GPU': 1.0}
+[92mINFO [0m:      Optimize your simulation with Flower VCE: https://flower.ai/docs/framework/how-to-run-simulations.html
+[92mINFO [0m:      No `client_resources` specified. Using minimal resources for clients.
+[92mINFO [0m:      Flower VCE: Resources for each Virtual Client: {'num_cpus': 1, 'num_gpus': 0.0}
+[92mINFO [0m:      Flower VCE: Creating VirtualClientEngineActorPool with 8 actors
+[92mINFO [0m:      [INIT]
+[92mINFO [0m:      Using initial global parameters provided by strategy
+[92mINFO [0m:      Evaluating initial global parameters
+[91mERROR [0m:     30
+[91mERROR [0m:     Traceback (most recent call last):
+  File "C:\Users\IFES CACHOEIRO\AppData\Local\Programs\Python\Python311\Lib\site-packages\flwr\simulation\app.py", line 308, in start_simulation
+    hist = run_fl(
+           ^^^^^^^
+  File "C:\Users\IFES CACHOEIRO\AppData\Local\Programs\Python\Python311\Lib\site-packages\flwr\server\server.py", line 483, in run_fl
+    hist, elapsed_time = server.fit(
+                         ^^^^^^^^^^^
+  File "C:\Users\IFES CACHOEIRO\AppData\Local\Programs\Python\Python311\Lib\site-packages\flwr\server\server.py", line 95, in fit
+    res = self.strategy.evaluate(0, parameters=self.parameters)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\IFES CACHOEIRO\Documents\recsys-fair-federation-flower\00\FedRecSysFair-300Users-Optuna.py", line 510, in evaluate
+    loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = test(net, testloader, server=True)
+                                                                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\IFES CACHOEIRO\Documents\recsys-fair-federation-flower\00\FedRecSysFair-300Users-Optuna.py", line 254, in test
+    RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = calculate_Rgrp(net)
+                                                                                                ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\IFES CACHOEIRO\Documents\recsys-fair-federation-flower\00\FedRecSysFair-300Users-Optuna.py", line 296, in calculate_Rgrp
+    glv = GroupLossVariance(avaliacoes_df, omega, G_GENDER, 1)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\IFES CACHOEIRO\Documents\recsys-fair-federation-flower\00\AlgorithmUserFairness.py", line 114, in __init__
+    omega_user[user] = self.omega_group[self.group_id[user]]
+                                        ~~~~~~~~~~~~~^^^^^^
+KeyError: 30
+
+[91mERROR [0m:     Your simulation crashed :(. This could be because of several reasons. The most common are: 
+	 > Sometimes, issues in the simulation code itself can cause crashes. It's always a good idea to double-check your code for any potential bugs or inconsistencies that might be contributing to the problem. For example: 
+		 - You might be using a class attribute in your clients that hasn't been defined.
+		 - There could be an incorrect method call to a 3rd party library (e.g., PyTorch).
+		 - The return types of methods in your clients/strategies might be incorrect.
+	 > Your system couldn't fit a single VirtualClient: try lowering `client_resources`.
+	 > All the actors in your pool crashed. This could be because: 
+		 - You clients hit an out-of-memory (OOM) error and actors couldn't recover from it. Try launching your simulation with more generous `client_resources` setting (i.e. it seems {'num_cpus': 1, 'num_gpus': 0.0} is not enough for your run). Use fewer concurrent actors. 
+		 - You were running a multi-node simulation and all worker nodes disconnected. The head node might still be alive but cannot accommodate any actor with resources: {'num_cpus': 1, 'num_gpus': 0.0}.
+Take a look at the Flower simulation examples for guidance <https://flower.ai/docs/framework/how-to-run-simulations.html>.
+[W 2024-08-24 19:03:52,813] Trial 0 failed with parameters: {'normalized_variance_min': 0.4269601436162145, 'normalized_variance_max': 0.8061586282393822, 'p_diff_loss': 0.607293623381748, 'p_group_mean': 0.7132894994814861} because of the following error: RuntimeError('Simulation crashed.').
+Traceback (most recent call last):
+  File "C:\Users\IFES CACHOEIRO\AppData\Local\Programs\Python\Python311\Lib\site-packages\flwr\simulation\app.py", line 308, in start_simulation
+    hist = run_fl(
+           ^^^^^^^
+  File "C:\Users\IFES CACHOEIRO\AppData\Local\Programs\Python\Python311\Lib\site-packages\flwr\server\server.py", line 483, in run_fl
+    hist, elapsed_time = server.fit(
+                         ^^^^^^^^^^^
+  File "C:\Users\IFES CACHOEIRO\AppData\Local\Programs\Python\Python311\Lib\site-packages\flwr\server\server.py", line 95, in fit
+    res = self.strategy.evaluate(0, parameters=self.parameters)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\IFES CACHOEIRO\Documents\recsys-fair-federation-flower\00\FedRecSysFair-300Users-Optuna.py", line 510, in evaluate
+    loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = test(net, testloader, server=True)
+                                                                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\IFES CACHOEIRO\Documents\recsys-fair-federation-flower\00\FedRecSysFair-300Users-Optuna.py", line 254, in test
+    RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = calculate_Rgrp(net)
+                                                                                                ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\IFES CACHOEIRO\Documents\recsys-fair-federation-flower\00\FedRecSysFair-300Users-Optuna.py", line 296, in calculate_Rgrp
+    glv = GroupLossVariance(avaliacoes_df, omega, G_GENDER, 1)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\IFES CACHOEIRO\Documents\recsys-fair-federation-flower\00\AlgorithmUserFairness.py", line 114, in __init__
+    omega_user[user] = self.omega_group[self.group_id[user]]
+                                        ~~~~~~~~~~~~~^^^^^^
+KeyError: 30
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\IFES CACHOEIRO\AppData\Local\Programs\Python\Python311\Lib\site-packages\optuna\study\_optimize.py", line 196, in _run_trial
+    value_or_values = func(trial)
+                      ^^^^^^^^^^^
+  File "C:\Users\IFES CACHOEIRO\Documents\recsys-fair-federation-flower\00\FedRecSysFair-300Users-Optuna.py", line 587, in objective
+    fl.simulation.start_simulation(
+  File "C:\Users\IFES CACHOEIRO\AppData\Local\Programs\Python\Python311\Lib\site-packages\flwr\simulation\app.py", line 344, in start_simulation
+    raise RuntimeError("Simulation crashed.") from ex
+RuntimeError: Simulation crashed.
+[W 2024-08-24 19:03:52,821] Trial 0 failed with value None.
+Traceback (most recent call last):
+  File "C:\Users\IFES CACHOEIRO\AppData\Local\Programs\Python\Python311\Lib\site-packages\flwr\simulation\app.py", line 308, in start_simulation
+    hist = run_fl(
+           ^^^^^^^
+  File "C:\Users\IFES CACHOEIRO\AppData\Local\Programs\Python\Python311\Lib\site-packages\flwr\server\server.py", line 483, in run_fl
+    hist, elapsed_time = server.fit(
+                         ^^^^^^^^^^^
+  File "C:\Users\IFES CACHOEIRO\AppData\Local\Programs\Python\Python311\Lib\site-packages\flwr\server\server.py", line 95, in fit
+    res = self.strategy.evaluate(0, parameters=self.parameters)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\IFES CACHOEIRO\Documents\recsys-fair-federation-flower\00\FedRecSysFair-300Users-Optuna.py", line 510, in evaluate
+    loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = test(net, testloader, server=True)
+                                                                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\IFES CACHOEIRO\Documents\recsys-fair-federation-flower\00\FedRecSysFair-300Users-Optuna.py", line 254, in test
+    RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = calculate_Rgrp(net)
+                                                                                                ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\IFES CACHOEIRO\Documents\recsys-fair-federation-flower\00\FedRecSysFair-300Users-Optuna.py", line 296, in calculate_Rgrp
+    glv = GroupLossVariance(avaliacoes_df, omega, G_GENDER, 1)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\IFES CACHOEIRO\Documents\recsys-fair-federation-flower\00\AlgorithmUserFairness.py", line 114, in __init__
+    omega_user[user] = self.omega_group[self.group_id[user]]
+                                        ~~~~~~~~~~~~~^^^^^^
+KeyError: 30
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\IFES CACHOEIRO\Documents\recsys-fair-federation-flower\00\FedRecSysFair-300Users-Optuna.py", line 608, in <module>
+    study.optimize(objective, n_trials=15)  # Define o número de iterações (trials)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\IFES CACHOEIRO\AppData\Local\Programs\Python\Python311\Lib\site-packages\optuna\study\study.py", line 451, in optimize
+    _optimize(
+  File "C:\Users\IFES CACHOEIRO\AppData\Local\Programs\Python\Python311\Lib\site-packages\optuna\study\_optimize.py", line 62, in _optimize
+    _optimize_sequential(
+  File "C:\Users\IFES CACHOEIRO\AppData\Local\Programs\Python\Python311\Lib\site-packages\optuna\study\_optimize.py", line 159, in _optimize_sequential
+    frozen_trial = _run_trial(study, func, catch)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\IFES CACHOEIRO\AppData\Local\Programs\Python\Python311\Lib\site-packages\optuna\study\_optimize.py", line 247, in _run_trial
+    raise func_err
+  File "C:\Users\IFES CACHOEIRO\AppData\Local\Programs\Python\Python311\Lib\site-packages\optuna\study\_optimize.py", line 196, in _run_trial
+    value_or_values = func(trial)
+                      ^^^^^^^^^^^
+  File "C:\Users\IFES CACHOEIRO\Documents\recsys-fair-federation-flower\00\FedRecSysFair-300Users-Optuna.py", line 587, in objective
+    fl.simulation.start_simulation(
+  File "C:\Users\IFES CACHOEIRO\AppData\Local\Programs\Python\Python311\Lib\site-packages\flwr\simulation\app.py", line 344, in start_simulation
+    raise RuntimeError("Simulation crashed.") from ex
+RuntimeError: Simulation crashed.
+[2m[36m(pid=11272)[0m 2024-08-24 19:03:53.961820: I tensorflow/core/util/port.cc:113] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+[2m[36m(pid=17484)[0m 2024-08-24 19:03:55.487173: I tensorflow/core/util/port.cc:113] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.[32m [repeated 15x across cluster] (Ray deduplicates logs by default. Set RAY_DEDUP_LOGS=0 to disable log deduplication, or see https://docs.ray.io/en/master/ray-observability/ray-logging.html#log-deduplication for more options.)[0m

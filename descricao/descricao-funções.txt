@@ -1,0 +1,33 @@
+Considere as 4 sugestões de funções de regulação:
+1. Transformações Não-Lineares (b. Função Exponencial)
+fairness_penalty = group_mean_loss * (1 - np.exp(-global_groups_variance)) * self.learning_rate
+
+2. Fator Logarítmico
+fairness_penalty = group_mean_loss * np.log(1 + global_groups_variance) * self.learning_rate
+
+3. Função Sigmoidal
+fairness_penalty = group_mean_loss * (1 / (1 + np.exp(-global_groups_variance))) * self.learning_rate
+
+4. Cálculo da Raiz Quadrada
+fairness_penalty = group_mean_loss * (np.sqrt(global_groups_variance)) * self.learning_rate
+
+Preciso que você gere uma tabela com colunas para os resultados de client_index, loss, global_groups_variance, group_mean_loss, learning_rate e fairness_penalty calculado para cada uma das sete versões de função.
+
+fairness_regularization -------------------------------
+server_round: 1
+client_index: 0
+loss: 0.76
+global_groups_variance: 0.0001
+group_mean_loss: 0.91
+learning_rate: 0.2
+
+fairness_regularization -------------------------------
+server_round: 2
+client_index: 21
+loss: 2.08
+global_groups_variance: 0.0024
+group_mean_loss: 1.0675863107045491
+learning_rate: 0.2
+
+
+

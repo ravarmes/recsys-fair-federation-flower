@@ -1,0 +1,51 @@
+Considere o contexto de um sistema de recomendação federado.
+
+Estou testando funções para regulação de justiça de grupo (ou seja, para tornar os erros dos modelos dos diferentes grupos de usuários o mais próximo possível do outro).
+Para tal, a ideia é calcular adjusted_loss um pouco maior para os usuários com maior erro e um pouco menor para usuários com menor erro.
+Isso porque, a agregação dos modelos locais ao modelo global será na proporção do erro (adjusted_loss) de cada usuário.
+
+def fairness_regularization(self, server_round, client_index, loss, group_mean_loss, global_groups_variance):
+        fairness_penalty = group_mean_loss * global_groups_variance * self.learning_rate
+        adjusted_loss = loss + fairness_penalty
+        return adjusted_loss
+        
+
+def evaluate_and_adjust_learning_rate(self, new_rgrp_activity):
+    if self.previous_rgrp_activity is not None:
+        if new_rgrp_activity > self.previous_rgrp_activity:
+            # Aumentar a taxa de aprendizado se a injustiça aumenta
+            self.learning_rate *= 1.05
+        elif new_rgrp_activity < self.previous_rgrp_activity:
+            # Diminuir a taxa de aprendizado se a injustiça diminui
+            self.learning_rate *= 0.95
+
+    self.previous_rgrp_activity = new_rgrp_activity    
+    
+    
+No entanto, global_groups_variance é um valor muito pequeno, fazendo com que fairness_penalty também seja muito pequeno e influencie pouco no adjusted_loss.
+Para ter uma noção da ordem de grandeza dos valores deixo exemplos de cálculos a seguir:
+
+fairness_regularization -------------------------------
+server_round: 1
+client_index: 0
+loss: 0.760873556137085
+global_groups_variance: 0.00010921156433715033
+group_mean_loss: 0.9103810747464498
+
+fairness_regularization -------------------------------
+server_round: 2
+client_index: 21
+loss: 2.0846853256225586
+global_groups_variance: 0.00243163356435691
+group_mean_loss: 1.0675863107045491
+learning_rate: 0.3050134225082425
+
+Tenho que alterar a seguinte instrução:
+fairness_penalty = group_mean_loss * global_groups_variance * self.learning_rate        
+
+Para que a regulação de justiça influencie mais o adjusted_loss.
+Alguma sugestão?
+
+group_mean_loss: é a média de perda dos grupos (por exemplo, média dos usuários femininos e média dos usuários masculinos)
+global_groups_variance: é a variância entre as medidas de perda dos grupos (é a injustiça de grupo calculada)
+self.learning_rate: taxa de aprendizado que aumenta quando a injustiça aumenta e diminui caso contrário.

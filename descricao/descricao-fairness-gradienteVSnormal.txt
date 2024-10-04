@@ -1,0 +1,111 @@
+Considere o contexto de um sistema de recomendação federado.
+
+Estou testando funções para regulação de justiça de grupo (ou seja, para tornar os erros dos modelos dos diferentes grupos de usuários o mais próximo possível do outro).
+Para tal, a ideia é calcular adjusted_loss um pouco maior para os usuários com maior erro e um pouco menor para usuários com menor erro.
+Isso porque, a agregação dos modelos locais ao modelo global será na proporção do erro (adjusted_loss) de cada usuário.
+
+def fairness_regularization1(self, server_round, client_index, loss, group_mean_loss, global_groups_variance):
+        fairness_penalty = group_mean_loss * global_groups_variance
+        adjusted_loss = loss + fairness_penalty
+        return adjusted_loss
+
+def fairness_regularization2(self, server_round, client_index, loss, group_mean_loss, global_groups_variance):
+        fairness_penalty = group_mean_loss * global_groups_variance * self.learning_rate
+        adjusted_loss = loss + fairness_penalty
+        return adjusted_loss
+
+def fairness_regularization3(self, server_round, client_index, loss, group_mean_loss, global_groups_variance):
+        fairness_penalty = group_mean_loss * global_groups_variance / self.learning_rate
+        adjusted_loss = loss + fairness_penalty 
+        return adjusted_loss
+
+def fairness_regularization4(self, server_round, client_index, loss, group_mean_loss, global_groups_variance):
+        # Transformar valores usando a função logarítmica
+        transformed_group_mean_loss = np.log1p(group_mean_loss)
+        transformed_global_groups_variance = np.log1p(global_groups_variance)
+        # Calcular a penalidade de justiça
+        fairness_penalty = transformed_group_mean_loss + transformed_global_groups_variance
+        # Ajustar a perda
+        adjusted_loss = loss + fairness_penalty * self.learning_rate
+
+Observação: self.learning_rate é uma taxa de aprendizado que pode aumentar ou diminuir a cada round, dependendo do valor da injustiça de grupo.
+    def evaluate_and_adjust_learning_rate(self, new_rgrp_activity):
+        if self.previous_rgrp_activity is not None:
+            if new_rgrp_activity > self.previous_rgrp_activity:
+                self.learning_rate *= 1.05
+            elif new_rgrp_activity < self.previous_rgrp_activity:
+                self.learning_rate *= 0.95
+        self.previous_rgrp_activity = new_rgrp_activity    
+        
+        
+Preciso que você me ajude calculando os valores retornados pelas funções de regulação de justiça, considerando os seguintes usuários:
+
+fairness_regularization -------------------------------
+server_round: 1
+client_index: 0
+loss: 0.5456452965736389
+global_groups_variance: 0.00029412065504705234
+group_mean_loss: 0.8316648741563161
+learning_rate: 0.01
+loss + fairness_penalty: 0.5458899063912054
+
+fairness_regularization -------------------------------
+server_round: 1
+client_index: 18
+loss: 0.29543089866638184
+global_groups_variance: 0.00029412065504705234
+group_mean_loss: 0.7973649817339161
+learning_rate: 0.01
+loss + fairness_penalty: 0.295665420177121
+
+fairness_regularization -------------------------------
+server_round: 1
+client_index: 0
+loss: 0.5456452965736389
+global_groups_variance: 0.00029412065504705234
+group_mean_loss: 0.8316648741563161
+learning_rate: 0.2
+loss + fairness_penalty: 0.5458899063912054
+
+fairness_regularization -------------------------------
+server_round: 1
+client_index: 18
+loss: 0.29543089866638184
+global_groups_variance: 0.00029412065504705234
+group_mean_loss: 0.7973649817339161
+learning_rate: 0.2
+loss + fairness_penalty: 0.295665420177121
+
+fairness_regularization -------------------------------
+server_round: 15
+client_index: 11
+loss: 0.01662162955472013
+global_groups_variance: 2.067770642497654e-06
+group_mean_loss: 0.0533720019205551
+learning_rate: 0.01
+
+fairness_regularization -------------------------------
+server_round: 15
+client_index: 16
+loss: 0.004049040164863982
+global_groups_variance: 2.067770642497654e-06
+group_mean_loss: 0.05624795090654053
+learning_rate: 0.01
+
+fairness_regularization -------------------------------
+server_round: 15
+client_index: 11
+loss: 0.01662162955472013
+global_groups_variance: 2.067770642497654e-06
+group_mean_loss: 0.0533720019205551
+learning_rate: 0.2
+
+fairness_regularization -------------------------------
+server_round: 15
+client_index: 16
+loss: 0.004049040164863982
+global_groups_variance: 2.067770642497654e-06
+group_mean_loss: 0.05624795090654053
+learning_rate: 0.2
+
+Gere os resultados em uma tabela com uma coluna para o erro orginal (loss) e uma coluna para cada uma das funções de regulação.

@@ -611,8 +611,5 @@ best_value = study.best_value
 print(f"Melhores parâmetros encontrados: {best_params}")
 print(f"Melhor valor da função objetivo: {best_value}")
 
-# Melhores parâmetros encontrados: {'learning_rate': 0.45691027182199495}
-# Melhor valor da função objetivo: 0.00019333538219742734
-
-# Melhores parâmetros encontrados: {'learning_rate': 0.8750342726969902}
-# Melhor valor da função objetivo: 0.00010611728191184578
+# Melhores parâmetros encontrados: {'learning_rate': 5.509493331717947}
+# Melhor valor da função objetivo: 5.060927360739802e-08

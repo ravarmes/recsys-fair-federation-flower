@@ -555,7 +555,7 @@ import flwr as fl
 
 def objective(trial):
     # Sugestão de hiperparâmetros pelo Optuna
-    learning_rate = trial.suggest_float("learning_rate", 0.001, 0.5)
+    learning_rate = trial.suggest_float("learning_rate", 0.1, 100)
 
     strategy = FedCustom(
         initial_learning_rate = learning_rate,
@@ -589,7 +589,7 @@ def objective(trial):
 
 # Criar o estudo de otimização
 study = optuna.create_study(direction="minimize")
-study.optimize(objective, n_trials=80)  # Define o número de iterações (trials)
+study.optimize(objective, n_trials=90)  # Define o número de iterações (trials)
 
 # Imprimir os melhores parâmetros e o valor da função objetivo
 best_params = study.best_params
@@ -599,3 +599,6 @@ print(f"Melhor valor da função objetivo: {best_value}")
 
 # Melhores parâmetros encontrados: {'learning_rate': 0.45691027182199495}
 # Melhor valor da função objetivo: 0.00019333538219742734
+
+# Melhores parâmetros encontrados: {'learning_rate': 0.8750342726969902}
+# Melhor valor da função objetivo: 0.00010611728191184578

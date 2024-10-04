@@ -591,8 +591,11 @@ def objective(trial):
 study = optuna.create_study(direction="minimize")
 study.optimize(objective, n_trials=80)  # Define o número de iterações (trials)
 
-# Imprimir os melhores parâmetros
+# Imprimir os melhores parâmetros e o valor da função objetivo
 best_params = study.best_params
+best_value = study.best_value
 print(f"Melhores parâmetros encontrados: {best_params}")
+print(f"Melhor valor da função objetivo: {best_value}")
 
-# Melhores parâmetros encontrados: {'learning_rate': 0.42333013695118293}
+# Melhores parâmetros encontrados: {'learning_rate': 0.45691027182199495}
+# Melhor valor da função objetivo: 0.00019333538219742734

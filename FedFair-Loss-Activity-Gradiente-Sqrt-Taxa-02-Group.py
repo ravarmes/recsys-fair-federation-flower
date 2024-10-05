@@ -452,7 +452,7 @@ class FedCustom(fl.server.strategy.Strategy):
         fairness_penalty = (group_mean_loss * (global_groups_variance ** 0.25)) * self.learning_rate * adjustment_factor
         adjusted_loss = loss + fairness_penalty
 
-        with open("FedFair-Loss-Activity-Gradiente-Sqrt-Taxa-02.log", "a") as log_file:
+        with open("FedFair-Loss-Activity-Gradiente-Sqrt-Taxa-02-Group.log", "a") as log_file:
             log_file.write("\n\nfairness_regularization -------------------------------\n")
             log_file.write(f"server_round: {server_round}\n")
             log_file.write(f"client_index: {client_index}\n")

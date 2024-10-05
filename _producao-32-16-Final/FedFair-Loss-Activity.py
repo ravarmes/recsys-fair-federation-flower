@@ -39,7 +39,6 @@ DEVICE = torch.device("cpu")  # Try "cuda" to train on GPU
 print(f"Training on {DEVICE} using PyTorch {torch.__version__} and Flower {fl.__version__}")
 
 NUM_CLIENTS = 300
-NUM_ITEMS = 1000
 
 def verificar_trainloaders(trainloaders):
     """Verifica e imprime o conteúdo de cada DataLoader."""
@@ -332,9 +331,9 @@ def calculate_f1_recall_at_k(predictions, targets, k=10, threshold=3.5):
     return precision_at_k, recall_at_k
 
 def calculate_Rgrp(net):
-    recomendacoes_df = net.predict_all(NUM_CLIENTS, NUM_ITEMS)
+    recomendacoes_df = net.predict_all(300, 1000)
     omega = ~avaliacoes_df.isnull()
-    G_ACTIVITY = {1: list(range(0, int(0.05*NUM_CLIENTS))), 2: list(range(int(0.05*NUM_CLIENTS), NUM_CLIENTS))}
+    G_ACTIVITY = {1: list(range(0, 15)), 2: list(range(15, 300))}
     G_GENDER = {1: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 30, 32, 33, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 64, 65, 66, 67, 68, 69, 70, 71, 72, 74, 75, 76, 77, 78, 79, 80, 82, 83, 84, 85, 86, 87, 88, 89, 90, 93, 94, 95, 96, 99, 100, 102, 103, 105, 107, 108, 109, 110, 111, 112, 115, 117, 118, 120, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 146, 147, 148, 149, 151, 152, 153, 154, 156, 159, 160, 161, 162, 164, 165, 166, 168, 169, 170, 172, 174, 175, 176, 177, 178, 181, 182, 183, 184, 186, 187, 188, 189, 191, 194, 196, 198, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 218, 219, 220, 222, 223, 224, 226, 227, 229, 230, 231, 232, 233, 234, 237, 238, 239, 240, 245, 246, 247, 248, 249, 250, 251, 252, 255, 256, 257, 258, 259, 260, 261, 262, 263, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 293, 294, 295, 296, 297, 298, 299],
           2: [14, 25, 31, 34, 35, 42, 63, 73, 81, 91, 92, 97, 98, 101, 104, 106, 113, 114, 116, 119, 121, 122, 133, 144, 145, 150, 155, 157, 158, 163, 167, 171, 173, 179, 180, 185, 190, 192, 193, 195, 197, 199, 213, 214, 215, 216, 217, 221, 225, 228, 235, 236, 241, 242, 243, 244, 253, 254, 264, 290]}
     G_AGE = {1: [14, 132, 194, 262, 273], 2: [8, 23, 26, 33, 48, 50, 61, 64, 70, 71, 76, 82, 86, 90, 92, 94, 96, 101, 107, 124, 126, 129, 134, 140, 149, 157, 158, 159, 163, 168, 171, 174, 175, 189, 191, 201, 207, 209, 215, 216, 222, 231, 237, 244, 246, 251, 255, 265, 270, 275, 282, 288, 290], 
@@ -403,7 +402,7 @@ class FlowerClient(fl.client.NumPyClient):
 
 def client_fn(cid) -> FlowerClient:
     """Cria uma instância do cliente."""
-    net = Net(NUM_CLIENTS, NUM_ITEMS).to(DEVICE)
+    net = Net(300, 1000).to(DEVICE)
     trainloader = trainloaders[int(cid)]
     print(f"\n\nTamanho do trainloader do Cliente {cid}: {len(trainloader)}\n\n")
     valloader = valloaders[int(cid)]
@@ -415,7 +414,7 @@ class FedCustom(fl.server.strategy.Strategy):
     """Estratégia personalizada para agregação de modelos."""
     def __init__(self, fraction_fit: float = 1.0, fraction_evaluate: float = 1.0, 
                  min_fit_clients: int = NUM_CLIENTS, min_evaluate_clients: int = NUM_CLIENTS, 
-                 min_available_clients: int = NUM_CLIENTS, initial_learning_rate=0.2) -> None:
+                 min_available_clients: int = NUM_CLIENTS) -> None:
         super().__init__()
         self.fraction_fit = fraction_fit
         self.fraction_evaluate = fraction_evaluate
@@ -426,14 +425,12 @@ class FedCustom(fl.server.strategy.Strategy):
         self.all_losses = []
         self.all_weights = []
         self.global_groups_variance = 1
-        self.learning_rate = initial_learning_rate
-        self.previous_rgrp_activity = None
 
     def __repr__(self) -> str:
         return "FedCustom"
 
     def initialize_parameters(self, client_manager: ClientManager) -> Optional[Parameters]:
-        net = Net(NUM_CLIENTS, NUM_ITEMS)
+        net = Net(300, 1000)
         ndarrays = get_parameters(net)
         return fl.common.ndarrays_to_parameters(ndarrays)
 
@@ -444,32 +441,20 @@ class FedCustom(fl.server.strategy.Strategy):
 
     # Função de Regulação com Normalização das Perdas
     def fairness_regularization(self, server_round, client_index, loss, group_mean_loss, global_groups_variance):
-        fairness_penalty = group_mean_loss * (global_groups_variance ** 0.25) * self.learning_rate
-        adjusted_loss = loss +  fairness_penalty
+        
+        fairness_penalty = (group_mean_loss) * (global_groups_variance)
 
-        with open("FedFair-Loss-Activity-Gradiente-Sqrt-Taxa-02.log", "a") as log_file:
+        with open("FedRecSysFair-FedCustom-Aggregate-Loss-Fair-Activity-Taxa9_debug.log", "a") as log_file:
             log_file.write("\n\nfairness_regularization -------------------------------\n")
             log_file.write(f"server_round: {server_round}\n")
             log_file.write(f"client_index: {client_index}\n")
             log_file.write(f"loss: {loss}\n")
-            log_file.write(f"group_mean_loss: {group_mean_loss}\n")
             log_file.write(f"global_groups_variance: {global_groups_variance}\n")
-            log_file.write(f"learning_rate: {self.learning_rate}\n")
+            log_file.write(f"group_mean_loss: {group_mean_loss}\n")
             log_file.write(f"fairness_penalty: {fairness_penalty}\n")
             log_file.write(f"loss + fairness_penalty: {loss + fairness_penalty}\n")
 
-        return adjusted_loss
-    
-    def evaluate_and_adjust_learning_rate(self, new_rgrp_activity):
-        if self.previous_rgrp_activity is not None:
-            if new_rgrp_activity > self.previous_rgrp_activity:
-                # Aumentar a taxa de aprendizado se a injustiça aumenta
-                self.learning_rate *= 1.05
-            elif new_rgrp_activity < self.previous_rgrp_activity:
-                # Diminuir a taxa de aprendizado se a injustiça diminui
-                self.learning_rate *= 0.95
-
-        self.previous_rgrp_activity = new_rgrp_activity
+        return loss + fairness_penalty
 
 
     def configure_fit(self, server_round: int, parameters: Parameters, client_manager: ClientManager) -> List[Tuple[ClientProxy, FitIns]]:
@@ -489,7 +474,7 @@ class FedCustom(fl.server.strategy.Strategy):
 
     def aggregate_fit(self, server_round: int, results: List[Tuple[ClientProxy, FitRes]], failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]]) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
         """Agrega os parâmetros dos modelos treinados pelos clientes."""
-        G_ACTIVITY = {1: list(range(0, int(0.05*NUM_CLIENTS))), 2: list(range(int(0.05*NUM_CLIENTS), NUM_CLIENTS))}
+        G_ACTIVITY = {1: list(range(0, 15)), 2: list(range(15, 300))}
         total_loss = sum(fit_res.metrics.get('loss', 0) for _, fit_res in results)
 
         group_losses = {}
@@ -576,13 +561,10 @@ class FedCustom(fl.server.strategy.Strategy):
 
     def evaluate(self, server_round: int, parameters: Parameters) -> Optional[Tuple[float, Dict[str, Scalar]]]:
         """Avalia o modelo global na rodada atual."""
-        net = Net(NUM_CLIENTS, NUM_ITEMS).to(DEVICE)
+        net = Net(300, 1000).to(DEVICE)
         set_parameters(net, parameters_to_ndarrays(parameters))
         loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = test(net, testloader, server=True)
         metrics = {"rmse": rmse, "accuracy": accuracy, "precision_at_10": precision_at_10, "recall_at_10": recall_at_10, "RgrpActivity": RgrpActivity, "RgrpGender": RgrpGender, "RgrpAge": RgrpAge, "RgrpActivity_Losses": RgrpActivity_Losses, "RgrpGender_Losses": RgrpGender_Losses, "RgrpAge_Losses": RgrpAge_Losses}
-
-        # Ajustar a taxa de aprendizado com base na nova RgrpActivity
-        self.evaluate_and_adjust_learning_rate(metrics["RgrpActivity"])
         
         print(f"Server-side evaluation :: Round {server_round}")
         print(f"loss {loss} / RMSE {rmse} / accuracy {accuracy} / Precision@10 {precision_at_10} / Recall@10 {recall_at_10}")

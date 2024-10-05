@@ -1,0 +1,365 @@
+Estou trabalhando em um contexto de sistema de recomendação federado.
+No meu experimento eu tenho 300 clientes e um total de 24 rounds.
+Os clientes estão separadas em grupos (por exemplo por sexo).
+Meu objetivo principal é diminuir a injustiça de grupo (Rgrp), a qual é medida pela variância entre as perdas dos grupos.
+
+Um dos métodos de agregação é via FedAvg com base na perda dos modelos locais (FedAvg-Loss):
+
+ESTRATÉGIA 1
+class FedCustom(fl.server.strategy.Strategy):
+    """Estratégia personalizada para agregação de modelos."""
+    def __init__(self, fraction_fit: float = 1.0, fraction_evaluate: float = 1.0, 
+                 min_fit_clients: int = NUM_CLIENTS, min_evaluate_clients: int = NUM_CLIENTS, 
+                 min_available_clients: int = NUM_CLIENTS) -> None:
+        super().__init__()
+        self.fraction_fit = fraction_fit
+        self.fraction_evaluate = fraction_evaluate
+        self.min_fit_clients = min_fit_clients
+        self.min_evaluate_clients = min_evaluate_clients
+        self.min_available_clients = min_available_clients
+        self.loss_avg_per_group = {}
+        self.all_losses = []
+        self.all_weights = []
+        self.global_groups_variance = 1
+
+    def __repr__(self) -> str:
+        return "FedCustom"
+
+    def initialize_parameters(self, client_manager: ClientManager) -> Optional[Parameters]:
+        net = Net(300, 1000)
+        ndarrays = get_parameters(net)
+        return fl.common.ndarrays_to_parameters(ndarrays)
+
+    def adaptive_learning_rate(self, initial_lr, decay_factor, round_num):
+        """Calcula a taxa de aprendizado adaptativa."""
+        return initial_lr / (1 + decay_factor * round_num)
+
+
+    # Função de Regulação com Normalização das Perdas
+    def fairness_regularization(self, server_round, client_index, loss, group_mean_loss, global_groups_variance):
+        return loss
+
+
+    def configure_fit(self, server_round: int, parameters: Parameters, client_manager: ClientManager) -> List[Tuple[ClientProxy, FitIns]]:
+        """Configura o treinamento de clientes."""
+        sample_size, min_num_clients = self.num_fit_clients(client_manager.num_available())
+        clients = client_manager.sample(num_clients=sample_size, min_num_clients=min_num_clients)
+        
+        config = {
+            "server_round": server_round,
+            "local_epochs": 20,
+            "learning_rate": self.adaptive_learning_rate(0.01, 0.01, server_round),
+            "lotes_por_rodada": server_round,
+        }
+
+        return [(client, FitIns(parameters, config)) for client in clients]
+
+
+    def aggregate_fit(self, server_round: int, results: List[Tuple[ClientProxy, FitRes]], failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]]) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
+        """Agrega os parâmetros dos modelos treinados pelos clientes."""
+        G_ACTIVITY = {1: list(range(0, 15)), 2: list(range(15, 300))}
+        total_loss = sum(fit_res.metrics.get('loss', 0) for _, fit_res in results)
+
+        group_losses = {}
+        group_counts = {}
+        for group, client_indexes in G_ACTIVITY.items():
+            group_loss = sum(fit_res.metrics.get('loss', 0) for index, (client, fit_res) in enumerate(results) if index in client_indexes)
+            group_count = sum(1 for index in client_indexes if index < len(results))
+            group_losses[group] = group_loss
+            group_counts[group] = group_count
+
+        self.loss_avg_per_group = {group: (group_losses[group] / group_counts[group] if group_counts[group] != 0 else 0) for group in G_ACTIVITY}
+        print(f"Perda Média por Grupo: {self.loss_avg_per_group}")
+
+        total_examples = sum(fit_res.num_examples for _, fit_res in results)
+        print(f"Número total de exemplos agregados: {total_examples}")
+
+        global_groups_variance = np.var(list(self.loss_avg_per_group.values()))
+        print(f"global_groups_variance: {global_groups_variance}")
+
+        for client_index, (client, fit_res) in enumerate(results):
+            local_loss = fit_res.metrics.get('loss', 0)
+
+            # Identifica o grupo do cliente atual
+            group_id = next(group for group, client_indexes in G_ACTIVITY.items() if client_index in client_indexes)
+            group_mean_loss = self.loss_avg_per_group[group_id]
+
+            # Usar group_mean_loss na chamada para fairness_regularization
+            fairness_loss = self.fairness_regularization(server_round, client_index, local_loss, group_mean_loss, global_groups_variance)
+            fit_res.metrics['loss'] = fairness_loss
+
+        weights_results = [ (parameters_to_ndarrays(fit_res.parameters), fit_res.metrics.get('loss', 0)) for _, fit_res in results ]
+
+        def aggregate(results: List[Tuple[NDArrays, float]]) -> NDArrays:
+            # Calcula a perda total durante do treinamento
+            loss_total = sum(loss for (_, loss) in results)
+
+            # Crie uma lista de pesos, cada um multiplicado pela perda
+            weighted_weights = [
+                [layer * loss for layer in weights] for weights, loss in results
+            ]
+
+            # Compute average weights of each layer
+            weights_prime: NDArrays = [
+                reduce(np.add, layer_updates) / loss_total
+                for layer_updates in zip(*weighted_weights)
+            ]
+            return weights_prime
+
+        parameters_aggregated = ndarrays_to_parameters(aggregate(weights_results))
+
+        metrics_aggregated = {}
+        for client_index, (client, fit_res) in enumerate(results):
+            loss = fit_res.metrics.get('loss', 0)
+            weight = loss / total_loss
+            print(f"Cliente {client.cid}: Perda = {loss}, Peso = {weight}")
+            self.all_losses.append(loss)
+            self.all_weights.append(weight)
+        
+        return parameters_aggregated, metrics_aggregated
+        
+
+Todavia, estou tentando trabalhar em uma estratégia de agregação para reduzir ainda mais a injustiça de grupo (Rgrp):
+
+ESTRATÉGIA 2
+class FedCustom(fl.server.strategy.Strategy):
+    """Estratégia personalizada para agregação de modelos."""
+    def __init__(self, fraction_fit: float = 1.0, fraction_evaluate: float = 1.0, 
+                 min_fit_clients: int = NUM_CLIENTS, min_evaluate_clients: int = NUM_CLIENTS, 
+                 min_available_clients: int = NUM_CLIENTS, initial_learning_rate=0.2) -> None:
+        super().__init__()
+        self.fraction_fit = fraction_fit
+        self.fraction_evaluate = fraction_evaluate
+        self.min_fit_clients = min_fit_clients
+        self.min_evaluate_clients = min_evaluate_clients
+        self.min_available_clients = min_available_clients
+        self.loss_avg_per_group = {}
+        self.all_losses = []
+        self.all_weights = []
+        self.global_groups_variance = 1
+        self.learning_rate = initial_learning_rate
+        self.previous_rgrp_activity = None
+
+    def __repr__(self) -> str:
+        return "FedCustom"
+
+    def initialize_parameters(self, client_manager: ClientManager) -> Optional[Parameters]:
+        net = Net(NUM_CLIENTS, NUM_ITEMS)
+        ndarrays = get_parameters(net)
+        return fl.common.ndarrays_to_parameters(ndarrays)
+
+    def adaptive_learning_rate(self, initial_lr, decay_factor, round_num):
+        """Calcula a taxa de aprendizado adaptativa."""
+        return initial_lr / (1 + decay_factor * round_num)
+
+
+    # Função de Regulação com Normalização das Perdas
+    def fairness_regularization(self, server_round, client_index, loss, group_mean_loss, global_groups_variance):
+        fairness_penalty = group_mean_loss * (global_groups_variance ** 0.25) * self.learning_rate
+        adjusted_loss = loss +  fairness_penalty
+
+        with open("FedFair-Loss-Activity-Gradiente-Sqrt-Taxa-02.log", "a") as log_file:
+            log_file.write("\n\nfairness_regularization -------------------------------\n")
+            log_file.write(f"server_round: {server_round}\n")
+            log_file.write(f"client_index: {client_index}\n")
+            log_file.write(f"loss: {loss}\n")
+            log_file.write(f"group_mean_loss: {group_mean_loss}\n")
+            log_file.write(f"global_groups_variance: {global_groups_variance}\n")
+            log_file.write(f"learning_rate: {self.learning_rate}\n")
+            log_file.write(f"fairness_penalty: {fairness_penalty}\n")
+            log_file.write(f"loss + fairness_penalty: {loss + fairness_penalty}\n")
+
+        return adjusted_loss
+    
+    def evaluate_and_adjust_learning_rate(self, new_rgrp_activity):
+        if self.previous_rgrp_activity is not None:
+            if new_rgrp_activity > self.previous_rgrp_activity:
+                # Aumentar a taxa de aprendizado se a injustiça aumenta
+                self.learning_rate *= 1.05
+            elif new_rgrp_activity < self.previous_rgrp_activity:
+                # Diminuir a taxa de aprendizado se a injustiça diminui
+                self.learning_rate *= 0.95
+
+        self.previous_rgrp_activity = new_rgrp_activity
+
+
+    def configure_fit(self, server_round: int, parameters: Parameters, client_manager: ClientManager) -> List[Tuple[ClientProxy, FitIns]]:
+        """Configura o treinamento de clientes."""
+        sample_size, min_num_clients = self.num_fit_clients(client_manager.num_available())
+        clients = client_manager.sample(num_clients=sample_size, min_num_clients=min_num_clients)
+        
+        config = {
+            "server_round": server_round,
+            "local_epochs": 20,
+            "learning_rate": self.adaptive_learning_rate(0.01, 0.01, server_round),
+            "lotes_por_rodada": server_round,
+        }
+
+        return [(client, FitIns(parameters, config)) for client in clients]
+
+
+    def aggregate_fit(self, server_round: int, results: List[Tuple[ClientProxy, FitRes]], failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]]) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
+        """Agrega os parâmetros dos modelos treinados pelos clientes."""
+        G_ACTIVITY = {1: list(range(0, int(0.05*NUM_CLIENTS))), 2: list(range(int(0.05*NUM_CLIENTS), NUM_CLIENTS))}
+        total_loss = sum(fit_res.metrics.get('loss', 0) for _, fit_res in results)
+
+        group_losses = {}
+        group_counts = {}
+        for group, client_indexes in G_ACTIVITY.items():
+            group_loss = sum(fit_res.metrics.get('loss', 0) for index, (client, fit_res) in enumerate(results) if index in client_indexes)
+            group_count = sum(1 for index in client_indexes if index < len(results))
+            group_losses[group] = group_loss
+            group_counts[group] = group_count
+
+        self.loss_avg_per_group = {group: (group_losses[group] / group_counts[group] if group_counts[group] != 0 else 0) for group in G_ACTIVITY}
+        print(f"Perda Média por Grupo: {self.loss_avg_per_group}")
+
+        total_examples = sum(fit_res.num_examples for _, fit_res in results)
+        print(f"Número total de exemplos agregados: {total_examples}")
+
+        global_groups_variance = np.var(list(self.loss_avg_per_group.values()))
+        print(f"global_groups_variance: {global_groups_variance}")
+
+        for client_index, (client, fit_res) in enumerate(results):
+            local_loss = fit_res.metrics.get('loss', 0)
+
+            # Identifica o grupo do cliente atual
+            group_id = next(group for group, client_indexes in G_ACTIVITY.items() if client_index in client_indexes)
+            group_mean_loss = self.loss_avg_per_group[group_id]
+
+            # Usar group_mean_loss na chamada para fairness_regularization
+            fairness_loss = self.fairness_regularization(server_round, client_index, local_loss, group_mean_loss, global_groups_variance)
+            fit_res.metrics['loss'] = fairness_loss
+
+        weights_results = [
+            (parameters_to_ndarrays(fit_res.parameters), fit_res.metrics.get('loss', 0)) for _, fit_res in results
+        ]
+
+        def aggregate(results: List[Tuple[NDArrays, float]]) -> NDArrays:
+            # Calcula a perda total durante do treinamento
+            loss_total = sum(loss for (_, loss) in results)
+
+            # Crie uma lista de pesos, cada um multiplicado pela perda
+            weighted_weights = [
+                [layer * loss for layer in weights] for weights, loss in results
+            ]
+
+            # Compute average weights of each layer
+            weights_prime: NDArrays = [
+                reduce(np.add, layer_updates) / loss_total
+                for layer_updates in zip(*weighted_weights)
+            ]
+            return weights_prime
+
+        parameters_aggregated = ndarrays_to_parameters(aggregate(weights_results))
+
+        metrics_aggregated = {}
+        for client_index, (client, fit_res) in enumerate(results):
+            loss = fit_res.metrics.get('loss', 0)
+            weight = loss / total_loss
+            num_examples = fit_res.num_examples
+            print(f"Cliente {client.cid}: Perda = {loss}, Peso = {weight}, Exemplos = {num_examples}")
+            self.all_losses.append(loss)
+            self.all_weights.append(weight)
+        
+        return parameters_aggregated, metrics_aggregated
+
+
+    def configure_evaluate(self, server_round: int, parameters: Parameters, client_manager: ClientManager) -> List[Tuple[ClientProxy, EvaluateIns]]:
+        """Configura a avaliação dos clientes."""
+        if self.fraction_evaluate == 0.0:
+            return []
+        
+        config = {}
+        evaluate_ins = EvaluateIns(parameters, config)
+        sample_size, min_num_clients = self.num_evaluation_clients(client_manager.num_available())
+        clients = client_manager.sample(num_clients=sample_size, min_num_clients=min_num_clients)
+        return [(client, evaluate_ins) for client in clients]
+
+    def aggregate_evaluate(self, server_round: int, results: List[Tuple[ClientProxy, EvaluateRes]], failures: List[Union[Tuple[ClientProxy, EvaluateRes], BaseException]]) -> Tuple[Optional[float], Dict[str, Scalar]]:
+        """Agrega os resultados da avaliação dos clientes."""
+        if not results:
+            return None, {}
+        
+        metrics_aggregated = {}
+        loss_aggregated = None
+        return loss_aggregated, metrics_aggregated
+
+    def evaluate(self, server_round: int, parameters: Parameters) -> Optional[Tuple[float, Dict[str, Scalar]]]:
+        """Avalia o modelo global na rodada atual."""
+        net = Net(NUM_CLIENTS, NUM_ITEMS).to(DEVICE)
+        set_parameters(net, parameters_to_ndarrays(parameters))
+        loss, rmse, accuracy, precision_at_10, recall_at_10, RgrpActivity, RgrpGender, RgrpAge, RgrpActivity_Losses, RgrpGender_Losses, RgrpAge_Losses = test(net, testloader, server=True)
+        metrics = {"rmse": rmse, "accuracy": accuracy, "precision_at_10": precision_at_10, "recall_at_10": recall_at_10, "RgrpActivity": RgrpActivity, "RgrpGender": RgrpGender, "RgrpAge": RgrpAge, "RgrpActivity_Losses": RgrpActivity_Losses, "RgrpGender_Losses": RgrpGender_Losses, "RgrpAge_Losses": RgrpAge_Losses}
+
+        # Ajustar a taxa de aprendizado com base na nova RgrpActivity
+        self.evaluate_and_adjust_learning_rate(metrics["RgrpActivity"])
+        
+        print(f"Server-side evaluation :: Round {server_round}")
+        print(f"loss {loss} / RMSE {rmse} / accuracy {accuracy} / Precision@10 {precision_at_10} / Recall@10 {recall_at_10}")
+        print(f"RgrpActivity {RgrpActivity} / RgrpGender {RgrpGender} / RgrpAge {RgrpAge}")
+        print(f"RgrpActivity_Losses {RgrpActivity_Losses} / RgrpGender_Losses {RgrpGender_Losses} / RgrpAge_Losses {RgrpAge_Losses}")
+        return loss, metrics
+        
+        
+Eu preciso melhorar a ESTRATÉGIA 2. Para reduzir ainda mais a injustiça de grupo (Rgrp).         
+
+Atualmente estou com resultados próximos a:
+
+ESTRATÉGIA 1
+'RgrpActivity': [(0, 0.0018090796387086477),
+[92mINFO [0m:      	                  (1, 0.0005306385811662157),
+[92mINFO [0m:      	                  (2, 0.00026596287346733607),
+[92mINFO [0m:      	                  (3, 3.6207639211702824e-06),
+[92mINFO [0m:      	                  (4, 0.00014792441199180806),
+[92mINFO [0m:      	                  (5, 0.00023703545342404283),
+[92mINFO [0m:      	                  (6, 0.0002785509285398885),
+[92mINFO [0m:      	                  (7, 0.00032294637006181697),
+[92mINFO [0m:      	                  (8, 0.00031471157211339384),
+[92mINFO [0m:      	                  (9, 0.0003244841929707064),
+[92mINFO [0m:      	                  (10, 0.00033177965325814797),
+[92mINFO [0m:      	                  (11, 0.0003692250890411328),
+[92mINFO [0m:      	                  (12, 0.0003834094162870601),
+[92mINFO [0m:      	                  (13, 0.00038290521149818746),
+[92mINFO [0m:      	                  (14, 0.00045021881637968006),
+[92mINFO [0m:      	                  (15, 0.0005582609684034391),
+[92mINFO [0m:      	                  (16, 0.0005732621797498227),
+[92mINFO [0m:      	                  (17, 0.0007634085265089347),
+[92mINFO [0m:      	                  (18, 0.000931008740525887),
+[92mINFO [0m:      	                  (19, 0.0008739634811679295),
+[92mINFO [0m:      	                  (20, 0.001049650614341391),
+[92mINFO [0m:      	                  (21, 0.0010079374057449981),
+[92mINFO [0m:      	                  (22, 0.0009807265914188127),
+[92mINFO [0m:      	                  (23, 0.0009615740698231186),
+[92mINFO [0m:      	                  (24, 0.0012297784771274178)]
+
+
+ESTRATÉGIA 2
+'RgrpActivity': [(0, 0.0018090796387086477),
+[92mINFO [0m:      	                  (1, 0.0005239240317233726),
+[92mINFO [0m:      	                  (2, 0.0002757610442747311),
+[92mINFO [0m:      	                  (3, 3.5828164432343557e-06),
+[92mINFO [0m:      	                  (4, 0.00015896882157386366),
+[92mINFO [0m:      	                  (5, 0.00023447966694595222),
+[92mINFO [0m:      	                  (6, 0.0003076066828119777),
+[92mINFO [0m:      	                  (7, 0.0003458403847320966),
+[92mINFO [0m:      	                  (8, 0.00032139423601769597),
+[92mINFO [0m:      	                  (9, 0.0003609717311202105),
+[92mINFO [0m:      	                  (10, 0.00029304140800026965),
+[92mINFO [0m:      	                  (11, 0.00038058654100330534),
+[92mINFO [0m:      	                  (12, 0.000399033455137672),
+[92mINFO [0m:      	                  (13, 0.0005390239396581543),
+[92mINFO [0m:      	                  (14, 0.0004700207947710845),
+[92mINFO [0m:      	                  (15, 0.0005462305623451255),
+[92mINFO [0m:      	                  (16, 0.0005327015622834292),
+[92mINFO [0m:      	                  (17, 0.0007368736647867109),
+[92mINFO [0m:      	                  (18, 0.000749621363682503),
+[92mINFO [0m:      	                  (19, 0.0007534450906115397),
+[92mINFO [0m:      	                  (20, 0.0009323592551306419),
+[92mINFO [0m:      	                  (21, 0.0005210508953697589),
+[92mINFO [0m:      	                  (22, 0.0006900053293345657),
+[92mINFO [0m:      	                  (23, 0.0007253660786814072),
+[92mINFO [0m:      	                  (24, 0.0008051886837963037)]
+
+
+Preciso de sugestões para alterar a função fairness_regularization na ESTRATÉGIA 2.

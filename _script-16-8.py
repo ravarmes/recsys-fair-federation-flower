@@ -1,13 +1,12 @@
 import os
 
 # FedAvg --------------------------------------------------------------------------------------
-os.system("python FedAvg-Example-16-8.py 2> FedAvg-Example-16-8-08.txt")
-os.system("python FedAvg-Example-16-8.py 2> FedAvg-Example-16-8-09.txt")
+os.system("python FedAvg-Example-16-8.py 2> FedAvg-Example-16-8-10.txt")
+os.system("python FedAvg-Example-16-8.py 2> FedAvg-Example-16-8-11.txt")
 
 # Fed(l) --------------------------------------------------------------------------------------
-os.system("python FedAvg-Loss-16-8.py 2> FedAvg-Loss-16-8-07.txt")
-os.system("python FedAvg-Loss-16-8.py 2> FedAvg-Loss-16-8-08.txt")
-os.system("python FedAvg-Loss-16-8.py 2> FedAvg-Loss-16-8-09.txt")
+os.system("python FedAvg-Loss-16-8.py 2> FedAvg-Loss-16-8-10.txt")
+os.system("python FedAvg-Loss-16-8.py 2> FedAvg-Loss-16-8-11.txt")
 
 # # FairFed(l) ACTIVITY -------------------------------------------------------------------------
 # os.system("python FedFair-Loss-Activity-16-8.py 2> FedFair-Loss-Activity-16-8-06.txt")

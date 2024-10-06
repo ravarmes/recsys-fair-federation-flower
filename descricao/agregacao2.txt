@@ -1,0 +1,52 @@
+Estou trabalhando em um contexto de sistema de recomendação federado.
+No meu experimento eu tenho 300 clientes e um total de 24 rounds.
+Os clientes estão separadas em grupos (por exemplo por sexo).
+Meu objetivo principal é diminuir a injustiça de grupo (Rgrp), a qual é medida pela variância entre as perdas dos grupos.
+Na agregação estou utilizando a perda de cada cliente para definir o peso de contribuição na agregação do modelo global.
+Portanto, para clientes com maiores perdas, estou considerando maior peso. Para cliente com menores pesos, estou considerando pesos menores.
+A ideia geral é fazer com que cliente com perdas menores aprendam mais devagar e clientes com perdas maiores aprendam mais rápido.
+Todavia, lembrando que a ideia macro é reduzir a variância entre as perdas dos grupos.
+
+Atualmente estou utilizando a seguinte função para regulação de justiça:
+
+    def fairness_regularization(self, server_round, client_index, loss, group_mean_loss, global_groups_variance):
+        if loss < group_mean_loss:
+            adjustment_factor = 0.9  # Recompensa pela contribuição menor que a média
+        else:
+            adjustment_factor = 1.1  # Penaliza pela contribuição maior
+        
+        fairness_penalty = (group_mean_loss * (global_groups_variance ** 0.25)) * self.learning_rate * adjustment_factor
+        adjusted_loss = loss + fairness_penalty
+
+
+Observe os seguintes resultados:
+fairness_regularization -------------------------------
+server_round: 8
+client_index: 72 (Cliente em um Erro Maior)
+loss: 0.23117529973387718
+group_mean_loss: 0.22990731801536432
+global_groups_variance: 0.000268093411886752
+learning_rate: 0.20842893421875003
+adjustment_factor: 1.1
+fairness_penalty: 0.006744892365458014
+loss + fairness_penalty: 0.2379201920993352
+
+fairness_regularization -------------------------------
+server_round: 8
+client_index: 73 (Cliente com um Erro Menor)
+loss: 0.06542783189797774
+group_mean_loss: 0.22990731801536432
+global_groups_variance: 0.000268093411886752
+learning_rate: 0.20842893421875003
+adjustment_factor: 0.9
+fairness_penalty: 0.005518548299011102
+loss + fairness_penalty: 0.07094638019698885
+
+Portanto, a porcentagem de penalidade foi aproximadamente 2.917% para o cliente 72 e 8.434% para o cliente 73.
+
+Gostaria que me ajudasse a refletir se essas proporções de aumento estão adequadas para o propósito final.
+Observe que neste caso, o cliente 72, mesmo com maior erro (loss: 0.23117529973387718) teve uma penalidade proporcional menor do que o cliente 73 (loss: 0.06542783189797774).
+Lembro que group_mean_loss é a média do grupo em que estes clientes (72 e 73) se encontram.
+Seria interessante utilizar global_mean_loss (média global dos erros) no lugar de group_mean_loss?
+Preciso de análises sobre a estratégia da função.
+

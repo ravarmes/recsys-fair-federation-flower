@@ -346,7 +346,8 @@ def client_fn(cid) -> FlowerClient:
 class FedCustom(fl.server.strategy.Strategy):
     def __init__(self, fraction_fit: float = 1.0, fraction_evaluate: float = 1.0, 
                  min_fit_clients: int = NUM_CLIENTS, min_evaluate_clients: int = NUM_CLIENTS, 
-                 min_available_clients: int = NUM_CLIENTS, initial_learning_rate=0.2, initial_adjustment_factor_min=0.5, initial_adjustment_factor_max=1.5) -> None:
+                 min_available_clients: int = NUM_CLIENTS, 
+                 initial_learning_rate=0.2, initial_adjustment_factor_min=0.5, initial_adjustment_factor_max=1.5) -> None:
         super().__init__()
         self.fraction_fit = fraction_fit
         self.fraction_evaluate = fraction_evaluate
@@ -385,9 +386,9 @@ class FedCustom(fl.server.strategy.Strategy):
     # Função de Regulação com Normalização das Perdas
     def fairness_regularization(self, server_round, client_index, loss, group_mean_loss, global_groups_variance):
         if loss < group_mean_loss:
-            adjustment_factor = 0.9  # Recompensa pela contribuição menor que a média
+            adjustment_factor = self.adjustment_factor_min  # Recompensa pela contribuição menor que a média
         else:
-            adjustment_factor = 1.1  # Penaliza pela contribuição maior
+            adjustment_factor = self.adjustment_factor_max  # Penaliza pela contribuição maior
         
         fairness_penalty = (group_mean_loss * (global_groups_variance ** 0.25)) * self.learning_rate * adjustment_factor
         adjusted_loss = loss + fairness_penalty
@@ -463,7 +464,7 @@ class FedCustom(fl.server.strategy.Strategy):
             group_id = next(group for group, client_indexes in G_ACTIVITY.items() if client_index in client_indexes)
             group_mean_loss = self.loss_avg_per_group[group_id]
 
-            fairness_loss = self.fairness_regularization(server_round, client_index, local_loss, global_mean_loss, group_mean_loss, global_groups_variance)
+            fairness_loss = self.fairness_regularization(server_round, client_index, local_loss, group_mean_loss, global_groups_variance)
             fit_res.metrics['loss'] = fairness_loss
 
         weights_results = [
@@ -577,7 +578,8 @@ import flwr as fl
 
 def objective(trial):
     # Sugestão de hiperparâmetros pelo Optuna
-    learning_rate = trial.suggest_float("learning_rate", 0.01, 100)
+    #learning_rate = trial.suggest_float("learning_rate", 0.01, 100)
+    learning_rate = trial.suggest_float("learning_rate", 0.2, 0.2)
     adjustment_factor_min = trial.suggest_float("adjustment_factor_min", 0.5, 0.9)
     adjustment_factor_max = trial.suggest_float("adjustment_factor_max", 1.1, 1.5)
 
@@ -615,7 +617,7 @@ def objective(trial):
 
 # Criar o estudo de otimização
 study = optuna.create_study(direction="minimize")
-study.optimize(objective, n_trials=80)  # Define o número de iterações (trials)
+study.optimize(objective, n_trials=40)  # Define o número de iterações (trials)
 
 # Imprimir os melhores parâmetros e o valor da função objetivo
 best_params = study.best_params
@@ -623,8 +625,6 @@ best_value = study.best_value
 print(f"Melhores parâmetros encontrados: {best_params}")
 print(f"Melhor valor da função objetivo: {best_value}")
 
-# Melhores parâmetros encontrados: {'learning_rate': 5.509493331717947}
-# Melhor valor da função objetivo: 5.060927360739802e-08
-
-# Melhores parâmetros encontrados: {'learning_rate': 6.007121707285693}
-# Melhor valor da função objetivo: 1.613998572926046e-07
+# ("learning_rate", 0.01, 100)
+# Melhores parâmetros encontrados: {'learning_rate': 26.60577524611588, 'adjustment_factor_min': 0.6923953366475435, 'adjustment_factor_max': 1.2752968761386307}
+# Melhor valor da função objetivo: 2.6638398534249658e-08

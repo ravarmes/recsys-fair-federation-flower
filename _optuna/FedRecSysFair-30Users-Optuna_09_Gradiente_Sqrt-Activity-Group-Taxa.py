@@ -43,7 +43,7 @@ DEVICE = torch.device("cpu")  # Use "cuda" para GPU
 print(f"Training on {DEVICE} using PyTorch {torch.__version__} and Flower {fl.__version__}")
 
 NUM_CLIENTS = 30
-NUM_ROUNDS = 10
+NUM_ROUNDS = 15
 
 RESULTS = []
 
@@ -378,7 +378,7 @@ class FedCustom(fl.server.strategy.Strategy):
 
 
     # Função de Regulação com Normalização das Perdas
-    def fairness_regularization(self, server_round, client_index, loss, global_mean_loss, group_mean_loss, global_groups_variance):
+    def fairness_regularization(self, server_round, client_index, loss, group_mean_loss, global_groups_variance):
         if loss < group_mean_loss:
             adjustment_factor = 0.9
         else:
@@ -433,7 +433,6 @@ class FedCustom(fl.server.strategy.Strategy):
     def aggregate_fit(self, server_round: int, results: List[Tuple[ClientProxy, FitRes]], failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]]) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
         G_ACTIVITY = {1: list(range(0, 15)), 2: list(range(15, NUM_CLIENTS))}
         total_loss = sum(fit_res.metrics.get('loss', 0) for _, fit_res in results)
-        global_mean_loss = total_loss / len(results)
 
         group_losses = {}
         group_counts = {}
@@ -449,8 +448,6 @@ class FedCustom(fl.server.strategy.Strategy):
         total_examples = sum(fit_res.num_examples for _, fit_res in results)
         print(f"Número total de exemplos agregados: {total_examples}")
 
-        print(f"global_mean_loss: {global_mean_loss}")
-
         global_groups_variance = np.var(list(self.loss_avg_per_group.values()))
         print(f"global_groups_variance: {global_groups_variance}")
 
@@ -460,7 +457,7 @@ class FedCustom(fl.server.strategy.Strategy):
             group_id = next(group for group, client_indexes in G_ACTIVITY.items() if client_index in client_indexes)
             group_mean_loss = self.loss_avg_per_group[group_id]
 
-            fairness_loss = self.fairness_regularization(server_round, client_index, local_loss, global_mean_loss, group_mean_loss, global_groups_variance)
+            fairness_loss = self.fairness_regularization(server_round, client_index, local_loss, group_mean_loss, global_groups_variance)
             fit_res.metrics['loss'] = fairness_loss
 
         weights_results = [
@@ -608,7 +605,7 @@ def objective(trial):
 
 # Criar o estudo de otimização
 study = optuna.create_study(direction="minimize")
-study.optimize(objective, n_trials=30)  # Define o número de iterações (trials)
+study.optimize(objective, n_trials=100)  # Define o número de iterações (trials)
 
 # Imprimir os melhores parâmetros e o valor da função objetivo
 best_params = study.best_params
@@ -616,5 +613,11 @@ best_value = study.best_value
 print(f"Melhores parâmetros encontrados: {best_params}")
 print(f"Melhor valor da função objetivo: {best_value}")
 
-# Melhores parâmetros encontrados: {'learning_rate': 615.9905510032158}
-# Melhor valor da função objetivo: 1.3607480101446299e-06
+# Melhores parâmetros encontrados: {'learning_rate': 330.4895032100413}
+# Melhor valor da função objetivo: 1.03651564581253e-06
+
+# Melhores parâmetros encontrados: {'learning_rate': 212.1837948991843}
+# Melhor valor da função objetivo: 5.8322264430616465e-08
+
+# Melhores parâmetros encontrados: {'learning_rate': 373.58023715763056}
+# Melhor valor da função objetivo: 9.25202165217042e-11

@@ -452,7 +452,7 @@ class FedCustom(fl.server.strategy.Strategy):
         fairness_penalty = (group_mean_loss * (global_groups_variance ** 0.25)) * self.learning_rate * adjustment_factor
         adjusted_loss = loss + fairness_penalty
 
-        with open("FedFair-Loss-Activity-Gradiente-Sqrt-Taxa-02-Group.log", "a") as log_file:
+        with open("FedFair-Loss-Activity-16-8-Gradiente-Sqrt-Taxa-02-Group.log", "a") as log_file:
             log_file.write("\n\nfairness_regularization -------------------------------\n")
             log_file.write(f"server_round: {server_round}\n")
             log_file.write(f"client_index: {client_index}\n")
@@ -466,16 +466,16 @@ class FedCustom(fl.server.strategy.Strategy):
 
         return adjusted_loss
     
-    def evaluate_and_adjust_learning_rate(self, new_rgrp_activity):
-        if self.previous_rgrp_activity is not None:
-            if new_rgrp_activity > self.previous_rgrp_activity:
-                # Aumentar a taxa de aprendizado se a injustiça aumenta
-                self.learning_rate *= 1.05
-            elif new_rgrp_activity < self.previous_rgrp_activity:
-                # Diminuir a taxa de aprendizado se a injustiça diminui
-                self.learning_rate *= 0.95
+    # def evaluate_and_adjust_learning_rate(self, new_rgrp_activity):
+    #     if self.previous_rgrp_activity is not None:
+    #         if new_rgrp_activity > self.previous_rgrp_activity:
+    #             # Aumentar a taxa de aprendizado se a injustiça aumenta
+    #             self.learning_rate *= 1.05
+    #         elif new_rgrp_activity < self.previous_rgrp_activity:
+    #             # Diminuir a taxa de aprendizado se a injustiça diminui
+    #             self.learning_rate *= 0.95
 
-        self.previous_rgrp_activity = new_rgrp_activity
+    #     self.previous_rgrp_activity = new_rgrp_activity
 
 
     def configure_fit(self, server_round: int, parameters: Parameters, client_manager: ClientManager) -> List[Tuple[ClientProxy, FitIns]]:
@@ -588,7 +588,7 @@ class FedCustom(fl.server.strategy.Strategy):
         metrics = {"rmse": rmse, "accuracy": accuracy, "precision_at_10": precision_at_10, "recall_at_10": recall_at_10, "RgrpActivity": RgrpActivity, "RgrpGender": RgrpGender, "RgrpAge": RgrpAge, "RgrpActivity_Losses": RgrpActivity_Losses, "RgrpGender_Losses": RgrpGender_Losses, "RgrpAge_Losses": RgrpAge_Losses}
 
         # Ajustar a taxa de aprendizado com base na nova RgrpActivity
-        self.evaluate_and_adjust_learning_rate(metrics["RgrpActivity"])
+        # self.evaluate_and_adjust_learning_rate(metrics["RgrpActivity"])
         
         print(f"Server-side evaluation :: Round {server_round}")
         print(f"loss {loss} / RMSE {rmse} / accuracy {accuracy} / Precision@10 {precision_at_10} / Recall@10 {recall_at_10}")

@@ -29,7 +29,7 @@ os.system("python FedFair-Loss-Age-16-8-Gradiente-Sqrt-Taxa-02-Group.py 2> FedFa
 # # FairFed(l) GENDER ---------------------------------------------------------------------------
 os.system("python FedFair-Loss-Gender-16-8-Gradiente-Sqrt-Taxa-02-Group.py 2> FedFair-Loss-Gender-16-8-Gradiente-Sqrt-Taxa-02-Group-01.txt")
 
-os.system("python FedFair-Loss-Activity-16-8-Gradiente-Sqrt-Taxa-02-Group.py 2> FedFair-Loss-Activity-16-8-Gradiente-Sqrt-Taxa-02-Group-02.txt")
-os.system("python FedFair-Loss-Age-16-8-Gradiente-Sqrt-Taxa-02-Group.py 2> FedFair-Loss-Age-16-8-Gradiente-Sqrt-Taxa-02-Group-02.txt")
-os.system("python FedFair-Loss-Gender-16-8-Gradiente-Sqrt-Taxa-02-Group.py 2> FedFair-Loss-Gender-16-8-Gradiente-Sqrt-Taxa-02-Group-02.txt")
+# os.system("python FedFair-Loss-Activity-16-8-Gradiente-Sqrt-Taxa-02-Group.py 2> FedFair-Loss-Activity-16-8-Gradiente-Sqrt-Taxa-02-Group-02.txt")
+# os.system("python FedFair-Loss-Age-16-8-Gradiente-Sqrt-Taxa-02-Group.py 2> FedFair-Loss-Age-16-8-Gradiente-Sqrt-Taxa-02-Group-02.txt")
+# os.system("python FedFair-Loss-Gender-16-8-Gradiente-Sqrt-Taxa-02-Group.py 2> FedFair-Loss-Gender-16-8-Gradiente-Sqrt-Taxa-02-Group-02.txt")
 

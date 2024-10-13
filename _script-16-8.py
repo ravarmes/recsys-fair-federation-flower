@@ -21,13 +21,13 @@ import os
 # os.system("python FedFair-Loss-Gender-16-8.py 2> FedFair-Loss-Gender-16-8.py-04.txt")
 
 # # FairFed(l) ACTIVITY -------------------------------------------------------------------------
-os.system("python FedFair-Loss-Activity-16-8-Gradiente-Sqrt-Taxa-02-Group.py 2> FedFair-Loss-Activity-16-8-Gradiente-Sqrt-Taxa-02-Group-01.txt")
+os.system("python FedFair-Loss-Activity-16-8-Gradiente-Sqrt-Taxa-02-Group.py 2> FedFair-Loss-Activity-16-8-Gradiente-Sqrt-Taxa-02-Group-02.txt")
 
 # # FairFed(l) AGE ------------------------------------------------------------------------------
-os.system("python FedFair-Loss-Age-16-8-Gradiente-Sqrt-Taxa-02-Group.py 2> FedFair-Loss-Age-16-8-Gradiente-Sqrt-Taxa-02-Group-01.txt")
+os.system("python FedFair-Loss-Age-16-8-Gradiente-Sqrt-Taxa-02-Group.py 2> FedFair-Loss-Age-16-8-Gradiente-Sqrt-Taxa-02-Group-02.txt")
 
 # # FairFed(l) GENDER ---------------------------------------------------------------------------
-os.system("python FedFair-Loss-Gender-16-8-Gradiente-Sqrt-Taxa-02-Group.py 2> FedFair-Loss-Gender-16-8-Gradiente-Sqrt-Taxa-02-Group-01.txt")
+os.system("python FedFair-Loss-Gender-16-8-Gradiente-Sqrt-Taxa-02-Group.py 2> FedFair-Loss-Gender-16-8-Gradiente-Sqrt-Taxa-02-Group-02.txt")
 
 # os.system("python FedFair-Loss-Activity-16-8-Gradiente-Sqrt-Taxa-02-Group.py 2> FedFair-Loss-Activity-16-8-Gradiente-Sqrt-Taxa-02-Group-02.txt")
 # os.system("python FedFair-Loss-Age-16-8-Gradiente-Sqrt-Taxa-02-Group.py 2> FedFair-Loss-Age-16-8-Gradiente-Sqrt-Taxa-02-Group-02.txt")

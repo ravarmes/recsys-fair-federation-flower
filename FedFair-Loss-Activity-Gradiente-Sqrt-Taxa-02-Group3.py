@@ -445,7 +445,7 @@ class FedCustom(fl.server.strategy.Strategy):
     # Função de Regulação com Normalização das Perdas
     def fairness_regularization(self, server_round, client_index, loss, group_mean_loss, global_groups_variance):
         
-        tr = self.adaptive_learning_rate(self, 1, 0.05, server_round)
+        lr = self.adaptive_learning_rate(1, 0.05, server_round)
         fairness_penalty = (group_mean_loss * (global_groups_variance ** 0.25)) * lr
         adjusted_loss = loss + fairness_penalty
 
@@ -584,7 +584,7 @@ class FedCustom(fl.server.strategy.Strategy):
         metrics = {"rmse": rmse, "accuracy": accuracy, "precision_at_10": precision_at_10, "recall_at_10": recall_at_10, "RgrpActivity": RgrpActivity, "RgrpGender": RgrpGender, "RgrpAge": RgrpAge, "RgrpActivity_Losses": RgrpActivity_Losses, "RgrpGender_Losses": RgrpGender_Losses, "RgrpAge_Losses": RgrpAge_Losses}
 
         # Ajustar a taxa de aprendizado com base na nova RgrpActivity
-        self.evaluate_and_adjust_learning_rate(metrics["RgrpActivity"])
+        # self.evaluate_and_adjust_learning_rate(metrics["RgrpActivity"])
         
         print(f"Server-side evaluation :: Round {server_round}")
         print(f"loss {loss} / RMSE {rmse} / accuracy {accuracy} / Precision@10 {precision_at_10} / Recall@10 {recall_at_10}")

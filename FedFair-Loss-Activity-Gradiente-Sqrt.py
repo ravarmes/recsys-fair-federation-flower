@@ -443,7 +443,7 @@ class FedCustom(fl.server.strategy.Strategy):
 
     # Função de Regulação com Normalização das Perdas
     def fairness_regularization(self, server_round, client_index, loss, group_mean_loss, global_groups_variance):
-        fairness_penalty = group_mean_loss * (global_groups_variance ** 0.25)
+        fairness_penalty = group_mean_loss * (global_groups_variance ** 0.5)
         adjusted_loss = loss + self.learning_rate * fairness_penalty
 
         with open("FedFair-Loss-Activity-Gradiente-Sqrt_debug.log", "a") as log_file:

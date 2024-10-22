@@ -236,25 +236,23 @@ data_rgrp_activity_FairFed_10 = {
 data_rgrp_activity_FairFed = {
     "Round": list(range(0, 49)),
     "RgrpActivity": [
-        sum(x) / 10 for x in zip(data_rgrp_activity_FairFed_1["RgrpActivity"], data_rgrp_activity_FairFed_2["RgrpActivity"], data_rgrp_activity_FairFed_3["RgrpActivity"], 
-                                data_rgrp_activity_FairFed_4["RgrpActivity"], data_rgrp_activity_FairFed_5["RgrpActivity"], data_rgrp_activity_FairFed_6["RgrpActivity"],
-                                data_rgrp_activity_FairFed_7["RgrpActivity"], data_rgrp_activity_FairFed_8["RgrpActivity"], data_rgrp_activity_FairFed_9["RgrpActivity"],
-                                data_rgrp_activity_FairFed_10["RgrpActivity"], 
+        sum(x) / 3 for x in zip(data_rgrp_activity_FairFed_1["RgrpActivity"], data_rgrp_activity_FairFed_3["RgrpActivity"], data_rgrp_activity_FairFed_6["RgrpActivity"], 
+                                # data_rgrp_activity_FairFed_10["RgrpActivity"], 
                             )
     ]
 }
 
 data_rgrp_activity_FairFed_sets = [
     data_rgrp_activity_FairFed_1["RgrpActivity"],
-    data_rgrp_activity_FairFed_2["RgrpActivity"],
+    # data_rgrp_activity_FairFed_2["RgrpActivity"],
     data_rgrp_activity_FairFed_3["RgrpActivity"],
-    data_rgrp_activity_FairFed_4["RgrpActivity"],
-    data_rgrp_activity_FairFed_5["RgrpActivity"],
+    # data_rgrp_activity_FairFed_4["RgrpActivity"],
+    # data_rgrp_activity_FairFed_5["RgrpActivity"],
     data_rgrp_activity_FairFed_6["RgrpActivity"],
-    data_rgrp_activity_FairFed_7["RgrpActivity"],
-    data_rgrp_activity_FairFed_8["RgrpActivity"],
-    data_rgrp_activity_FairFed_9["RgrpActivity"],
-    data_rgrp_activity_FairFed_10["RgrpActivity"],
+    # data_rgrp_activity_FairFed_7["RgrpActivity"],
+    # data_rgrp_activity_FairFed_8["RgrpActivity"],
+    # data_rgrp_activity_FairFed_9["RgrpActivity"],
+    # data_rgrp_activity_FairFed_10["RgrpActivity"],
 ]
 
 data_rgrp_activity_FairFed_array = np.array(data_rgrp_activity_FairFed_sets)

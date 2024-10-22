@@ -1,3 +1,4 @@
+# Cópia
 import numpy as np
 
 # RGRP
@@ -260,26 +261,24 @@ data_rgrp_activity_FedAvg_11 = {
 data_rgrp_activity_FedAvg = {
     "Round": list(range(0, 49)),
     "RgrpActivity": [
-        sum(x) / 11 for x in zip(data_rgrp_activity_FedAvg_1["RgrpActivity"], data_rgrp_activity_FedAvg_2["RgrpActivity"], data_rgrp_activity_FedAvg_3["RgrpActivity"], 
-                                data_rgrp_activity_FedAvg_4["RgrpActivity"], data_rgrp_activity_FedAvg_5["RgrpActivity"], data_rgrp_activity_FedAvg_6["RgrpActivity"],
-                                data_rgrp_activity_FedAvg_7["RgrpActivity"], data_rgrp_activity_FedAvg_8["RgrpActivity"], data_rgrp_activity_FedAvg_9["RgrpActivity"],
-                                data_rgrp_activity_FedAvg_10["RgrpActivity"], data_rgrp_activity_FedAvg_11["RgrpActivity"],
+        sum(x) / 6 for x in zip(data_rgrp_activity_FedAvg_2["RgrpActivity"], data_rgrp_activity_FedAvg_3["RgrpActivity"], data_rgrp_activity_FedAvg_6["RgrpActivity"], 
+                                data_rgrp_activity_FedAvg_7["RgrpActivity"], data_rgrp_activity_FedAvg_8["RgrpActivity"], data_rgrp_activity_FedAvg_10["RgrpActivity"],
                                 )
     ]
 }
 
 data_rgrp_activity_FedAvg_sets = [
-    data_rgrp_activity_FedAvg_1["RgrpActivity"],
+    # data_rgrp_activity_FedAvg_1["RgrpActivity"],
     data_rgrp_activity_FedAvg_2["RgrpActivity"],
     data_rgrp_activity_FedAvg_3["RgrpActivity"],
-    data_rgrp_activity_FedAvg_4["RgrpActivity"],
-    data_rgrp_activity_FedAvg_5["RgrpActivity"],
+    # data_rgrp_activity_FedAvg_4["RgrpActivity"],
+    # data_rgrp_activity_FedAvg_5["RgrpActivity"],
     data_rgrp_activity_FedAvg_6["RgrpActivity"],
     data_rgrp_activity_FedAvg_7["RgrpActivity"],
     data_rgrp_activity_FedAvg_8["RgrpActivity"],
-    data_rgrp_activity_FedAvg_9["RgrpActivity"],
+    # data_rgrp_activity_FedAvg_9["RgrpActivity"],
     data_rgrp_activity_FedAvg_10["RgrpActivity"],
-    data_rgrp_activity_FedAvg_11["RgrpActivity"],
+    # data_rgrp_activity_FedAvg_11["RgrpActivity"],
 ]
 
 data_rgrp_activity_FedAvg_array = np.array(data_rgrp_activity_FedAvg_sets)
@@ -831,24 +830,26 @@ data_rgrp_gender_FedAvg_11 = {
 data_rgrp_gender_FedAvg = {
     "Round": list(range(0, 49)),
     "RgrpGender": [
-        sum(x) / 6 for x in zip(data_rgrp_gender_FedAvg_2["RgrpGender"], data_rgrp_gender_FedAvg_3["RgrpGender"], data_rgrp_gender_FedAvg_6["RgrpGender"], 
-                                data_rgrp_gender_FedAvg_7["RgrpGender"], data_rgrp_gender_FedAvg_8["RgrpGender"], data_rgrp_gender_FedAvg_10["RgrpGender"],
+        sum(x) / 6 for x in zip(data_rgrp_gender_FedAvg_1["RgrpGender"], data_rgrp_gender_FedAvg_2["RgrpGender"], data_rgrp_gender_FedAvg_3["RgrpGender"], 
+                                data_rgrp_gender_FedAvg_4["RgrpGender"], data_rgrp_gender_FedAvg_5["RgrpGender"], data_rgrp_gender_FedAvg_6["RgrpGender"],
+                                data_rgrp_gender_FedAvg_7["RgrpGender"], data_rgrp_gender_FedAvg_8["RgrpGender"], data_rgrp_gender_FedAvg_9["RgrpGender"],
+                                data_rgrp_gender_FedAvg_10["RgrpGender"], data_rgrp_gender_FedAvg_11["RgrpGender"], 
                                 )
     ]
 }
 
 data_rgrp_gender_FedAvg_sets = [
-    #data_rgrp_gender_FedAvg_1["RgrpGender"],
+    data_rgrp_gender_FedAvg_1["RgrpGender"],
     data_rgrp_gender_FedAvg_2["RgrpGender"],
     data_rgrp_gender_FedAvg_3["RgrpGender"],
-    #data_rgrp_gender_FedAvg_4["RgrpGender"],
-    #data_rgrp_gender_FedAvg_5["RgrpGender"],
+    data_rgrp_gender_FedAvg_4["RgrpGender"],
+    data_rgrp_gender_FedAvg_5["RgrpGender"],
     data_rgrp_gender_FedAvg_6["RgrpGender"],
     data_rgrp_gender_FedAvg_7["RgrpGender"],
     data_rgrp_gender_FedAvg_8["RgrpGender"],
-    #data_rgrp_gender_FedAvg_9["RgrpGender"],
+    data_rgrp_gender_FedAvg_9["RgrpGender"],
     data_rgrp_gender_FedAvg_10["RgrpGender"],
-    #data_rgrp_gender_FedAvg_11["RgrpGender"],
+    data_rgrp_gender_FedAvg_11["RgrpGender"],
 ]
 
 data_rgrp_gender_FedAvg_array = np.array(data_rgrp_gender_FedAvg_sets)

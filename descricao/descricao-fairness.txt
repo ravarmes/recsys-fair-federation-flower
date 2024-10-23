@@ -7,7 +7,7 @@ Mas, quero implementar uma função para regulação de justiça.
 A ideia geral da função é "aumentar" o peso do usuário a depender de seu grupo, bem como, da injustiça de grupo calculada no round.
 Por exemplo:
 
-def fairness_regularization(self, server_round, client_index, loss, global_groups_variance):
+def fairness_regularization(self, server_round, client_index, loss, group_mean_loss, global_groups_variance):
         fairness_penalty = (group_mean_loss * global_groups_variance)
         return loss + fairness_penalty
         

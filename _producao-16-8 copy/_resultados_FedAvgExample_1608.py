@@ -553,17 +553,17 @@ data_rgrp_age_FedAvg = {
 }
 
 data_rgrp_age_FedAvg_sets = [
-    data_rgrp_age_FedAvg_1["RgrpAge"],
+    # data_rgrp_age_FedAvg_1["RgrpAge"],
     data_rgrp_age_FedAvg_2["RgrpAge"],
     data_rgrp_age_FedAvg_3["RgrpAge"],
-    data_rgrp_age_FedAvg_4["RgrpAge"],
-    data_rgrp_age_FedAvg_5["RgrpAge"],
+    # data_rgrp_age_FedAvg_4["RgrpAge"],
+    # data_rgrp_age_FedAvg_5["RgrpAge"],
     data_rgrp_age_FedAvg_6["RgrpAge"],
     data_rgrp_age_FedAvg_7["RgrpAge"],
     data_rgrp_age_FedAvg_8["RgrpAge"],
-    data_rgrp_age_FedAvg_9["RgrpAge"],
+    # data_rgrp_age_FedAvg_9["RgrpAge"],
     data_rgrp_age_FedAvg_10["RgrpAge"],
-    data_rgrp_age_FedAvg_11["RgrpAge"],
+    # data_rgrp_age_FedAvg_11["RgrpAge"],
 ]
 
 data_rgrp_age_FedAvg_array = np.array(data_rgrp_age_FedAvg_sets)

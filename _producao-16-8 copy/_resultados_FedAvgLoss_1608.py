@@ -259,7 +259,7 @@ data_rgrp_activity_FedLoss_11 = {
 data_rgrp_activity_FedLoss = {
     "Round": list(range(0, 49)),
     "RgrpActivity": [
-        sum(x) / 6 for x in zip(data_rgrp_activity_FedLoss_2["RgrpActivity"], data_rgrp_activity_FedLoss_4["RgrpActivity"], data_rgrp_activity_FedLoss_7["RgrpActivity"], 
+        sum(x) / 11 for x in zip(data_rgrp_activity_FedLoss_2["RgrpActivity"], data_rgrp_activity_FedLoss_4["RgrpActivity"], data_rgrp_activity_FedLoss_7["RgrpActivity"], 
                                 data_rgrp_activity_FedLoss_9["RgrpActivity"], data_rgrp_activity_FedLoss_10["RgrpActivity"], data_rgrp_activity_FedLoss_11["RgrpActivity"],
                             )
     ]
@@ -542,7 +542,7 @@ data_rgrp_age_FedLoss_11 = {
 data_rgrp_age_FedLoss = {
     "Round": list(range(0, 49)),
     "RgrpAge": [
-        sum(x) / 3 for x in zip(data_rgrp_age_FedLoss_1["RgrpAge"], data_rgrp_age_FedLoss_2["RgrpAge"], data_rgrp_age_FedLoss_4["RgrpAge"],
+        sum(x) / 11 for x in zip(data_rgrp_age_FedLoss_1["RgrpAge"], data_rgrp_age_FedLoss_2["RgrpAge"], data_rgrp_age_FedLoss_4["RgrpAge"],
                                 data_rgrp_age_FedLoss_4["RgrpAge"], data_rgrp_age_FedLoss_5["RgrpAge"], data_rgrp_age_FedLoss_6["RgrpAge"],
                                 data_rgrp_age_FedLoss_7["RgrpAge"], data_rgrp_age_FedLoss_8["RgrpAge"], data_rgrp_age_FedLoss_9["RgrpAge"],
                                 data_rgrp_age_FedLoss_10["RgrpAge"], data_rgrp_age_FedLoss_11["RgrpAge"], 
@@ -829,7 +829,7 @@ data_rgrp_gender_FedLoss_11 = {
 data_rgrp_gender_FedLoss = {
     "Round": list(range(0, 49)),
     "RgrpGender": [
-        sum(x) / 6 for x in zip(data_rgrp_gender_FedLoss_1["RgrpGender"], data_rgrp_gender_FedLoss_2["RgrpGender"], data_rgrp_gender_FedLoss_3["RgrpGender"], 
+        sum(x) / 11 for x in zip(data_rgrp_gender_FedLoss_1["RgrpGender"], data_rgrp_gender_FedLoss_2["RgrpGender"], data_rgrp_gender_FedLoss_3["RgrpGender"], 
                                 data_rgrp_gender_FedLoss_4["RgrpGender"], data_rgrp_gender_FedLoss_5["RgrpGender"], data_rgrp_gender_FedLoss_6["RgrpGender"],
                                 data_rgrp_gender_FedLoss_7["RgrpGender"], data_rgrp_gender_FedLoss_8["RgrpGender"], data_rgrp_gender_FedLoss_9["RgrpGender"],
                                 data_rgrp_gender_FedLoss_10["RgrpGender"], data_rgrp_gender_FedLoss_11["RgrpGender"], 
@@ -838,14 +838,14 @@ data_rgrp_gender_FedLoss = {
 }
 
 data_rgrp_gender_FedLoss_sets = [
-    data_rgrp_gender_FedLoss_1["RgrpGender"],
+    # data_rgrp_gender_FedLoss_1["RgrpGender"],
     data_rgrp_gender_FedLoss_2["RgrpGender"],
-    data_rgrp_gender_FedLoss_3["RgrpGender"],
+    # data_rgrp_gender_FedLoss_3["RgrpGender"],
     data_rgrp_gender_FedLoss_4["RgrpGender"],
-    data_rgrp_gender_FedLoss_5["RgrpGender"],
+    # data_rgrp_gender_FedLoss_5["RgrpGender"],
     data_rgrp_gender_FedLoss_6["RgrpGender"],
-    data_rgrp_gender_FedLoss_7["RgrpGender"],
-    data_rgrp_gender_FedLoss_8["RgrpGender"],
+    # data_rgrp_gender_FedLoss_7["RgrpGender"],
+    # data_rgrp_gender_FedLoss_8["RgrpGender"],
     data_rgrp_gender_FedLoss_9["RgrpGender"],
     data_rgrp_gender_FedLoss_10["RgrpGender"],
     data_rgrp_gender_FedLoss_11["RgrpGender"],

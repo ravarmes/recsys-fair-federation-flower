@@ -173,7 +173,7 @@ def load_datasets(num_clients: int, filename: str, seed: int = 42):
         len_train = len(dataset) - len_val
         ds_train, ds_val = random_split(dataset, [len_train, len_val], generator=torch.Generator().manual_seed(seed))
 
-        batch_size = 32 if cliente_id <= 14 else 16  # Definindo o tamanho do lote de acordo com o nível de atividade dos usuários
+        batch_size = 64 if cliente_id <= 14 else 8  # Definindo o tamanho do lote de acordo com o nível de atividade dos usuários
         train_loader = DataLoader(ds_train, batch_size=batch_size, shuffle=True)
         val_loader = DataLoader(ds_val, batch_size=batch_size, shuffle=False)
 
@@ -206,13 +206,13 @@ def load_datasets(num_clients: int, filename: str, seed: int = 42):
     X_test_all = np.array(final_test_sample)[:, :2]
     y_test_all = np.array(final_test_sample)[:, 2]
     test_dataset = TensorDataset(torch.from_numpy(X_test_all).float(), torch.from_numpy(y_test_all).float())
-    testloader = DataLoader(test_dataset, batch_size=32, shuffle=True)
+    testloader = DataLoader(test_dataset, batch_size=64, shuffle=True)
 
     return df, trainloaders, valloaders, testloader
 
 avaliacoes_df, trainloaders, valloaders, testloader = load_datasets(NUM_CLIENTS, filename="X.xlsx")
 # verificar_trainloaders(trainloaders)
-# verificar_datasets_file(trainloaders, valloaders, testloader)
+verificar_datasets_file(trainloaders, valloaders, testloader)
 
 
 class Net(nn.Module):
@@ -439,9 +439,21 @@ class FedCustom(fl.server.strategy.Strategy):
         return initial_lr / (1 + decay_factor * round_num)
 
 
-    # Função de Regulação com Normalização das Perdas
     def fairness_regularization(self, server_round, client_index, loss, group_mean_loss, global_groups_variance):
-        return loss
+        
+        fairness_penalty = (group_mean_loss) * (global_groups_variance ** 0.5)
+
+        with open("FedFair-Loss-Gender-16-8.log", "a") as log_file:
+            log_file.write("\n\nfairness_regularization -------------------------------\n")
+            log_file.write(f"server_round: {server_round}\n")
+            log_file.write(f"client_index: {client_index}\n")
+            log_file.write(f"loss: {loss}\n")
+            log_file.write(f"global_groups_variance: {global_groups_variance}\n")
+            log_file.write(f"group_mean_loss: {group_mean_loss}\n")
+            log_file.write(f"fairness_penalty: {fairness_penalty}\n")
+            log_file.write(f"loss + fairness_penalty: {loss + fairness_penalty}\n")
+
+        return loss + fairness_penalty
 
 
     def configure_fit(self, server_round: int, parameters: Parameters, client_manager: ClientManager) -> List[Tuple[ClientProxy, FitIns]]:
@@ -461,18 +473,19 @@ class FedCustom(fl.server.strategy.Strategy):
 
     def aggregate_fit(self, server_round: int, results: List[Tuple[ClientProxy, FitRes]], failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]]) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
         """Agrega os parâmetros dos modelos treinados pelos clientes."""
-        G_ACTIVITY = {1: list(range(0, 15)), 2: list(range(15, 300))}
+        G_GENDER = {1: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 30, 32, 33, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 64, 65, 66, 67, 68, 69, 70, 71, 72, 74, 75, 76, 77, 78, 79, 80, 82, 83, 84, 85, 86, 87, 88, 89, 90, 93, 94, 95, 96, 99, 100, 102, 103, 105, 107, 108, 109, 110, 111, 112, 115, 117, 118, 120, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 146, 147, 148, 149, 151, 152, 153, 154, 156, 159, 160, 161, 162, 164, 165, 166, 168, 169, 170, 172, 174, 175, 176, 177, 178, 181, 182, 183, 184, 186, 187, 188, 189, 191, 194, 196, 198, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 218, 219, 220, 222, 223, 224, 226, 227, 229, 230, 231, 232, 233, 234, 237, 238, 239, 240, 245, 246, 247, 248, 249, 250, 251, 252, 255, 256, 257, 258, 259, 260, 261, 262, 263, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 293, 294, 295, 296, 297, 298, 299],
+                    2: [14, 25, 31, 34, 35, 42, 63, 73, 81, 91, 92, 97, 98, 101, 104, 106, 113, 114, 116, 119, 121, 122, 133, 144, 145, 150, 155, 157, 158, 163, 167, 171, 173, 179, 180, 185, 190, 192, 193, 195, 197, 199, 213, 214, 215, 216, 217, 221, 225, 228, 235, 236, 241, 242, 243, 244, 253, 254, 264, 290]}
         total_loss = sum(fit_res.metrics.get('loss', 0) for _, fit_res in results)
 
         group_losses = {}
         group_counts = {}
-        for group, client_indexes in G_ACTIVITY.items():
+        for group, client_indexes in G_GENDER.items():
             group_loss = sum(fit_res.metrics.get('loss', 0) for index, (client, fit_res) in enumerate(results) if index in client_indexes)
             group_count = sum(1 for index in client_indexes if index < len(results))
             group_losses[group] = group_loss
             group_counts[group] = group_count
 
-        self.loss_avg_per_group = {group: (group_losses[group] / group_counts[group] if group_counts[group] != 0 else 0) for group in G_ACTIVITY}
+        self.loss_avg_per_group = {group: (group_losses[group] / group_counts[group] if group_counts[group] != 0 else 0) for group in G_GENDER}
         print(f"Perda Média por Grupo: {self.loss_avg_per_group}")
 
         total_examples = sum(fit_res.num_examples for _, fit_res in results)
@@ -485,7 +498,7 @@ class FedCustom(fl.server.strategy.Strategy):
             local_loss = fit_res.metrics.get('loss', 0)
 
             # Identifica o grupo do cliente atual
-            group_id = next(group for group, client_indexes in G_ACTIVITY.items() if client_index in client_indexes)
+            group_id = next(group for group, client_indexes in G_GENDER.items() if client_index in client_indexes)
             group_mean_loss = self.loss_avg_per_group[group_id]
 
             # Usar group_mean_loss na chamada para fairness_regularization
@@ -493,22 +506,21 @@ class FedCustom(fl.server.strategy.Strategy):
             fit_res.metrics['loss'] = fairness_loss
 
         weights_results = [
-            (parameters_to_ndarrays(fit_res.parameters), fit_res.num_examples) for _, fit_res in results
+            (parameters_to_ndarrays(fit_res.parameters), fit_res.metrics.get('loss', 0)) for _, fit_res in results
         ]
 
-        def aggregate(results: List[Tuple[NDArrays, int]]) -> NDArrays:
-            """Compute weighted average."""
-            # Calculate the total number of examples used during training
-            num_examples_total = sum(num_examples for (_, num_examples) in results)
+        def aggregate(results: List[Tuple[NDArrays, float]]) -> NDArrays:
+            # Calcula a perda total durante do treinamento
+            loss_total = sum(loss for (_, loss) in results)
 
-            # Create a list of weights, each multiplied by the related number of examples
+            # Crie uma lista de pesos, cada um multiplicado pela perda
             weighted_weights = [
-                [layer * num_examples for layer in weights] for weights, num_examples in results
+                [layer * loss for layer in weights] for weights, loss in results
             ]
 
             # Compute average weights of each layer
             weights_prime: NDArrays = [
-                reduce(np.add, layer_updates) / num_examples_total
+                reduce(np.add, layer_updates) / loss_total
                 for layer_updates in zip(*weighted_weights)
             ]
             return weights_prime
@@ -516,17 +528,13 @@ class FedCustom(fl.server.strategy.Strategy):
         parameters_aggregated = ndarrays_to_parameters(aggregate(weights_results))
 
         metrics_aggregated = {}
-        num_examples_total = sum(fit_res.num_examples for _, fit_res in results)
-
         for client_index, (client, fit_res) in enumerate(results):
             loss = fit_res.metrics.get('loss', 0)
+            weight = loss / total_loss
             num_examples = fit_res.num_examples
-            # Peso baseado no número de exemplos, semelhante à agregação dos pesos do modelo
-            weight = num_examples / num_examples_total
-            print(f"Cliente {client.cid}: Perda = {loss}, Peso = {weight}")
+            print(f"Cliente {client.cid}: Perda = {loss}, Peso = {weight}, Exemplos = {num_examples}")
             self.all_losses.append(loss)
             self.all_weights.append(weight)
-
         
         return parameters_aggregated, metrics_aggregated
 
@@ -583,7 +591,7 @@ if DEVICE.type == "cuda":
 fl.simulation.start_simulation(
     client_fn=client_fn,
     num_clients=NUM_CLIENTS,
-    config=fl.server.ServerConfig(num_rounds=24),
+    config=fl.server.ServerConfig(num_rounds=12),
     strategy=FedCustom(),
     client_resources=client_resources,
 )

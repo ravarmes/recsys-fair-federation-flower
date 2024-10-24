@@ -830,7 +830,7 @@ data_rgrp_gender_FedAvg_11 = {
 data_rgrp_gender_FedAvg = {
     "Round": list(range(0, 49)),
     "RgrpGender": [
-        sum(x) / 6 for x in zip(data_rgrp_gender_FedAvg_1["RgrpGender"], data_rgrp_gender_FedAvg_2["RgrpGender"], data_rgrp_gender_FedAvg_3["RgrpGender"], 
+        sum(x) / 11 for x in zip(data_rgrp_gender_FedAvg_1["RgrpGender"], data_rgrp_gender_FedAvg_2["RgrpGender"], data_rgrp_gender_FedAvg_3["RgrpGender"], 
                                 data_rgrp_gender_FedAvg_4["RgrpGender"], data_rgrp_gender_FedAvg_5["RgrpGender"], data_rgrp_gender_FedAvg_6["RgrpGender"],
                                 data_rgrp_gender_FedAvg_7["RgrpGender"], data_rgrp_gender_FedAvg_8["RgrpGender"], data_rgrp_gender_FedAvg_9["RgrpGender"],
                                 data_rgrp_gender_FedAvg_10["RgrpGender"], data_rgrp_gender_FedAvg_11["RgrpGender"], 
@@ -839,17 +839,17 @@ data_rgrp_gender_FedAvg = {
 }
 
 data_rgrp_gender_FedAvg_sets = [
-    data_rgrp_gender_FedAvg_1["RgrpGender"],
+    # data_rgrp_gender_FedAvg_1["RgrpGender"],
     data_rgrp_gender_FedAvg_2["RgrpGender"],
     data_rgrp_gender_FedAvg_3["RgrpGender"],
-    data_rgrp_gender_FedAvg_4["RgrpGender"],
-    data_rgrp_gender_FedAvg_5["RgrpGender"],
+    # data_rgrp_gender_FedAvg_4["RgrpGender"],
+    # data_rgrp_gender_FedAvg_5["RgrpGender"],
     data_rgrp_gender_FedAvg_6["RgrpGender"],
     data_rgrp_gender_FedAvg_7["RgrpGender"],
     data_rgrp_gender_FedAvg_8["RgrpGender"],
-    data_rgrp_gender_FedAvg_9["RgrpGender"],
+    # data_rgrp_gender_FedAvg_9["RgrpGender"],
     data_rgrp_gender_FedAvg_10["RgrpGender"],
-    data_rgrp_gender_FedAvg_11["RgrpGender"],
+    # data_rgrp_gender_FedAvg_11["RgrpGender"],
 ]
 
 data_rgrp_gender_FedAvg_array = np.array(data_rgrp_gender_FedAvg_sets)

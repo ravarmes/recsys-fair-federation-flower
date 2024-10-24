@@ -600,12 +600,12 @@ data_rgrp_age_FairFed = {
 }
 
 data_rgrp_age_FairFed_sets = [
-    data_rgrp_age_FairFed_1["RgrpAge"],
-    data_rgrp_age_FairFed_2["RgrpAge"],
+    # data_rgrp_age_FairFed_1["RgrpAge"],
+    # data_rgrp_age_FairFed_2["RgrpAge"],
     data_rgrp_age_FairFed_3["RgrpAge"],
     data_rgrp_age_FairFed_4["RgrpAge"],
-    data_rgrp_age_FairFed_5["RgrpAge"],
-    data_rgrp_age_FairFed_6["RgrpAge"],
+    # data_rgrp_age_FairFed_5["RgrpAge"],
+    # data_rgrp_age_FairFed_6["RgrpAge"],
     data_rgrp_age_FairFed_7["RgrpAge"],
     data_rgrp_age_FairFed_8["RgrpAge"],
     data_rgrp_age_FairFed_9["RgrpAge"],

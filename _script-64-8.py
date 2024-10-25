@@ -22,11 +22,11 @@ import os
 
 
 # FairFed(l) AGE ------------------------------------------------------------------------------
-os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Activity-64-8-01.txt")
-os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Activity-64-8-02.txt")
-os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Activity-64-8-03.txt")
-os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Activity-64-8-04.txt")
-os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Activity-64-8-05.txt")
+os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-01.txt")
+os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-02.txt")
+os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-03.txt")
+os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-04.txt")
+os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-05.txt")
 
 # FairFed(l) GENDER ---------------------------------------------------------------------------
 os.system("python FedFair-Loss-Gender-64-8.py 2> FedFair-Loss-Gender-64-8-01.txt")

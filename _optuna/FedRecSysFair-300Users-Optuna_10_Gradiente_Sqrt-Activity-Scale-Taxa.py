@@ -342,7 +342,7 @@ def client_fn(cid) -> FlowerClient:
 class FedCustom(fl.server.strategy.Strategy):
     def __init__(self, fraction_fit: float = 1.0, fraction_evaluate: float = 1.0, 
                  min_fit_clients: int = NUM_CLIENTS, min_evaluate_clients: int = NUM_CLIENTS, 
-                 min_available_clients: int = NUM_CLIENTS, initial_learning_rate=0.2, scale_value: float = 1, decay_rate: float = 1) -> None:
+                 min_available_clients: int = NUM_CLIENTS, scale_value: float = 1, decay_rate: float = 1) -> None:
         super().__init__()
         self.fraction_fit = fraction_fit
         self.fraction_evaluate = fraction_evaluate
@@ -356,7 +356,6 @@ class FedCustom(fl.server.strategy.Strategy):
         self.previous_global_loss = 0
         
         # Armazenar os hiperparâmetros como atributos da classe
-        self.learning_rate = initial_learning_rate
         self.scale_value = scale_value
         self.decay_rate = decay_rate
 
@@ -552,12 +551,10 @@ import flwr as fl
 
 def objective(trial):
     # Sugestão de hiperparâmetros pelo Optuna
-    learning_rate = trial.suggest_float("learning_rate", 0.01, 10)
     scale_value = trial.suggest_float("scale_value", 1, 1000)
     decay_rate = trial.suggest_float("decay_rate", 0.90, 0.999)
 
     strategy = FedCustom(
-        initial_learning_rate = learning_rate,
         scale_value = scale_value,
         decay_rate = decay_rate
     )
@@ -598,8 +595,5 @@ best_value = study.best_value
 print(f"Melhores parâmetros encontrados: {best_params}")
 print(f"Melhor valor da função objetivo: {best_value}")
 
-# Melhores parâmetros encontrados: {'learning_rate': 5.509493331717947}
-# Melhor valor da função objetivo: 5.060927360739802e-08
-
-# Melhores parâmetros encontrados: {'learning_rate': 6.007121707285693}
-# Melhor valor da função objetivo: 1.613998572926046e-07
+# Melhores parâmetros encontrados: {'learning_rate': 1.3575314559720861, 'scale_value': 388.10047628223157, 'decay_rate': 0.9553355152643261}
+# Melhor valor da função objetivo: 0.00021014097517097844

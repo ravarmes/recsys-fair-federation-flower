@@ -1,10 +1,13 @@
 import os
 
 
-os.system("python FedAvg-Loss-64-8-DEEV-Maiores.py 2> FedAvg-Loss-64-8-DEEV-Maiores-01.txt")
-os.system("python FedAvg-Loss-64-8-DEEV-Maiores.py 2> FedAvg-Loss-64-8-DEEV-Maiores-02.txt")
-os.system("python FedAvg-Loss-64-8-DEEV-Maiores.py 2> FedAvg-Loss-64-8-DEEV-Maiores-03.txt")
-os.system("python FedAvg-Loss-64-8-DEEV-Maiores.py 2> FedAvg-Loss-64-8-DEEV-Maiores-04.txt")
+# os.system("python FedAvg-Loss-64-8-DEEV-Maiores.py 2> FedAvg-Loss-64-8-DEEV-Maiores-01.txt")
+# os.system("python FedAvg-Loss-64-8-DEEV-Maiores.py 2> FedAvg-Loss-64-8-DEEV-Maiores-02.txt")
+# os.system("python FedAvg-Loss-64-8-DEEV-Maiores.py 2> FedAvg-Loss-64-8-DEEV-Maiores-03.txt")
+# os.system("python FedAvg-Loss-64-8-DEEV-Maiores.py 2> FedAvg-Loss-64-8-DEEV-Maiores-04.txt")
+
+os.system("python FedAvg-Loss-64-8-DEEV-Maiores-Grupo-Decay.py 2> FedAvg-Loss-64-8-DEEV-Maiores-Grupo-Decay-02.txt")
+os.system("python FedAvg-Loss-64-8-DEEV-Maiores-Grupo-Decay.py 2> FedAvg-Loss-64-8-DEEV-Maiores-Grupo-Decay-03.txt")
 
 
 

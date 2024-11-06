@@ -1,0 +1,1038 @@
+2024-10-04 22:02:49.332020: I tensorflow/core/util/port.cc:113] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2024-10-04 22:02:52.000871: I tensorflow/core/util/port.cc:113] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+[92mINFO [0m:      Starting Flower simulation, config: num_rounds=24, no round_timeout
+2024-10-04 22:03:04,832	INFO worker.py:1621 -- Started a local Ray instance.
+[92mINFO [0m:      Flower VCE: Ray initialized with resources: {'CPU': 8.0, 'object_store_memory': 2680763596.0, 'memory': 5361527195.0, 'node:127.0.0.1': 1.0, 'node:__internal_head__': 1.0, 'GPU': 1.0}
+[92mINFO [0m:      Optimize your simulation with Flower VCE: https://flower.ai/docs/framework/how-to-run-simulations.html
+[92mINFO [0m:      No `client_resources` specified. Using minimal resources for clients.
+[92mINFO [0m:      Flower VCE: Resources for each Virtual Client: {'num_cpus': 1, 'num_gpus': 0.0}
+[92mINFO [0m:      Flower VCE: Creating VirtualClientEngineActorPool with 8 actors
+[92mINFO [0m:      [INIT]
+[92mINFO [0m:      Using initial global parameters provided by strategy
+[92mINFO [0m:      Evaluating initial global parameters
+[92mINFO [0m:      initial parameters (loss, other metrics): 1.4041661873755866, {'rmse': 1.1849874258041382, 'accuracy': 0.27988202421608194, 'precision_at_10': 0.0, 'recall_at_10': 0.0, 'RgrpActivity': 0.0018090796387086477, 'RgrpGender': 9.03641172599859e-05, 'RgrpAge': 0.0029344020020876695, 'RgrpActivity_Losses': 1    1.479313
+2    1.394246
+dtype: float64, 'RgrpGender_Losses': 1    1.396886
+2    1.415898
+dtype: float64, 'RgrpAge_Losses': 1    1.468893
+2    1.441373
+3    1.425823
+4    1.327453
+5    1.316173
+6    1.430696
+7    1.417082
+dtype: float64}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 1]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[2m[36m(pid=20768)[0m 2024-10-04 22:03:10.008402: I tensorflow/core/util/port.cc:113] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (1, 1.253603321037545, {'rmse': 1.119660496711731, 'accuracy': 0.2913173962537514, 'precision_at_10': 0.0, 'recall_at_10': 0.0, 'RgrpActivity': 0.0004544508240695971, 'RgrpGender': 0.00011798189853360304, 'RgrpAge': 0.003407935106288046, 'RgrpActivity_Losses': 1    1.290093
+2    1.247457
+dtype: float64, 'RgrpGender_Losses': 1    1.246424
+2    1.268148
+dtype: float64, 'RgrpAge_Losses': 1    1.327034
+2    1.300591
+3    1.268032
+4    1.185480
+5    1.173865
+6    1.245193
+7    1.326822
+dtype: float64}, 47.23506869992707)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 2]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (2, 1.172365085672069, {'rmse': 1.0827758312225342, 'accuracy': 0.42786919176239263, 'precision_at_10': 0.2, 'recall_at_10': 0.25, 'RgrpActivity': 0.00020066860370457863, 'RgrpGender': 0.00031064863742625984, 'RgrpAge': 0.0034184520673263617, 'RgrpActivity_Losses': 1    1.196159
+2    1.167827
+dtype: float64, 'RgrpGender_Losses': 1    1.163118
+2    1.198369
+dtype: float64, 'RgrpAge_Losses': 1    1.231098
+2    1.219135
+3    1.183863
+4    1.111838
+5    1.099914
+6    1.154209
+7    1.269780
+dtype: float64}, 105.72893569990993)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 3]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (3, 1.0206936044704835, {'rmse': 1.010313868522644, 'accuracy': 0.5114353720376694, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 9.58547668074334e-06, 'RgrpGender': 0.0012545097150614645, 'RgrpAge': 0.004732975802348337, 'RgrpActivity_Losses': 1    1.013014
+2    1.019206
+dtype: float64, 'RgrpGender_Losses': 1    1.005058
+2    1.075897
+dtype: float64, 'RgrpAge_Losses': 1    1.058202
+2    1.065685
+3    1.021787
+4    0.980747
+5    0.965329
+6    0.985198
+7    1.180676
+dtype: float64}, 170.78597159998026)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 4]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (4, 0.9646546982771513, {'rmse': 0.9821882843971252, 'accuracy': 0.5139708165166097, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.00020542193054413904, 'RgrpGender': 0.002043469938304193, 'RgrpAge': 0.0057671748983587545, 'RgrpActivity_Losses': 1    0.937379
+2    0.966044
+dtype: float64, 'RgrpGender_Losses': 1    0.946447
+2    1.036857
+dtype: float64, 'RgrpAge_Losses': 1    0.991391
+2    1.003760
+3    0.961324
+4    0.938447
+5    0.923244
+6    0.927726
+7    1.158692
+dtype: float64}, 241.54879689996596)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 5]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (5, 0.9454029255750164, {'rmse': 0.9723374247550964, 'accuracy': 0.5134016351029701, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.00032700540713159965, 'RgrpGender': 0.0024172286627942075, 'RgrpAge': 0.005972385217939852, 'RgrpActivity_Losses': 1    0.911648
+2    0.947815
+dtype: float64, 'RgrpGender_Losses': 1    0.926131
+2    1.024461
+dtype: float64, 'RgrpAge_Losses': 1    0.965405
+2    0.980707
+3    0.941064
+4    0.923846
+5    0.909104
+6    0.913353
+7    1.148314
+dtype: float64}, 318.2566624999745)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 6]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (6, 0.9354978684854034, {'rmse': 0.9672298431396484, 'accuracy': 0.5172824174686951, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.00038846953033433137, 'RgrpGender': 0.002626827353098027, 'RgrpAge': 0.006092599419441935, 'RgrpActivity_Losses': 1    0.898806
+2    0.938225
+dtype: float64, 'RgrpGender_Losses': 1    0.915493
+2    1.017998
+dtype: float64, 'RgrpAge_Losses': 1    0.949659
+2    0.967511
+3    0.930618
+4    0.916381
+5    0.901893
+6    0.908281
+7    1.143489
+dtype: float64}, 402.24369319994)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 7]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (7, 0.9287872005574751, {'rmse': 0.9637538194656372, 'accuracy': 0.5242160819621235, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.0004597466784125775, 'RgrpGender': 0.0027649059500605543, 'RgrpAge': 0.006310675299032602, 'RgrpActivity_Losses': 1    0.889144
+2    0.932027
+dtype: float64, 'RgrpGender_Losses': 1    0.908524
+2    1.013688
+dtype: float64, 'RgrpAge_Losses': 1    0.937335
+2    0.957955
+3    0.923794
+4    0.911919
+5    0.897919
+6    0.904316
+7    1.142641
+dtype: float64}, 492.7017044998938)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 8]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (8, 0.9274190429918814, {'rmse': 0.9630436897277832, 'accuracy': 0.5295974335092621, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.00042599264744554524, 'RgrpGender': 0.002725543467028542, 'RgrpAge': 0.006133450447696489, 'RgrpActivity_Losses': 1    0.889086
+2    0.930365
+dtype: float64, 'RgrpGender_Losses': 1    0.907126
+2    1.011540
+dtype: float64, 'RgrpAge_Losses': 1    0.932523
+2    0.954746
+3    0.922602
+4    0.910497
+5    0.897472
+6    0.905599
+7    1.138640
+dtype: float64}, 591.4691998999333)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 9]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (9, 0.9236060087353188, {'rmse': 0.9610621929168701, 'accuracy': 0.5325468281072131, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.0005004514905381699, 'RgrpGender': 0.0028131355781267097, 'RgrpAge': 0.006448443308059743, 'RgrpActivity_Losses': 1    0.882213
+2    0.926955
+dtype: float64, 'RgrpGender_Losses': 1    0.903137
+2    1.009215
+dtype: float64, 'RgrpAge_Losses': 1    0.927236
+2    0.950203
+3    0.917975
+4    0.908550
+5    0.896128
+6    0.901236
+7    1.141324
+dtype: float64}, 697.1850459999405)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 10]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (10, 0.9271288067595849, {'rmse': 0.962893009185791, 'accuracy': 0.5388078236572493, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.0004128416664569891, 'RgrpGender': 0.0027490915078882457, 'RgrpAge': 0.006122176099093114, 'RgrpActivity_Losses': 1    0.889193
+2    0.929830
+dtype: float64, 'RgrpGender_Losses': 1    0.906552
+2    1.011415
+dtype: float64, 'RgrpAge_Losses': 1    0.930143
+2    0.954012
+3    0.921680
+4    0.910285
+5    0.897711
+6    0.908998
+7    1.138864
+dtype: float64}, 809.8368643999565)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 11]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (11, 0.9240204848299752, {'rmse': 0.9612780213356018, 'accuracy': 0.5336851909344924, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.0004973213811024276, 'RgrpGender': 0.002818897916478004, 'RgrpAge': 0.006522492627181532, 'RgrpActivity_Losses': 1    0.882674
+2    0.927275
+dtype: float64, 'RgrpGender_Losses': 1    0.903447
+2    1.009633
+dtype: float64, 'RgrpAge_Losses': 1    0.928266
+2    0.949413
+3    0.918275
+4    0.909563
+5    0.896693
+6    0.901816
+7    1.143341
+dtype: float64}, 928.1433621998876)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 12]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (12, 0.9248103272934624, {'rmse': 0.961688220500946, 'accuracy': 0.5292352271551278, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.0005023737156461406, 'RgrpGender': 0.002710536221519691, 'RgrpAge': 0.0062551168501810295, 'RgrpActivity_Losses': 1    0.883569
+2    0.928396
+dtype: float64, 'RgrpGender_Losses': 1    0.904949
+2    1.009075
+dtype: float64, 'RgrpAge_Losses': 1    0.924205
+2    0.951493
+3    0.919707
+4    0.910346
+5    0.896187
+6    0.904563
+7    1.138867
+dtype: float64}, 1053.4963155000005)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 13]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (13, 0.9258148469869664, {'rmse': 0.9622092843055725, 'accuracy': 0.5218358687778123, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.0005261805586376301, 'RgrpGender': 0.0026656392756748844, 'RgrpAge': 0.006002836923313235, 'RgrpActivity_Losses': 1    0.883750
+2    0.929628
+dtype: float64, 'RgrpGender_Losses': 1    0.90627
+2    1.00953
+dtype: float64, 'RgrpAge_Losses': 1    0.922027
+2    0.953011
+3    0.921350
+4    0.911335
+5    0.895734
+6    0.906476
+7    1.134601
+dtype: float64}, 1200.3401892998954)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 14]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (14, 0.9206360719160528, {'rmse': 0.9595155119895935, 'accuracy': 0.5095208527372451, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.000702621779915308, 'RgrpGender': 0.0028074596049546176, 'RgrpAge': 0.006969725471641698, 'RgrpActivity_Losses': 1    0.872207
+2    0.925221
+dtype: float64, 'RgrpGender_Losses': 1    0.900810
+2    1.006781
+dtype: float64, 'RgrpAge_Losses': 1    0.918949
+2    0.944404
+3    0.915183
+4    0.909350
+5    0.897228
+6    0.894286
+7    1.147771
+dtype: float64}, 1350.4626564999344)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 15]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (15, 0.9187004585435848, {'rmse': 0.9585070610046387, 'accuracy': 0.5030011383628272, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.0008294519228585406, 'RgrpGender': 0.002779842673888481, 'RgrpAge': 0.007473746993842458, 'RgrpActivity_Losses': 1    0.866694
+2    0.924294
+dtype: float64, 'RgrpGender_Losses': 1    0.899644
+2    1.005092
+dtype: float64, 'RgrpAge_Losses': 1    0.916099
+2    0.939946
+3    0.912988
+4    0.911039
+5    0.900705
+6    0.889495
+7    1.155358
+dtype: float64}, 1508.7321736000013)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 16]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (16, 0.9200832081946316, {'rmse': 0.9592289328575134, 'accuracy': 0.499379074821484, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.0007871711665842399, 'RgrpGender': 0.002663853642497632, 'RgrpAge': 0.006913693173875636, 'RgrpActivity_Losses': 1    0.869715
+2    0.925828
+dtype: float64, 'RgrpGender_Losses': 1    0.901717
+2    1.004943
+dtype: float64, 'RgrpAge_Losses': 1    0.917598
+2    0.943807
+3    0.915450
+4    0.910822
+5    0.900705
+6    0.889630
+7    1.146462
+dtype: float64}, 1665.4912320999429)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 17]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (17, 0.9215173763253831, {'rmse': 0.9599764943122864, 'accuracy': 0.4904274034978785, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.0007469440116188012, 'RgrpGender': 0.00263730289312347, 'RgrpAge': 0.0066966025529012485, 'RgrpActivity_Losses': 1    0.872062
+2    0.926723
+dtype: float64, 'RgrpGender_Losses': 1    0.902819
+2    1.005529
+dtype: float64, 'RgrpAge_Losses': 1    0.919368
+2    0.944897
+3    0.916993
+4    0.911047
+5    0.902886
+6    0.887075
+7    1.142909
+dtype: float64}, 1827.1682233999018)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 18]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (18, 0.9215103684375617, {'rmse': 0.9599722623825073, 'accuracy': 0.4882024216081962, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.000827037185255009, 'RgrpGender': 0.002685628192994511, 'RgrpAge': 0.006620704171669499, 'RgrpActivity_Losses': 1    0.869568
+2    0.927084
+dtype: float64, 'RgrpGender_Losses': 1    0.902788
+2    1.006435
+dtype: float64, 'RgrpAge_Losses': 1    0.919820
+2    0.945364
+3    0.915733
+4    0.913015
+5    0.906366
+6    0.886708
+7    1.142409
+dtype: float64}, 1995.0157809999073)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 19]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (19, 0.9247510008859319, {'rmse': 0.9616585373878479, 'accuracy': 0.4804926006416227, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.0007633000498679847, 'RgrpGender': 0.0026203924103794197, 'RgrpAge': 0.006067880407583564, 'RgrpActivity_Losses': 1    0.874692
+2    0.929948
+dtype: float64, 'RgrpGender_Losses': 1    0.906064
+2    1.008444
+dtype: float64, 'RgrpAge_Losses': 1    0.925539
+2    0.947422
+3    0.919363
+4    0.915558
+5    0.910035
+6    0.891343
+7    1.136307
+dtype: float64}, 2174.8622974999016)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 20]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (20, 0.9234063805432509, {'rmse': 0.9609596729278564, 'accuracy': 0.48426989547759497, 'precision_at_10': 0.8, 'recall_at_10': 1.0, 'RgrpActivity': 0.0008090799974917317, 'RgrpGender': 0.002539195341818356, 'RgrpAge': 0.0065111975014404844, 'RgrpActivity_Losses': 1    0.872055
+2    0.928944
+dtype: float64, 'RgrpGender_Losses': 1    0.905248
+2    1.006029
+dtype: float64, 'RgrpAge_Losses': 1    0.927141
+2    0.946717
+3    0.918493
+4    0.913348
+5    0.909658
+6    0.884757
+7    1.141922
+dtype: float64}, 2372.289787399932)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 21]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (21, 0.9229834291417867, {'rmse': 0.9607399106025696, 'accuracy': 0.4915140225602815, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.0007959047348272, 'RgrpGender': 0.002412109632396215, 'RgrpAge': 0.006566989961510803, 'RgrpActivity_Losses': 1    0.872228
+2    0.928652
+dtype: float64, 'RgrpGender_Losses': 1    0.905484
+2    1.003711
+dtype: float64, 'RgrpAge_Losses': 1    0.926382
+2    0.949035
+3    0.918168
+4    0.911740
+5    0.907345
+6    0.885133
+7    1.142147
+dtype: float64}, 2569.143665199983)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 22]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (22, 0.9216179058745207, {'rmse': 0.960029125213623, 'accuracy': 0.4927558729173135, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.0008142994685601878, 'RgrpGender': 0.0023366709279410056, 'RgrpAge': 0.006759235545429893, 'RgrpActivity_Losses': 1    0.870763
+2    0.927835
+dtype: float64, 'RgrpGender_Losses': 1    0.904918
+2    1.001597
+dtype: float64, 'RgrpAge_Losses': 1    0.926083
+2    0.948924
+3    0.916916
+4    0.911287
+5    0.906199
+6    0.882416
+7    1.144140
+dtype: float64}, 2765.155883799889)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 23]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (23, 0.9191949322622344, {'rmse': 0.9587661027908325, 'accuracy': 0.4945669046879851, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.0009253798331414352, 'RgrpGender': 0.002484275758671259, 'RgrpAge': 0.0071954328340787755, 'RgrpActivity_Losses': 1    0.864638
+2    0.925478
+dtype: float64, 'RgrpGender_Losses': 1    0.901701
+2    1.001386
+dtype: float64, 'RgrpAge_Losses': 1    0.924330
+2    0.944806
+3    0.912661
+4    0.911454
+5    0.906624
+6    0.880427
+7    1.150334
+dtype: float64}, 2987.312505599926)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 24]
+[92mINFO [0m:      configure_fit: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_fit: received 300 results and 0 failures
+[92mINFO [0m:      fit progress: (24, 0.919215542196438, {'rmse': 0.9587770700454712, 'accuracy': 0.49912035599710236, 'precision_at_10': 0.9, 'recall_at_10': 1.0, 'RgrpActivity': 0.000887095267416322, 'RgrpGender': 0.0024753714643617843, 'RgrpAge': 0.007011638088961484, 'RgrpActivity_Losses': 1    0.865702
+2    0.925270
+dtype: float64, 'RgrpGender_Losses': 1    0.901622
+2    1.001128
+dtype: float64, 'RgrpAge_Losses': 1    0.925017
+2    0.944673
+3    0.913437
+4    0.910117
+5    0.904888
+6    0.880656
+7    1.146832
+dtype: float64}, 3216.77778029989)
+[92mINFO [0m:      configure_evaluate: strategy sampled 300 clients (out of 300)
+[92mINFO [0m:      aggregate_evaluate: received 300 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [SUMMARY]
+[92mINFO [0m:      Run finished 24 rounds in 3240.53s
+[92mINFO [0m:      History (loss, centralized):
+[92mINFO [0m:      	('\tround 0: 1.4041661873755866\n'
+[92mINFO [0m:      	 '\tround 1: 1.253603321037545\n'
+[92mINFO [0m:      	 '\tround 2: 1.172365085672069\n'
+[92mINFO [0m:      	 '\tround 3: 1.0206936044704835\n'
+[92mINFO [0m:      	 '\tround 4: 0.9646546982771513\n'
+[92mINFO [0m:      	 '\tround 5: 0.9454029255750164\n'
+[92mINFO [0m:      	 '\tround 6: 0.9354978684854034\n'
+[92mINFO [0m:      	 '\tround 7: 0.9287872005574751\n'
+[92mINFO [0m:      	 '\tround 8: 0.9274190429918814\n'
+[92mINFO [0m:      	 '\tround 9: 0.9236060087353188\n'
+[92mINFO [0m:      	 '\tround 10: 0.9271288067595849\n'
+[92mINFO [0m:      	 '\tround 11: 0.9240204848299752\n'
+[92mINFO [0m:      	 '\tround 12: 0.9248103272934624\n'
+[92mINFO [0m:      	 '\tround 13: 0.9258148469869664\n'
+[92mINFO [0m:      	 '\tround 14: 0.9206360719160528\n'
+[92mINFO [0m:      	 '\tround 15: 0.9187004585435848\n'
+[92mINFO [0m:      	 '\tround 16: 0.9200832081946316\n'
+[92mINFO [0m:      	 '\tround 17: 0.9215173763253831\n'
+[92mINFO [0m:      	 '\tround 18: 0.9215103684375617\n'
+[92mINFO [0m:      	 '\tround 19: 0.9247510008859319\n'
+[92mINFO [0m:      	 '\tround 20: 0.9234063805432509\n'
+[92mINFO [0m:      	 '\tround 21: 0.9229834291417867\n'
+[92mINFO [0m:      	 '\tround 22: 0.9216179058745207\n'
+[92mINFO [0m:      	 '\tround 23: 0.9191949322622344\n'
+[92mINFO [0m:      	 '\tround 24: 0.919215542196438\n')History (metrics, centralized):
+[92mINFO [0m:      	{'RgrpActivity': [(0, 0.0018090796387086477),
+[92mINFO [0m:      	                  (1, 0.0004544508240695971),
+[92mINFO [0m:      	                  (2, 0.00020066860370457863),
+[92mINFO [0m:      	                  (3, 9.58547668074334e-06),
+[92mINFO [0m:      	                  (4, 0.00020542193054413904),
+[92mINFO [0m:      	                  (5, 0.00032700540713159965),
+[92mINFO [0m:      	                  (6, 0.00038846953033433137),
+[92mINFO [0m:      	                  (7, 0.0004597466784125775),
+[92mINFO [0m:      	                  (8, 0.00042599264744554524),
+[92mINFO [0m:      	                  (9, 0.0005004514905381699),
+[92mINFO [0m:      	                  (10, 0.0004128416664569891),
+[92mINFO [0m:      	                  (11, 0.0004973213811024276),
+[92mINFO [0m:      	                  (12, 0.0005023737156461406),
+[92mINFO [0m:      	                  (13, 0.0005261805586376301),
+[92mINFO [0m:      	                  (14, 0.000702621779915308),
+[92mINFO [0m:      	                  (15, 0.0008294519228585406),
+[92mINFO [0m:      	                  (16, 0.0007871711665842399),
+[92mINFO [0m:      	                  (17, 0.0007469440116188012),
+[92mINFO [0m:      	                  (18, 0.000827037185255009),
+[92mINFO [0m:      	                  (19, 0.0007633000498679847),
+[92mINFO [0m:      	                  (20, 0.0008090799974917317),
+[92mINFO [0m:      	                  (21, 0.0007959047348272),
+[92mINFO [0m:      	                  (22, 0.0008142994685601878),
+[92mINFO [0m:      	                  (23, 0.0009253798331414352),
+[92mINFO [0m:      	                  (24, 0.000887095267416322)],
+[92mINFO [0m:      	 'RgrpActivity_Losses': [(0, 1    1.479313
+[92mINFO [0m:      	2    1.394246
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (1, 1    1.290093
+[92mINFO [0m:      	2    1.247457
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (2, 1    1.196159
+[92mINFO [0m:      	2    1.167827
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (3, 1    1.013014
+[92mINFO [0m:      	2    1.019206
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (4, 1    0.937379
+[92mINFO [0m:      	2    0.966044
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (5, 1    0.911648
+[92mINFO [0m:      	2    0.947815
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (6, 1    0.898806
+[92mINFO [0m:      	2    0.938225
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (7, 1    0.889144
+[92mINFO [0m:      	2    0.932027
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (8, 1    0.889086
+[92mINFO [0m:      	2    0.930365
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (9, 1    0.882213
+[92mINFO [0m:      	2    0.926955
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (10, 1    0.889193
+[92mINFO [0m:      	2    0.929830
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (11, 1    0.882674
+[92mINFO [0m:      	2    0.927275
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (12, 1    0.883569
+[92mINFO [0m:      	2    0.928396
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (13, 1    0.883750
+[92mINFO [0m:      	2    0.929628
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (14, 1    0.872207
+[92mINFO [0m:      	2    0.925221
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (15, 1    0.866694
+[92mINFO [0m:      	2    0.924294
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (16, 1    0.869715
+[92mINFO [0m:      	2    0.925828
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (17, 1    0.872062
+[92mINFO [0m:      	2    0.926723
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (18, 1    0.869568
+[92mINFO [0m:      	2    0.927084
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (19, 1    0.874692
+[92mINFO [0m:      	2    0.929948
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (20, 1    0.872055
+[92mINFO [0m:      	2    0.928944
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (21, 1    0.872228
+[92mINFO [0m:      	2    0.928652
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (22, 1    0.870763
+[92mINFO [0m:      	2    0.927835
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (23, 1    0.864638
+[92mINFO [0m:      	2    0.925478
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                         (24, 1    0.865702
+[92mINFO [0m:      	2    0.925270
+[92mINFO [0m:      	dtype: float64)],
+[92mINFO [0m:      	 'RgrpAge': [(0, 0.0029344020020876695),
+[92mINFO [0m:      	             (1, 0.003407935106288046),
+[92mINFO [0m:      	             (2, 0.0034184520673263617),
+[92mINFO [0m:      	             (3, 0.004732975802348337),
+[92mINFO [0m:      	             (4, 0.0057671748983587545),
+[92mINFO [0m:      	             (5, 0.005972385217939852),
+[92mINFO [0m:      	             (6, 0.006092599419441935),
+[92mINFO [0m:      	             (7, 0.006310675299032602),
+[92mINFO [0m:      	             (8, 0.006133450447696489),
+[92mINFO [0m:      	             (9, 0.006448443308059743),
+[92mINFO [0m:      	             (10, 0.006122176099093114),
+[92mINFO [0m:      	             (11, 0.006522492627181532),
+[92mINFO [0m:      	             (12, 0.0062551168501810295),
+[92mINFO [0m:      	             (13, 0.006002836923313235),
+[92mINFO [0m:      	             (14, 0.006969725471641698),
+[92mINFO [0m:      	             (15, 0.007473746993842458),
+[92mINFO [0m:      	             (16, 0.006913693173875636),
+[92mINFO [0m:      	             (17, 0.0066966025529012485),
+[92mINFO [0m:      	             (18, 0.006620704171669499),
+[92mINFO [0m:      	             (19, 0.006067880407583564),
+[92mINFO [0m:      	             (20, 0.0065111975014404844),
+[92mINFO [0m:      	             (21, 0.006566989961510803),
+[92mINFO [0m:      	             (22, 0.006759235545429893),
+[92mINFO [0m:      	             (23, 0.0071954328340787755),
+[92mINFO [0m:      	             (24, 0.007011638088961484)],
+[92mINFO [0m:      	 'RgrpAge_Losses': [(0,
+[92mINFO [0m:      	                     1    1.468893
+[92mINFO [0m:      	2    1.441373
+[92mINFO [0m:      	3    1.425823
+[92mINFO [0m:      	4    1.327453
+[92mINFO [0m:      	5    1.316173
+[92mINFO [0m:      	6    1.430696
+[92mINFO [0m:      	7    1.417082
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (1,
+[92mINFO [0m:      	                     1    1.327034
+[92mINFO [0m:      	2    1.300591
+[92mINFO [0m:      	3    1.268032
+[92mINFO [0m:      	4    1.185480
+[92mINFO [0m:      	5    1.173865
+[92mINFO [0m:      	6    1.245193
+[92mINFO [0m:      	7    1.326822
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (2,
+[92mINFO [0m:      	                     1    1.231098
+[92mINFO [0m:      	2    1.219135
+[92mINFO [0m:      	3    1.183863
+[92mINFO [0m:      	4    1.111838
+[92mINFO [0m:      	5    1.099914
+[92mINFO [0m:      	6    1.154209
+[92mINFO [0m:      	7    1.269780
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (3,
+[92mINFO [0m:      	                     1    1.058202
+[92mINFO [0m:      	2    1.065685
+[92mINFO [0m:      	3    1.021787
+[92mINFO [0m:      	4    0.980747
+[92mINFO [0m:      	5    0.965329
+[92mINFO [0m:      	6    0.985198
+[92mINFO [0m:      	7    1.180676
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (4,
+[92mINFO [0m:      	                     1    0.991391
+[92mINFO [0m:      	2    1.003760
+[92mINFO [0m:      	3    0.961324
+[92mINFO [0m:      	4    0.938447
+[92mINFO [0m:      	5    0.923244
+[92mINFO [0m:      	6    0.927726
+[92mINFO [0m:      	7    1.158692
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (5,
+[92mINFO [0m:      	                     1    0.965405
+[92mINFO [0m:      	2    0.980707
+[92mINFO [0m:      	3    0.941064
+[92mINFO [0m:      	4    0.923846
+[92mINFO [0m:      	5    0.909104
+[92mINFO [0m:      	6    0.913353
+[92mINFO [0m:      	7    1.148314
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (6,
+[92mINFO [0m:      	                     1    0.949659
+[92mINFO [0m:      	2    0.967511
+[92mINFO [0m:      	3    0.930618
+[92mINFO [0m:      	4    0.916381
+[92mINFO [0m:      	5    0.901893
+[92mINFO [0m:      	6    0.908281
+[92mINFO [0m:      	7    1.143489
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (7,
+[92mINFO [0m:      	                     1    0.937335
+[92mINFO [0m:      	2    0.957955
+[92mINFO [0m:      	3    0.923794
+[92mINFO [0m:      	4    0.911919
+[92mINFO [0m:      	5    0.897919
+[92mINFO [0m:      	6    0.904316
+[92mINFO [0m:      	7    1.142641
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (8,
+[92mINFO [0m:      	                     1    0.932523
+[92mINFO [0m:      	2    0.954746
+[92mINFO [0m:      	3    0.922602
+[92mINFO [0m:      	4    0.910497
+[92mINFO [0m:      	5    0.897472
+[92mINFO [0m:      	6    0.905599
+[92mINFO [0m:      	7    1.138640
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (9,
+[92mINFO [0m:      	                     1    0.927236
+[92mINFO [0m:      	2    0.950203
+[92mINFO [0m:      	3    0.917975
+[92mINFO [0m:      	4    0.908550
+[92mINFO [0m:      	5    0.896128
+[92mINFO [0m:      	6    0.901236
+[92mINFO [0m:      	7    1.141324
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (10,
+[92mINFO [0m:      	                     1    0.930143
+[92mINFO [0m:      	2    0.954012
+[92mINFO [0m:      	3    0.921680
+[92mINFO [0m:      	4    0.910285
+[92mINFO [0m:      	5    0.897711
+[92mINFO [0m:      	6    0.908998
+[92mINFO [0m:      	7    1.138864
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (11,
+[92mINFO [0m:      	                     1    0.928266
+[92mINFO [0m:      	2    0.949413
+[92mINFO [0m:      	3    0.918275
+[92mINFO [0m:      	4    0.909563
+[92mINFO [0m:      	5    0.896693
+[92mINFO [0m:      	6    0.901816
+[92mINFO [0m:      	7    1.143341
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (12,
+[92mINFO [0m:      	                     1    0.924205
+[92mINFO [0m:      	2    0.951493
+[92mINFO [0m:      	3    0.919707
+[92mINFO [0m:      	4    0.910346
+[92mINFO [0m:      	5    0.896187
+[92mINFO [0m:      	6    0.904563
+[92mINFO [0m:      	7    1.138867
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (13,
+[92mINFO [0m:      	                     1    0.922027
+[92mINFO [0m:      	2    0.953011
+[92mINFO [0m:      	3    0.921350
+[92mINFO [0m:      	4    0.911335
+[92mINFO [0m:      	5    0.895734
+[92mINFO [0m:      	6    0.906476
+[92mINFO [0m:      	7    1.134601
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (14,
+[92mINFO [0m:      	                     1    0.918949
+[92mINFO [0m:      	2    0.944404
+[92mINFO [0m:      	3    0.915183
+[92mINFO [0m:      	4    0.909350
+[92mINFO [0m:      	5    0.897228
+[92mINFO [0m:      	6    0.894286
+[92mINFO [0m:      	7    1.147771
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (15,
+[92mINFO [0m:      	                     1    0.916099
+[92mINFO [0m:      	2    0.939946
+[92mINFO [0m:      	3    0.912988
+[92mINFO [0m:      	4    0.911039
+[92mINFO [0m:      	5    0.900705
+[92mINFO [0m:      	6    0.889495
+[92mINFO [0m:      	7    1.155358
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (16,
+[92mINFO [0m:      	                     1    0.917598
+[92mINFO [0m:      	2    0.943807
+[92mINFO [0m:      	3    0.915450
+[92mINFO [0m:      	4    0.910822
+[92mINFO [0m:      	5    0.900705
+[92mINFO [0m:      	6    0.889630
+[92mINFO [0m:      	7    1.146462
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (17,
+[92mINFO [0m:      	                     1    0.919368
+[92mINFO [0m:      	2    0.944897
+[92mINFO [0m:      	3    0.916993
+[92mINFO [0m:      	4    0.911047
+[92mINFO [0m:      	5    0.902886
+[92mINFO [0m:      	6    0.887075
+[92mINFO [0m:      	7    1.142909
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (18,
+[92mINFO [0m:      	                     1    0.919820
+[92mINFO [0m:      	2    0.945364
+[92mINFO [0m:      	3    0.915733
+[92mINFO [0m:      	4    0.913015
+[92mINFO [0m:      	5    0.906366
+[92mINFO [0m:      	6    0.886708
+[92mINFO [0m:      	7    1.142409
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (19,
+[92mINFO [0m:      	                     1    0.925539
+[92mINFO [0m:      	2    0.947422
+[92mINFO [0m:      	3    0.919363
+[92mINFO [0m:      	4    0.915558
+[92mINFO [0m:      	5    0.910035
+[92mINFO [0m:      	6    0.891343
+[92mINFO [0m:      	7    1.136307
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (20,
+[92mINFO [0m:      	                     1    0.927141
+[92mINFO [0m:      	2    0.946717
+[92mINFO [0m:      	3    0.918493
+[92mINFO [0m:      	4    0.913348
+[92mINFO [0m:      	5    0.909658
+[92mINFO [0m:      	6    0.884757
+[92mINFO [0m:      	7    1.141922
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (21,
+[92mINFO [0m:      	                     1    0.926382
+[92mINFO [0m:      	2    0.949035
+[92mINFO [0m:      	3    0.918168
+[92mINFO [0m:      	4    0.911740
+[92mINFO [0m:      	5    0.907345
+[92mINFO [0m:      	6    0.885133
+[92mINFO [0m:      	7    1.142147
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (22,
+[92mINFO [0m:      	                     1    0.926083
+[92mINFO [0m:      	2    0.948924
+[92mINFO [0m:      	3    0.916916
+[92mINFO [0m:      	4    0.911287
+[92mINFO [0m:      	5    0.906199
+[92mINFO [0m:      	6    0.882416
+[92mINFO [0m:      	7    1.144140
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (23,
+[92mINFO [0m:      	                     1    0.924330
+[92mINFO [0m:      	2    0.944806
+[92mINFO [0m:      	3    0.912661
+[92mINFO [0m:      	4    0.911454
+[92mINFO [0m:      	5    0.906624
+[92mINFO [0m:      	6    0.880427
+[92mINFO [0m:      	7    1.150334
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                    (24,
+[92mINFO [0m:      	                     1    0.925017
+[92mINFO [0m:      	2    0.944673
+[92mINFO [0m:      	3    0.913437
+[92mINFO [0m:      	4    0.910117
+[92mINFO [0m:      	5    0.904888
+[92mINFO [0m:      	6    0.880656
+[92mINFO [0m:      	7    1.146832
+[92mINFO [0m:      	dtype: float64)],
+[92mINFO [0m:      	 'RgrpGender': [(0, 9.03641172599859e-05),
+[92mINFO [0m:      	                (1, 0.00011798189853360304),
+[92mINFO [0m:      	                (2, 0.00031064863742625984),
+[92mINFO [0m:      	                (3, 0.0012545097150614645),
+[92mINFO [0m:      	                (4, 0.002043469938304193),
+[92mINFO [0m:      	                (5, 0.0024172286627942075),
+[92mINFO [0m:      	                (6, 0.002626827353098027),
+[92mINFO [0m:      	                (7, 0.0027649059500605543),
+[92mINFO [0m:      	                (8, 0.002725543467028542),
+[92mINFO [0m:      	                (9, 0.0028131355781267097),
+[92mINFO [0m:      	                (10, 0.0027490915078882457),
+[92mINFO [0m:      	                (11, 0.002818897916478004),
+[92mINFO [0m:      	                (12, 0.002710536221519691),
+[92mINFO [0m:      	                (13, 0.0026656392756748844),
+[92mINFO [0m:      	                (14, 0.0028074596049546176),
+[92mINFO [0m:      	                (15, 0.002779842673888481),
+[92mINFO [0m:      	                (16, 0.002663853642497632),
+[92mINFO [0m:      	                (17, 0.00263730289312347),
+[92mINFO [0m:      	                (18, 0.002685628192994511),
+[92mINFO [0m:      	                (19, 0.0026203924103794197),
+[92mINFO [0m:      	                (20, 0.002539195341818356),
+[92mINFO [0m:      	                (21, 0.002412109632396215),
+[92mINFO [0m:      	                (22, 0.0023366709279410056),
+[92mINFO [0m:      	                (23, 0.002484275758671259),
+[92mINFO [0m:      	                (24, 0.0024753714643617843)],
+[92mINFO [0m:      	 'RgrpGender_Losses': [(0, 1    1.396886
+[92mINFO [0m:      	2    1.415898
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (1, 1    1.246424
+[92mINFO [0m:      	2    1.268148
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (2, 1    1.163118
+[92mINFO [0m:      	2    1.198369
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (3, 1    1.005058
+[92mINFO [0m:      	2    1.075897
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (4, 1    0.946447
+[92mINFO [0m:      	2    1.036857
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (5, 1    0.926131
+[92mINFO [0m:      	2    1.024461
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (6, 1    0.915493
+[92mINFO [0m:      	2    1.017998
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (7, 1    0.908524
+[92mINFO [0m:      	2    1.013688
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (8, 1    0.907126
+[92mINFO [0m:      	2    1.011540
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (9, 1    0.903137
+[92mINFO [0m:      	2    1.009215
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (10, 1    0.906552
+[92mINFO [0m:      	2    1.011415
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (11, 1    0.903447
+[92mINFO [0m:      	2    1.009633
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (12, 1    0.904949
+[92mINFO [0m:      	2    1.009075
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (13, 1    0.90627
+[92mINFO [0m:      	2    1.00953
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (14, 1    0.900810
+[92mINFO [0m:      	2    1.006781
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (15, 1    0.899644
+[92mINFO [0m:      	2    1.005092
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (16, 1    0.901717
+[92mINFO [0m:      	2    1.004943
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (17, 1    0.902819
+[92mINFO [0m:      	2    1.005529
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (18, 1    0.902788
+[92mINFO [0m:      	2    1.006435
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (19, 1    0.906064
+[92mINFO [0m:      	2    1.008444
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (20, 1    0.905248
+[92mINFO [0m:      	2    1.006029
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (21, 1    0.905484
+[92mINFO [0m:      	2    1.003711
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (22, 1    0.904918
+[92mINFO [0m:      	2    1.001597
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (23, 1    0.901701
+[92mINFO [0m:      	2    1.001386
+[92mINFO [0m:      	dtype: float64),
+[92mINFO [0m:      	                       (24, 1    0.901622
+[92mINFO [0m:      	2    1.001128
+[92mINFO [0m:      	dtype: float64)],
+[92mINFO [0m:      	 'accuracy': [(0, 0.27988202421608194),
+[92mINFO [0m:      	              (1, 0.2913173962537514),
+[92mINFO [0m:      	              (2, 0.42786919176239263),
+[92mINFO [0m:      	              (3, 0.5114353720376694),
+[92mINFO [0m:      	              (4, 0.5139708165166097),
+[92mINFO [0m:      	              (5, 0.5134016351029701),
+[92mINFO [0m:      	              (6, 0.5172824174686951),
+[92mINFO [0m:      	              (7, 0.5242160819621235),
+[92mINFO [0m:      	              (8, 0.5295974335092621),
+[92mINFO [0m:      	              (9, 0.5325468281072131),
+[92mINFO [0m:      	              (10, 0.5388078236572493),
+[92mINFO [0m:      	              (11, 0.5336851909344924),
+[92mINFO [0m:      	              (12, 0.5292352271551278),
+[92mINFO [0m:      	              (13, 0.5218358687778123),
+[92mINFO [0m:      	              (14, 0.5095208527372451),
+[92mINFO [0m:      	              (15, 0.5030011383628272),
+[92mINFO [0m:      	              (16, 0.499379074821484),
+[92mINFO [0m:      	              (17, 0.4904274034978785),
+[92mINFO [0m:      	              (18, 0.4882024216081962),
+[92mINFO [0m:      	              (19, 0.4804926006416227),
+[92mINFO [0m:      	              (20, 0.48426989547759497),
+[92mINFO [0m:      	              (21, 0.4915140225602815),
+[92mINFO [0m:      	              (22, 0.4927558729173135),
+[92mINFO [0m:      	              (23, 0.4945669046879851),
+[92mINFO [0m:      	              (24, 0.49912035599710236)],
+[92mINFO [0m:      	 'precision_at_10': [(0, 0.0),
+[92mINFO [0m:      	                     (1, 0.0),
+[92mINFO [0m:      	                     (2, 0.2),
+[92mINFO [0m:      	                     (3, 0.9),
+[92mINFO [0m:      	                     (4, 0.9),
+[92mINFO [0m:      	                     (5, 0.9),
+[92mINFO [0m:      	                     (6, 0.9),
+[92mINFO [0m:      	                     (7, 0.9),
+[92mINFO [0m:      	                     (8, 0.9),
+[92mINFO [0m:      	                     (9, 0.9),
+[92mINFO [0m:      	                     (10, 0.9),
+[92mINFO [0m:      	                     (11, 0.9),
+[92mINFO [0m:      	                     (12, 0.9),
+[92mINFO [0m:      	                     (13, 0.9),
+[92mINFO [0m:      	                     (14, 0.9),
+[92mINFO [0m:      	                     (15, 0.9),
+[92mINFO [0m:      	                     (16, 0.9),
+[92mINFO [0m:      	                     (17, 0.9),
+[92mINFO [0m:      	                     (18, 0.9),
+[92mINFO [0m:      	                     (19, 0.9),
+[92mINFO [0m:      	                     (20, 0.8),
+[92mINFO [0m:      	                     (21, 0.9),
+[92mINFO [0m:      	                     (22, 0.9),
+[92mINFO [0m:      	                     (23, 0.9),
+[92mINFO [0m:      	                     (24, 0.9)],
+[92mINFO [0m:      	 'recall_at_10': [(0, 0.0),
+[92mINFO [0m:      	                  (1, 0.0),
+[92mINFO [0m:      	                  (2, 0.25),
+[92mINFO [0m:      	                  (3, 1.0),
+[92mINFO [0m:      	                  (4, 1.0),
+[92mINFO [0m:      	                  (5, 1.0),
+[92mINFO [0m:      	                  (6, 1.0),
+[92mINFO [0m:      	                  (7, 1.0),
+[92mINFO [0m:      	                  (8, 1.0),
+[92mINFO [0m:      	                  (9, 1.0),
+[92mINFO [0m:      	                  (10, 1.0),
+[92mINFO [0m:      	                  (11, 1.0),
+[92mINFO [0m:      	                  (12, 1.0),
+[92mINFO [0m:      	                  (13, 1.0),
+[92mINFO [0m:      	                  (14, 1.0),
+[92mINFO [0m:      	                  (15, 1.0),
+[92mINFO [0m:      	                  (16, 1.0),
+[92mINFO [0m:      	                  (17, 1.0),
+[92mINFO [0m:      	                  (18, 1.0),
+[92mINFO [0m:      	                  (19, 1.0),
+[92mINFO [0m:      	                  (20, 1.0),
+[92mINFO [0m:      	                  (21, 1.0),
+[92mINFO [0m:      	                  (22, 1.0),
+[92mINFO [0m:      	                  (23, 1.0),
+[92mINFO [0m:      	                  (24, 1.0)],
+[92mINFO [0m:      	 'rmse': [(0, 1.1849874258041382),
+[92mINFO [0m:      	          (1, 1.119660496711731),
+[92mINFO [0m:      	          (2, 1.0827758312225342),
+[92mINFO [0m:      	          (3, 1.010313868522644),
+[92mINFO [0m:      	          (4, 0.9821882843971252),
+[92mINFO [0m:      	          (5, 0.9723374247550964),
+[92mINFO [0m:      	          (6, 0.9672298431396484),
+[92mINFO [0m:      	          (7, 0.9637538194656372),
+[92mINFO [0m:      	          (8, 0.9630436897277832),
+[92mINFO [0m:      	          (9, 0.9610621929168701),
+[92mINFO [0m:      	          (10, 0.962893009185791),
+[92mINFO [0m:      	          (11, 0.9612780213356018),
+[92mINFO [0m:      	          (12, 0.961688220500946),
+[92mINFO [0m:      	          (13, 0.9622092843055725),
+[92mINFO [0m:      	          (14, 0.9595155119895935),
+[92mINFO [0m:      	          (15, 0.9585070610046387),
+[92mINFO [0m:      	          (16, 0.9592289328575134),
+[92mINFO [0m:      	          (17, 0.9599764943122864),
+[92mINFO [0m:      	          (18, 0.9599722623825073),
+[92mINFO [0m:      	          (19, 0.9616585373878479),
+[92mINFO [0m:      	          (20, 0.9609596729278564),
+[92mINFO [0m:      	          (21, 0.9607399106025696),
+[92mINFO [0m:      	          (22, 0.960029125213623),
+[92mINFO [0m:      	          (23, 0.9587661027908325),
+[92mINFO [0m:      	          (24, 0.9587770700454712)]}
+[92mINFO [0m:      
+[2m[36m(pid=14320)[0m 2024-10-04 22:03:12.112518: I tensorflow/core/util/port.cc:113] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.[32m [repeated 15x across cluster][0m

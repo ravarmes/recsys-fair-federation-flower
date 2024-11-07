@@ -5,17 +5,17 @@ import os
 
 
 # FedAvg Loss ---------------------------------------------------------------------------------
-os.system("python FedAvg-Loss-64-8.py 2> FedAvg-Loss-64-8-10.txt")
-os.system("python FedAvg-Loss-64-8.py 2> FedAvg-Loss-64-8-11.txt")
-os.system("python FedAvg-Loss-64-8.py 2> FedAvg-Loss-64-8-12.txt")
-os.system("python FedAvg-Loss-64-8.py 2> FedAvg-Loss-64-8-13.txt")
-os.system("python FedAvg-Loss-64-8.py 2> FedAvg-Loss-64-8-14.txt")
-os.system("python FedAvg-Loss-64-8.py 2> FedAvg-Loss-64-8-15.txt")
-os.system("python FedAvg-Loss-64-8.py 2> FedAvg-Loss-64-8-16.txt")
-os.system("python FedAvg-Loss-64-8.py 2> FedAvg-Loss-64-8-17.txt")
-os.system("python FedAvg-Loss-64-8.py 2> FedAvg-Loss-64-8-18.txt")
-os.system("python FedAvg-Loss-64-8.py 2> FedAvg-Loss-64-8-19.txt")
-os.system("python FedAvg-Loss-64-8.py 2> FedAvg-Loss-64-8-20.txt")
+# os.system("python FedAvg-Loss-64-8.py 2> FedAvg-Loss-64-8-10.txt")
+# os.system("python FedAvg-Loss-64-8.py 2> FedAvg-Loss-64-8-11.txt")
+# os.system("python FedAvg-Loss-64-8.py 2> FedAvg-Loss-64-8-12.txt")
+# os.system("python FedAvg-Loss-64-8.py 2> FedAvg-Loss-64-8-13.txt")
+# os.system("python FedAvg-Loss-64-8.py 2> FedAvg-Loss-64-8-14.txt")
+# os.system("python FedAvg-Loss-64-8.py 2> FedAvg-Loss-64-8-15.txt")
+# os.system("python FedAvg-Loss-64-8.py 2> FedAvg-Loss-64-8-16.txt")
+# os.system("python FedAvg-Loss-64-8.py 2> FedAvg-Loss-64-8-17.txt")
+# os.system("python FedAvg-Loss-64-8.py 2> FedAvg-Loss-64-8-18.txt")
+# os.system("python FedAvg-Loss-64-8.py 2> FedAvg-Loss-64-8-19.txt")
+# os.system("python FedAvg-Loss-64-8.py 2> FedAvg-Loss-64-8-20.txt")
 
 
 # FedFair ACTIVITY -------------------------------------------------------------------------
@@ -32,16 +32,16 @@ os.system("python FedAvg-Loss-64-8.py 2> FedAvg-Loss-64-8-20.txt")
 
 
 # FedFair AGE ------------------------------------------------------------------------------
-# os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-11.txt")
-# os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-12.txt")
-# os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-13.txt")
-# os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-14.txt")
-# os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-15.txt")
-# os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-16.txt")
-# os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-17.txt")
-# os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-18.txt")
-# os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-19.txt")
-# os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-20.txt")
+os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-11.txt")
+os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-12.txt")
+os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-13.txt")
+os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-14.txt")
+os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-15.txt")
+os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-16.txt")
+os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-17.txt")
+os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-18.txt")
+os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-19.txt")
+os.system("python FedFair-Loss-Age-64-8.py 2> FedFair-Loss-Age-64-8-20.txt")
 
 
 # FedFair GENDER ---------------------------------------------------------------------------

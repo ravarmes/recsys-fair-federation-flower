@@ -1,11 +1,6 @@
 import os
 
 # FedAvg Example ------------------------------------------------------------------------------
-os.system("python FedAvg-Example-64-8.py 2> FedAvg-Example-64-8-11.txt")
-os.system("python FedAvg-Example-64-8.py 2> FedAvg-Example-64-8-12.txt")
-os.system("python FedAvg-Example-64-8.py 2> FedAvg-Example-64-8-13.txt")
-os.system("python FedAvg-Example-64-8.py 2> FedAvg-Example-64-8-14.txt")
-os.system("python FedAvg-Example-64-8.py 2> FedAvg-Example-64-8-15.txt")
 os.system("python FedAvg-Example-64-8.py 2> FedAvg-Example-64-8-16.txt")
 os.system("python FedAvg-Example-64-8.py 2> FedAvg-Example-64-8-17.txt")
 os.system("python FedAvg-Example-64-8.py 2> FedAvg-Example-64-8-18.txt")

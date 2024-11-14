@@ -26,16 +26,16 @@ fig, ((ax1, ax2, ax3), (ax4, ax5, ax6)) = plt.subplots(2, 3, figsize=(12, 9))
 ax1.plot(rounds, data_rgrp_activity_FedAvgExample_means, label=r"FedAvg($n$)", linestyle='-')
 ax1.plot(rounds, data_rgrp_activity_FedAvgLoss_means, label=r"FedAvg($\ell$)", linestyle='-')
 ax1.plot(rounds, data_rgrp_activity_FedFairLoss_means, label=r"FedFair($\ell$)", linestyle='-')
-ax1.plot(rounds, data_rgrp_activity_FedDEEVLoss_means, label=r"FedDEEV($\ell$)", linestyle='-')
+# ax1.plot(rounds, data_rgrp_activity_FedDEEVLoss_means, label=r"FedDEEV($\ell$)", linestyle='-')
 
 ax1.fill_between(rounds, data_rgrp_activity_FedAvgExample_means - data_rgrp_activity_FedAvgExample_confidence_interval, data_rgrp_activity_FedAvgExample_means + data_rgrp_activity_FedAvgExample_confidence_interval, color='b', alpha=0.2)
 ax1.fill_between(rounds, data_rgrp_activity_FedAvgLoss_means - data_rgrp_activity_FedAvgLoss_confidence_interval, data_rgrp_activity_FedAvgLoss_means + data_rgrp_activity_FedAvgLoss_confidence_interval, color='orange', alpha=0.2)
 ax1.fill_between(rounds, data_rgrp_activity_FedFairLoss_means - data_rgrp_activity_FedFairLoss_confidence_interval, data_rgrp_activity_FedFairLoss_means + data_rgrp_activity_FedFairLoss_confidence_interval, color='g', alpha=0.2)
-ax1.fill_between(rounds, data_rgrp_activity_FedDEEVLoss_means - data_rgrp_activity_FedDEEVLoss_confidence_interval, data_rgrp_activity_FedDEEVLoss_means + data_rgrp_activity_FedDEEVLoss_confidence_interval, color='r', alpha=0.2)
+# ax1.fill_between(rounds, data_rgrp_activity_FedDEEVLoss_means - data_rgrp_activity_FedDEEVLoss_confidence_interval, data_rgrp_activity_FedDEEVLoss_means + data_rgrp_activity_FedDEEVLoss_confidence_interval, color='r', alpha=0.2)
 
 ax1.set_ylabel(r"$R_{grp}$", fontsize=14)
 ax1.set_title(r"Atividade")
-ax1.legend(loc='lower center')
+ax1.legend(loc='lower right')
 
 # Subplot 2
 ax2.plot(rounds, data_rgrp_age_FedAvgExample_means, label=r"FedAvg($n$)", linestyle='-')
@@ -50,7 +50,7 @@ ax2.fill_between(rounds, data_rgrp_age_FedFairLoss_means - data_rgrp_age_FedFair
 
 #ax2.set_ylabel(r"$R_{grp}$", fontsize=14)
 ax2.set_title(r"Idade")
-ax2.legend(loc='lower center')
+ax2.legend(loc='lower right')
 
 
 # Subplot 2
@@ -65,7 +65,7 @@ ax3.fill_between(rounds, data_rgrp_gender_FedFairLoss_means - data_rgrp_gender_F
 # ax3.fill_between(rounds, data_rgrp_gender_FedDEEVLoss_means - data_rgrp_gender_FedDEEVLoss_confidence_interval, data_rgrp_gender_FedDEEVLoss_means + data_rgrp_gender_FedDEEVLoss_confidence_interval, color='r', alpha=0.2)
 
 ax3.set_title(r"Gênero")
-ax3.legend(loc='lower center')
+ax3.legend(loc='lower right')
 
 
 # # Subplot 4

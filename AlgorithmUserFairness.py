@@ -21,21 +21,6 @@ class Polarization():
     def evaluate(self, X_est):
         return X_est.var(axis=0,ddof=0).mean()
 
-    # def evaluate(self, X_est):
-    #     # Converter o DataFrame para um tensor PyTorch, garantindo que todos os dados sejam do tipo float
-    #     X_tensor = torch.tensor(X_est.astype(float).values, dtype=torch.float32)
-        
-    #     # Filtrar os valores diferentes de NaN e zero
-    #     filtered_values = X_tensor[~torch.isnan(X_tensor) & (X_tensor != 0)]
-        
-    #     # Verificar se existem valores filtrados
-    #     if filtered_values.numel() == 0:
-    #         return float('nan')  # Retorna NaN se não houver valores filtrados
-        
-    #     # Calcular a polarização
-    #     return torch.var(filtered_values).item()  # Calcular a variância e retornar o valor como um float
-
-
     def gradient(self, X_est):
         """
         Returns the gradient of the divergence utility defined on the
@@ -174,12 +159,6 @@ class RMSE():
         self.omega = omega
         self.X = X.mask(~omega)        
         
-    # def evaluate(self, X_est):
-    #     X_not_na = self.X.values[~np.isnan(self.X.values)]
-    #     X_est_not_na = X_est.values[~np.isnan(self.X.values)]
-    #     return np.sqrt(mean_squared_error(X_not_na, X_est_not_na))
-    
-    
     def evaluate(self, X_est):
         X_not_na = self.X.values[~np.isnan(self.X.values.astype(float))]
         X_est_not_na = X_est.values[~np.isnan(self.X.values.astype(float))]

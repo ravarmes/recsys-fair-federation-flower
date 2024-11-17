@@ -5,7 +5,7 @@ import numpy as np
 # FedAvg(n)
 # --------------------------------------------------------------------------------------------
 
-data_Losses_RgrpActivity_FedAvg = {
+data_losses_activity_FedAvgExample = {
     "Round": list(range(0, 25)),
     "Ativos": [
         1.479313, 1.273700, 1.168308, 0.985945, 0.922177, 0.896140, 
@@ -23,7 +23,8 @@ data_Losses_RgrpActivity_FedAvg = {
     ]
 }
 
-data_Losses_RgrpAge_FedAvg = {
+
+data_losses_age_FedAvgExample = {
     "Round": list(range(0, 25)),
     "00-17": [
         1.468893, 1.316791, 1.211457, 1.045997, 0.988080, 0.962615, 
@@ -76,7 +77,7 @@ data_Losses_RgrpAge_FedAvg = {
     ]
 }
 
-data_Losses_RgrpGender_FedAvg = {
+data_losses_gender_FedAvgExample = {
     "Round": list(range(0, 25)),
     "M": [
         1.396886, 1.235448, 1.144062, 0.991679, 0.942558, 0.922970, 
@@ -98,7 +99,7 @@ data_Losses_RgrpGender_FedAvg = {
 # FedAvg(l)
 # --------------------------------------------------------------------------------------------
 
-data_Losses_RgrpActivity_FedCustom_LossIndv_1 = {
+data_losses_activity_FedAvgLoss = {
     "Round": list(range(25)),
     "Ativos": [
         1.479313, 1.303439, 1.213300, 1.016523, 0.940893, 0.918351,
@@ -116,7 +117,7 @@ data_Losses_RgrpActivity_FedCustom_LossIndv_1 = {
     ]
 }
 
-data_Losses_RgrpAge_FedCustom_LossIndv_1 = {
+data_losses_age_FedAvgLoss = {
     "Round": list(range(25)),
     "00-17": [
         1.468893, 1.336449, 1.242962, 1.056070, 0.991245, 0.965411,
@@ -169,7 +170,7 @@ data_Losses_RgrpAge_FedCustom_LossIndv_1 = {
     ]
 }
 
-data_Losses_RgrpGender_FedCustom_LossIndv_1 = {
+data_losses_gender_FedAvgLoss = {
     "Round": list(range(25)),
     "M": [
         1.396886, 1.256705, 1.176521, 1.006140, 0.946894, 0.928465,
@@ -190,7 +191,7 @@ data_Losses_RgrpGender_FedCustom_LossIndv_1 = {
 # ----------------------------------------------------------
 # FedFair(l)
 # ----------------------------------------------------------
-data_Losses_RgrpActivity_FedCustom_LossGroup_Activity_7_lambda02 = {
+data_losses_activity_FedFairLoss = {
     "Round": list(range(0, 25)),
     "Ativos": [
         1.479313, 1.303436, 1.213227, 1.016362, 0.940068, 0.918444,
@@ -208,7 +209,7 @@ data_Losses_RgrpActivity_FedCustom_LossGroup_Activity_7_lambda02 = {
     ]
 }
 
-data_Losses_RgrpAge_FedCustom_LossGroup_Age_7_lambda02 = {
+data_losses_age_FedFairLoss = {
     "Round": list(range(0, 25)),
     "00-17": [
         1.468893, 1.336215, 1.245376, 1.060750, 0.992381, 0.965537,
@@ -261,7 +262,7 @@ data_Losses_RgrpAge_FedCustom_LossGroup_Age_7_lambda02 = {
     ]
 }
 
-data_Losses_RgrpGender_FedCustom_LossGroup_Gender_7_lambda02 = {
+data_losses_gender_FedFairLoss = {
     "Round": list(range(25)),
     "M": [
         1.396886, 1.256693, 1.176629, 1.007879, 0.947175, 0.927720,
@@ -313,8 +314,8 @@ bar_width_age = 0.4
 
 # Subplot 1 - Atividade
 bars1 = ax1.bar(np.arange(2), 
-                [round_mean(data_Losses_RgrpActivity_FedAvg["Ativos"], round_indices), 
-                 round_mean(data_Losses_RgrpActivity_FedAvg["Inativos"], round_indices)],
+                [round_mean(data_losses_activity_FedAvgExample["Ativos"], round_indices), 
+                 round_mean(data_losses_activity_FedAvgExample["Inativos"], round_indices)],
                 width=bar_width, color=['blue', 'orange'])  # Especifica cores diferentes
 ax1.set_xticks(np.arange(2))
 ax1.set_xticklabels(["Ativos", "Inativos"])
@@ -327,7 +328,7 @@ ax1.set_ylim(0, max([bar.get_height() for bar in bars1]) * 1.2)  # Ajusta a esca
 bars2 = []
 for idx, label in enumerate(age_labels):
     bars2.extend(ax2.bar(idx, 
-                         round_mean(data_Losses_RgrpAge_FedAvg[label], round_indices), 
+                         round_mean(data_losses_age_FedAvgExample[label], round_indices), 
                          width=bar_width_age, label=label))
 ax2.set_xticks(np.arange(len(age_labels)))
 ax2.set_xticklabels(age_labels)
@@ -337,8 +338,8 @@ ax2.set_ylim(0, max([bar.get_height() for bar in bars2]) * 1.2)  # Ajusta a esca
 
 # Subplot 3 - Gênero
 bars3 = ax3.bar(np.arange(2), 
-                [round_mean(data_Losses_RgrpGender_FedAvg["M"], round_indices), 
-                 round_mean(data_Losses_RgrpGender_FedAvg["F"], round_indices)],
+                [round_mean(data_losses_gender_FedAvgExample["M"], round_indices), 
+                 round_mean(data_losses_gender_FedAvgExample["F"], round_indices)],
                 width=bar_width, color=['blue', 'orange'])  # Especifica cores diferentes
 ax3.set_xticks(np.arange(2))
 ax3.set_xticklabels(["M", "F"])
@@ -348,8 +349,8 @@ ax3.set_ylim(0, max([bar.get_height() for bar in bars3]) * 1.2)  # Ajusta a esca
 
 # Subplot 4 - Atividade
 bars4 = ax4.bar(np.arange(2), 
-                [round_mean(data_Losses_RgrpActivity_FedCustom_LossIndv_1["Ativos"], round_indices), 
-                 round_mean(data_Losses_RgrpActivity_FedCustom_LossIndv_1["Inativos"], round_indices)],
+                [round_mean(data_losses_activity_FedAvgLoss["Ativos"], round_indices), 
+                 round_mean(data_losses_activity_FedAvgLoss["Inativos"], round_indices)],
                 width=bar_width, color=['blue', 'orange'])  # Especifica cores diferentes
 ax4.set_xticks(np.arange(2))
 ax4.set_xticklabels(["Ativos", "Inativos"])
@@ -361,7 +362,7 @@ ax4.set_ylim(0, max([bar.get_height() for bar in bars4]) * 1.2)  # Ajusta a esca
 bars5 = []
 for idx, label in enumerate(age_labels):
     bars5.extend(ax5.bar(idx, 
-                         round_mean(data_Losses_RgrpAge_FedCustom_LossIndv_1[label], round_indices), 
+                         round_mean(data_losses_age_FedAvgLoss[label], round_indices), 
                          width=bar_width_age, label=label))
 ax5.set_xticks(np.arange(len(age_labels)))
 ax5.set_xticklabels(age_labels)
@@ -370,8 +371,8 @@ ax5.set_ylim(0, max([bar.get_height() for bar in bars5]) * 1.2)  # Ajusta a esca
 
 # Subplot 6 - Gênero
 bars6 = ax6.bar(np.arange(2), 
-                [round_mean(data_Losses_RgrpGender_FedCustom_LossIndv_1["M"], round_indices), 
-                 round_mean(data_Losses_RgrpGender_FedCustom_LossIndv_1["F"], round_indices)],
+                [round_mean(data_losses_gender_FedAvgLoss["M"], round_indices), 
+                 round_mean(data_losses_gender_FedAvgLoss["F"], round_indices)],
                 width=bar_width, color=['blue', 'orange'])  # Especifica cores diferentes
 ax6.set_xticks(np.arange(2))
 ax6.set_xticklabels(["M", "F"])
@@ -380,8 +381,8 @@ ax6.set_ylim(0, max([bar.get_height() for bar in bars6]) * 1.2)  # Ajusta a esca
 
 # Subplot 7 - Atividade
 bars7 = ax7.bar(np.arange(2), 
-                [round_mean(data_Losses_RgrpActivity_FedCustom_LossGroup_Activity_7_lambda02["Ativos"], round_indices), 
-                 round_mean(data_Losses_RgrpActivity_FedCustom_LossGroup_Activity_7_lambda02["Inativos"], round_indices)],
+                [round_mean(data_losses_activity_FedFairLoss["Ativos"], round_indices), 
+                 round_mean(data_losses_activity_FedFairLoss["Inativos"], round_indices)],
                 width=bar_width, color=['blue', 'orange'])  # Especifica cores diferentes
 ax7.set_xticks(np.arange(2))
 ax7.set_xticklabels(["Ativos", "Inativos"])
@@ -393,7 +394,7 @@ ax7.set_ylim(0, max([bar.get_height() for bar in bars7]) * 1.2)  # Ajusta a esca
 bars8 = []
 for idx, label in enumerate(age_labels):
     bars8.extend(ax8.bar(idx, 
-                         round_mean(data_Losses_RgrpAge_FedCustom_LossGroup_Age_7_lambda02[label], round_indices), 
+                         round_mean(data_losses_age_FedFairLoss[label], round_indices), 
                          width=bar_width_age, label=label))
 ax8.set_xticks(np.arange(len(age_labels)))
 ax8.set_xticklabels(age_labels)
@@ -403,8 +404,8 @@ ax8.set_ylim(0, 1.416)
 
 # Subplot 9 - Gênero
 bars9 = ax9.bar(np.arange(2), 
-                [round_mean(data_Losses_RgrpGender_FedCustom_LossGroup_Gender_7_lambda02["M"], round_indices), 
-                 round_mean(data_Losses_RgrpGender_FedCustom_LossGroup_Gender_7_lambda02["F"], round_indices)],
+                [round_mean(data_losses_gender_FedFairLoss["M"], round_indices), 
+                 round_mean(data_losses_gender_FedFairLoss["F"], round_indices)],
                 width=bar_width, color=['blue', 'orange'])  # Especifica cores diferentes
 ax9.set_xticks(np.arange(2))
 ax9.set_xticklabels(["M", "F"])

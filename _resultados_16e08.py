@@ -2218,8 +2218,3 @@ data_rgrp_gender_FedDEEVLoss_means = np.mean(data_rgrp_gender_FedDEEVLoss_array,
 data_rgrp_gender_FedDEEVLoss_std_devs = np.std(data_rgrp_gender_FedDEEVLoss_array, axis=0)
 data_rgrp_gender_FedDEEVLoss_confidence_interval = 1.96 * data_rgrp_gender_FedDEEVLoss_std_devs / np.sqrt(len(data_rgrp_gender_FedDEEVLoss_sets))
 
-
-
-
-
-

@@ -70,6 +70,6 @@ for i in range(len(algorithms)):
 # Adicionar barra de cores
 plt.colorbar(heatmap, label="Redução (%)")
 
-plt.title("Redução Percentual de $R_{grp}$ Comparando com FedFair($\ell$) - 10 Últimos Rounds")
+plt.title("Redução percentual de $R_{grp}$ comparando com FedFair($\ell$) - 10 últimos rounds")
 plt.tight_layout()
 plt.show()

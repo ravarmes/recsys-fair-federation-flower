@@ -212,7 +212,7 @@ def load_datasets(num_clients: int, filename: str, seed: int = 42):
 
 avaliacoes_df, trainloaders, valloaders, testloader = load_datasets(NUM_CLIENTS, filename="X.xlsx")
 # verificar_trainloaders(trainloaders)
-# verificar_datasets_file(trainloaders, valloaders, testloader)
+verificar_datasets_file(trainloaders, valloaders, testloader)
 
 
 class Net(nn.Module):
@@ -421,9 +421,13 @@ class FedCustom(fl.server.strategy.Strategy):
         self.min_fit_clients = min_fit_clients
         self.min_evaluate_clients = min_evaluate_clients
         self.min_available_clients = min_available_clients
-        self.client_performance_history = {cid: [] for cid in range(NUM_CLIENTS)}
-        self.global_variance_history = []
-        self.weights_aggregated = None
+        self.loss_avg_per_group = {}
+        self.all_losses = []
+        self.all_weights = []
+        self.global_groups_variance = 1
+
+    def __repr__(self) -> str:
+        return "FedCustom"
 
     def initialize_parameters(self, client_manager: ClientManager) -> Optional[Parameters]:
         net = Net(300, 1000)
@@ -434,28 +438,50 @@ class FedCustom(fl.server.strategy.Strategy):
         """Calcula a taxa de aprendizado adaptativa."""
         return initial_lr / (1 + decay_factor * round_num)
 
-    def calculate_improvement_ratio(self, client_index, current_loss):
-        previous_losses = self.client_performance_history[client_index]
-        if previous_losses:
-            previous_loss = previous_losses[-1]
-            improvement_ratio = (previous_loss - current_loss) / previous_loss if previous_loss > 0 else 0
-            return improvement_ratio
-        return 0
 
-    def adjust_weights_based_on_improvement(self, results):
-        weighted_weights = []
-        total_loss = sum(fit_res.metrics.get('loss', 0) for _, fit_res in results)
-        for client_index, (parameters, current_loss) in enumerate(results):
-            improvement_ratio = self.calculate_improvement_ratio(client_index, current_loss)
-            weight_adjustment = 1 + (0.5 * improvement_ratio) if total_loss > 0 else 1.0  # Ajuste dinâmico
-            adjusted_weights = [layer * weight_adjustment for layer in parameters]
-            weighted_weights.append(adjusted_weights)
-        return weighted_weights
+    # Função de Regulação com Normalização das Perdas
+    # Clientes do grupo 1 tem sempre peso 1
+    # Clientes do grupo 2 tem sempre peso 2
+    def fairness_regularization(self, server_round, client_index, loss, group_mean_loss, global_groups_variance):
+        
+        fairness_penalty = (group_mean_loss) * (global_groups_variance ** 0.5)
+        if client_index <= 14:
+            fairness_penalty = 1
+        else:
+            fairness_penalty = 2
 
-    def aggregate_fit(self, server_round: int, results: List[Tuple[ClientProxy, FitRes]], 
-                      failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]]) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
-        G_ACTIVITY = {1: list(range(0, 15)), 2: list(range(15, 300))}
+        with open("FedFair-Loss-Activity-32-16-PesoFixoGrupo.log", "a") as log_file:
+            log_file.write("\n\nfairness_regularization -------------------------------\n")
+            log_file.write(f"server_round: {server_round}\n")
+            log_file.write(f"client_index: {client_index}\n")
+            log_file.write(f"loss: {loss}\n")
+            log_file.write(f"global_groups_variance: {global_groups_variance}\n")
+            log_file.write(f"global_groups_variance ** 0.5: {global_groups_variance ** 0.5}\n")
+            log_file.write(f"group_mean_loss: {group_mean_loss}\n")
+            log_file.write(f"fairness_penalty: {fairness_penalty}\n")
+            log_file.write(f"loss + fairness_penalty: {loss + fairness_penalty}\n")
+
+        return fairness_penalty
+
+
+    def configure_fit(self, server_round: int, parameters: Parameters, client_manager: ClientManager) -> List[Tuple[ClientProxy, FitIns]]:
+        """Configura o treinamento de clientes."""
+        sample_size, min_num_clients = self.num_fit_clients(client_manager.num_available())
+        clients = client_manager.sample(num_clients=sample_size, min_num_clients=min_num_clients)
+        
+        config = {
+            "server_round": server_round,
+            "local_epochs": 20,
+            "learning_rate": self.adaptive_learning_rate(0.01, 0.01, server_round),
+            "lotes_por_rodada": server_round,
+        }
+
+        return [(client, FitIns(parameters, config)) for client in clients]
+
+
+    def aggregate_fit(self, server_round: int, results: List[Tuple[ClientProxy, FitRes]], failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]]) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
         """Agrega os parâmetros dos modelos treinados pelos clientes."""
+        G_ACTIVITY = {1: list(range(0, 15)), 2: list(range(15, 300))}
         total_loss = sum(fit_res.metrics.get('loss', 0) for _, fit_res in results)
 
         group_losses = {}
@@ -466,44 +492,70 @@ class FedCustom(fl.server.strategy.Strategy):
             group_losses[group] = group_loss
             group_counts[group] = group_count
 
-        loss_avg_per_group = {group: (group_losses[group] / group_counts[group] if group_counts[group] != 0 else 0) for group in G_ACTIVITY}
-        print(f"Perda Média por Grupo: {loss_avg_per_group}")
+        self.loss_avg_per_group = {group: (group_losses[group] / group_counts[group] if group_counts[group] != 0 else 0) for group in G_ACTIVITY}
+        print(f"Perda Média por Grupo: {self.loss_avg_per_group}")
 
-        global_groups_variance = np.var(list(loss_avg_per_group.values()))
+        total_examples = sum(fit_res.num_examples for _, fit_res in results)
+        print(f"Número total de exemplos agregados: {total_examples}")
+
+        global_groups_variance = np.var(list(self.loss_avg_per_group.values()))
         print(f"global_groups_variance: {global_groups_variance}")
 
         for client_index, (client, fit_res) in enumerate(results):
             local_loss = fit_res.metrics.get('loss', 0)
+
+            # Identifica o grupo do cliente atual
             group_id = next(group for group, client_indexes in G_ACTIVITY.items() if client_index in client_indexes)
-            group_mean_loss = loss_avg_per_group[group_id]
-            fit_res.metrics['loss'] = local_loss  # Atualizando a perda após ajustá-la com fairness
+            group_mean_loss = self.loss_avg_per_group[group_id]
 
-            # Armazenar o desempenho do cliente
-            self.client_performance_history[client_index].append(local_loss)
+            # Usar group_mean_loss na chamada para fairness_regularization
+            fairness_loss = self.fairness_regularization(server_round, client_index, local_loss, group_mean_loss, global_groups_variance)
+            fit_res.metrics['loss'] = fairness_loss
 
-        # Ajustar pesos com base na melhoria
-        weighted_weights = self.adjust_weights_based_on_improvement(results)
+        weights_results = [
+            (parameters_to_ndarrays(fit_res.parameters), fit_res.metrics.get('loss', 0)) for _, fit_res in results
+        ]
 
         def aggregate(results: List[Tuple[NDArrays, float]]) -> NDArrays:
-            """Compute weighted average."""
+            # Calcula a perda total durante do treinamento
+            loss_total = sum(loss for (_, loss) in results)
+
+            # Crie uma lista de pesos, cada um multiplicado pela perda
+            weighted_weights = [
+                [layer * loss for layer in weights] for weights, loss in results
+            ]
+
+            # Compute average weights of each layer
             weights_prime: NDArrays = [
-                reduce(np.add, layer_updates) / len(results)
+                reduce(np.add, layer_updates) / loss_total
                 for layer_updates in zip(*weighted_weights)
             ]
             return weights_prime
 
-        # Computa as médias ponderadas dos parâmetros
-        parameters_aggregated = ndarrays_to_parameters(aggregate(weighted_weights))
+        parameters_aggregated = ndarrays_to_parameters(aggregate(weights_results))
 
         metrics_aggregated = {}
         for client_index, (client, fit_res) in enumerate(results):
             loss = fit_res.metrics.get('loss', 0)
+            weight = loss / total_loss
             num_examples = fit_res.num_examples
-            # Peso baseado no número de exemplos, semelhante à agregação dos pesos do modelo
-            weight = num_examples / total_loss if total_loss > 0 else 0
             print(f"Cliente {client.cid}: Perda = {loss}, Peso = {weight}, Exemplos = {num_examples}")
-
+            self.all_losses.append(loss)
+            self.all_weights.append(weight)
+        
         return parameters_aggregated, metrics_aggregated
+
+
+    def configure_evaluate(self, server_round: int, parameters: Parameters, client_manager: ClientManager) -> List[Tuple[ClientProxy, EvaluateIns]]:
+        """Configura a avaliação dos clientes."""
+        if self.fraction_evaluate == 0.0:
+            return []
+        
+        config = {}
+        evaluate_ins = EvaluateIns(parameters, config)
+        sample_size, min_num_clients = self.num_evaluation_clients(client_manager.num_available())
+        clients = client_manager.sample(num_clients=sample_size, min_num_clients=min_num_clients)
+        return [(client, evaluate_ins) for client in clients]
 
     def aggregate_evaluate(self, server_round: int, results: List[Tuple[ClientProxy, EvaluateRes]], failures: List[Union[Tuple[ClientProxy, EvaluateRes], BaseException]]) -> Tuple[Optional[float], Dict[str, Scalar]]:
         """Agrega os resultados da avaliação dos clientes."""
@@ -536,48 +588,6 @@ class FedCustom(fl.server.strategy.Strategy):
         """Retorna o número de clientes que devem ser selecionados para avaliação."""
         num_clients = int(num_available_clients * self.fraction_evaluate)
         return max(num_clients, self.min_evaluate_clients), self.min_available_clients
-
-    def configure_fit(self, server_round: int, parameters: Parameters, client_manager: ClientManager) -> List[Tuple[ClientProxy, FitIns]]:
-        """Configura o treinamento de clientes."""
-        sample_size, min_num_clients = self.num_fit_clients(client_manager.num_available())
-        clients = client_manager.sample(num_clients=sample_size, min_num_clients=min_num_clients)
-        
-        config = {
-            "server_round": server_round,
-            "local_epochs": 20,
-            "learning_rate": self.adaptive_learning_rate(0.01, 0.01, server_round),
-            "lotes_por_rodada": server_round,
-        }
-
-        return [(client, FitIns(parameters, config)) for client in clients]
-    
-    def configure_evaluate(self, server_round: int, parameters: Parameters, client_manager: ClientManager) -> List[Tuple[ClientProxy, EvaluateIns]]:
-        """Configura a avaliação dos clientes."""
-        if self.fraction_evaluate == 0.0:
-            return []
-        
-        config = {
-            "server_round": server_round
-        }
-        evaluate_ins = EvaluateIns(parameters, config)
-        sample_size, min_num_clients = self.num_evaluation_clients(client_manager.num_available())
-        clients = client_manager.sample(num_clients=sample_size, min_num_clients=min_num_clients)
-        return [(client, evaluate_ins) for client in clients]
-
-    def evaluate(self, server_round: int, parameters: Parameters, client_manager: ClientManager) -> List[Tuple[ClientProxy, EvaluateIns]]:
-        """Configura a avaliação dos clientes."""
-        if self.fraction_evaluate == 0.0:
-            return []
-
-        config = {
-            "server_round": server_round
-        }
-
-        evaluate_ins = EvaluateIns(parameters, config)
-        sample_size, min_num_clients = self.num_evaluation_clients(client_manager.num_available())
-        clients = client_manager.sample(num_clients=sample_size, min_num_clients=min_num_clients)
-        
-        return [(client, evaluate_ins) for client in clients]
 
 
 # Especificando os recursos do cliente

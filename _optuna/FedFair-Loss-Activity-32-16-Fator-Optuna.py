@@ -425,7 +425,7 @@ class FedCustom(fl.server.strategy.Strategy):
     """Estratégia personalizada para agregação de modelos."""
     def __init__(self, fraction_fit: float = 1.0, fraction_evaluate: float = 1.0, 
                  min_fit_clients: int = NUM_CLIENTS, min_evaluate_clients: int = NUM_CLIENTS, 
-                 min_available_clients: int = NUM_CLIENTS, scale: int = 1) -> None:
+                 min_available_clients: int = NUM_CLIENTS, scale: float = 1.0) -> None:
         super().__init__()
         self.fraction_fit = fraction_fit
         self.fraction_evaluate = fraction_evaluate
@@ -636,7 +636,7 @@ import flwr as fl
 
 def objective(trial):
     # Sugestão de hiperparâmetros pelo Optuna
-    scale = trial.suggest_float("scale", 2, 100)
+    scale = trial.suggest_float("scale", 0.1, 1000)
 
     strategy = FedCustom(
         scale=scale,
@@ -664,10 +664,13 @@ def objective(trial):
 
 # Criar o estudo de otimização
 study = optuna.create_study(direction="minimize")
-study.optimize(objective, n_trials=5)  # Define o número de iterações (trials)
+study.optimize(objective, n_trials=200)  # Define o número de iterações (trials)
 
 # Imprimir os melhores parâmetros
 best_params = study.best_params
 print(f"Melhores parâmetros encontrados: {best_params}")
+
+# [I 2024-12-13 10:07:34,161] Trial 49 finished with value: 2.3210637448426336e-05 and parameters: {'scale': 9.314352064537502}. Best is trial 31 with value: 1.671624634195085e-08.
+
 
 

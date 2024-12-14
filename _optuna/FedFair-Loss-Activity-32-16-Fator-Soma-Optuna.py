@@ -40,7 +40,7 @@ DEVICE = torch.device("cpu")  # Try "cuda" to train on GPU
 print(f"Training on {DEVICE} using PyTorch {torch.__version__} and Flower {fl.__version__}")
 
 NUM_CLIENTS = 30
-NUM_ROUNDS = 3
+NUM_ROUNDS = 5
 
 RESULTS = []
 
@@ -602,7 +602,7 @@ class FedCustom(fl.server.strategy.Strategy):
         # Verificar se a configuração já existe na lista RESULTS
         config_exists = False
         for result in RESULTS:
-            if (result['scale'] == self.scale):
+            if (result['scale_group_mean'] == self.scale_group_mean and result['scale_groups_variance'] == self.scale_groups_variance):
                 
                 # Adicionar nova tupla (server_round, RgrpActivity) na lista RgrpActivity
                 result['RgrpActivity'].append((server_round, RgrpActivity))
@@ -612,7 +612,8 @@ class FedCustom(fl.server.strategy.Strategy):
         # Se a configuração não existir, criar um novo item na lista RESULTS
         if not config_exists:
             RESULTS.append({
-                'scale': self.scale,
+                'scale_group_mean': self.scale_group_mean,
+                'scale_groups_variance': self.scale_groups_variance,
                 'RgrpActivity': [(server_round, RgrpActivity)]
             })
 
@@ -674,5 +675,6 @@ study.optimize(objective, n_trials=200)  # Define o número de iterações (tria
 # Imprimir os melhores parâmetros
 best_params = study.best_params
 print(f"Melhores parâmetros encontrados: {best_params}")
+# Melhores parâmetros encontrados: {'scale_group_mean': 0.4067543216911531, 'scale_groups_variance': 27.351023067559417}
 
 

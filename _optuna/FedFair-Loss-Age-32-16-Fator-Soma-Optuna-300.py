@@ -670,14 +670,14 @@ def objective(trial):
 
 # Criar o estudo de otimização
 study = optuna.create_study(direction="minimize")
-study.optimize(objective, n_trials=50)  # Define o número de iterações (trials)
+study.optimize(objective, n_trials=20)  # Define o número de iterações (trials)
 
 # Imprimir os melhores parâmetros
 best_params = study.best_params
 print(f"Melhores parâmetros encontrados: {best_params}")
 
-# Best is trial 13 with value: 0.00045266118596591393.
-# Melhores parâmetros encontrados: {'scale_group_mean': 0.0036723935618621084, 'scale_groups_variance': 25.057091092299807}
+# Best is trial 0 with value: 0.00022865698699202485. Melhores parâmetros encontrados: {'scale_group_mean': 83.59987929737014, 'scale_groups_variance': 31.079087935287532}
+
 
 
 

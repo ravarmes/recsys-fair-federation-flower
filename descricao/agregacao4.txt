@@ -1,0 +1,26 @@
+Estou trabalhando em um contexto de sistema de recomendação federado.
+No meu experimento eu tenho 300 clientes e um total de 24 rounds.
+Os clientes estão separadas em grupos (por exemplo por nível de atividade: ativos e inativos).
+Meu objetivo principal é diminuir a injustiça de grupo (Rgrp), a qual é medida pela variância entre as perdas dos grupos.
+Na agregação estou utilizando a perda de cada cliente para definir o peso de contribuição na agregação do modelo global.
+Portanto, para clientes com maiores perdas, estou considerando maior peso. Para cliente com menores pesos, estou considerando pesos menores.
+A ideia geral é fazer com que cliente com perdas menores aprendam mais devagar e clientes com perdas maiores aprendam mais rápido.
+Todavia, lembrando que a ideia macro é reduzir a variância entre as perdas dos grupos.
+
+Atualmente estou utilizando a seguinte função para regulação de justiça:
+
+    def fairness_regularization(self, server_round, client_index, loss, group_mean_loss, global_groups_variance, scale_group_mean, scale_groups_variance):
+        fairness_penalty = (group_mean_loss * scale_group_mean) + ((global_groups_variance ** 0.5) * scale_groups_variance)
+        return loss + fairness_penalty
+
+group_mean_loss: é a perda do grupo no qual um determinado cliente está localizado;
+global_groups_variance: é uma medida da variância entre as perdas dos grupos de usuário;
+
+Portanto, fairness_penalty será maior para group_mean_loss e global_groups_variance.
+Se o cliente está em um grupo com group_mean_loss alto (por exemplo, o grupo dos usuários inativos), a penalidade aumenta para que este cliente contribua mais do que eu cliente em outro grupo com menores perdas (por exemplo, o grupo dos usuários ativos).
+Se o global_groups_variance for maior, a penalidade também é maior, significando que quando a injustiça de grupo está alta (global_groups_variance alto), então, deve-se intensificar a penalidade de regulação de justiça. Além disso, global_groups_variance está elevando a 0.5 para que group_mean_loss e global_groups_variance tenham a mesma ordem de grandeza e, consequentemente, peso de contribuições.
+
+Além disso, as variáveis scale_group_mean e scale_groups_variance definem o peso dada para cada umas das duas variáveis (group_mean_loss e global_groups_variance).
+
+Eu já testei no, utilizando Optuna, os melhores valores de scale_group_mean e scale_groups_variance para minimizar a injustiça de grupo. No entanto, não estou conseguindo melhorar os valores já conseguindo pela agregação simples com FedAvg baseado no erro individual dos clientes.
+Portanto, preciso de outras ideias para melhorar a função de regulação de justiça fairness_regularization.

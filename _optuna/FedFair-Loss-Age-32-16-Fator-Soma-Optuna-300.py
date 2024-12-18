@@ -676,7 +676,8 @@ study.optimize(objective, n_trials=20)  # Define o número de iterações (trial
 best_params = study.best_params
 print(f"Melhores parâmetros encontrados: {best_params}")
 
-# Best is trial 0 with value: 0.00022865698699202485. Melhores parâmetros encontrados: {'scale_group_mean': 83.59987929737014, 'scale_groups_variance': 31.079087935287532}
+# Best is trial 0 with value: 0.00022865698699202485. 
+# Melhores parâmetros encontrados: {'scale_group_mean': 83.59987929737014, 'scale_groups_variance': 31.079087935287532}
 
 
 

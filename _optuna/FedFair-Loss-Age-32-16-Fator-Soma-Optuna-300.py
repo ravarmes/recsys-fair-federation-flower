@@ -604,8 +604,8 @@ class FedCustom(fl.server.strategy.Strategy):
         for result in RESULTS:
             if (result['scale_group_mean'] == self.scale_group_mean and result['scale_groups_variance'] == self.scale_groups_variance):
                 
-                # Adicionar nova tupla (server_round, RgrpActivity) na lista RgrpActivity
-                result['RgrpActivity'].append((server_round, RgrpActivity))
+                # Adicionar nova tupla (server_round, RgrpAge) na lista RgrpAge
+                result['RgrpAge'].append((server_round, RgrpAge))
                 config_exists = True
                 break
 
@@ -614,7 +614,7 @@ class FedCustom(fl.server.strategy.Strategy):
             RESULTS.append({
                 'scale_group_mean': self.scale_group_mean,
                 'scale_groups_variance': self.scale_groups_variance,
-                'RgrpActivity': [(server_round, RgrpActivity)]
+                'RgrpAge': [(server_round, RgrpAge)]
             })
 
         return loss, metrics
@@ -659,25 +659,24 @@ def objective(trial):
 
     # Avaliar a métrica desejada (exemplo: perda no servidor)
     loss = None
-    RgrpActivity = None
+    RgrpAge = None
     if RESULTS:
         last_result = RESULTS[-1]
-        loss = last_result.get("RgrpActivity", -1)
-        RgrpActivity = next(x[1] for x in loss if x[0] == NUM_ROUNDS)
+        loss = last_result.get("RgrpAge", -1)
+        RgrpAge = next(x[1] for x in loss if x[0] == NUM_ROUNDS)
     
     # O Optuna irá tentar minimizar o valor de retorno
-    return RgrpActivity
+    return RgrpAge
 
 # Criar o estudo de otimização
 study = optuna.create_study(direction="minimize")
-study.optimize(objective, n_trials=80)  # Define o número de iterações (trials)
+study.optimize(objective, n_trials=50)  # Define o número de iterações (trials)
 
 # Imprimir os melhores parâmetros
 best_params = study.best_params
 print(f"Melhores parâmetros encontrados: {best_params}")
 
-# Best is trial 0 with value: 0.00022865698699202485. Melhores parâmetros encontrados: {'scale_group_mean': 83.59987929737014, 'scale_groups_variance': 31.079087935287532}
-# Best is trial 0 with value: 0.0002208318917741014. Melhores parâmetros encontrados: {'scale_group_mean': 8.561979783663109, 'scale_groups_variance': 0.39739129049621846}
+# Best is trial 11 with value: 0.00513528608530487. Melhores parâmetros encontrados: {'scale_group_mean': 0.2399425047770989, 'scale_groups_variance': 6.740492680179962}
 
 
 

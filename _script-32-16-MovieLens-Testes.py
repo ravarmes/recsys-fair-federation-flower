@@ -7,8 +7,9 @@ import os
 # os.system("python FedFair-Loss-Activity-32-16-Inverter.py 2> FedFair-Loss-Activity-32-16-Inverter-32-16-01.txt")
 # os.system("python FedFair-Loss-Activity-32-16-Inverter.py 2> FedFair-Loss-Activity-32-16-Inverter-32-16-02.txt")
 
-os.system("python FedFair-Loss-Activity-32-16-Soma.py 2> FedFair-Loss-Activity-32-16-Soma-01.txt")
-os.system("python FedFair-Loss-Activity-32-16-Soma.py 2> FedFair-Loss-Activity-32-16-Soma-02.txt")
+os.system("python FedFair-Loss-Activity-32-16-Fator-Soma-Round.py 2> FedFair-Loss-Activity-32-16-Fator-Soma-Round-01.txt")
+os.system("python FedFair-Loss-Activity-32-16-Fator-Soma-Round.py 2> FedFair-Loss-Activity-32-16-Fator-Soma-Round-02.txt")
+os.system("python FedFair-Loss-Activity-32-16-Fator-Soma-Round.py 2> FedFair-Loss-Activity-32-16-Fator-Soma-Round-03.txt")
 
 
 

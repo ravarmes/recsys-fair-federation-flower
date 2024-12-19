@@ -636,8 +636,8 @@ import flwr as fl
 
 def objective(trial):
     # Sugestão de hiperparâmetros pelo Optuna
-    scale_group_mean = trial.suggest_float("scale_group_mean", 0, 100)
-    scale_groups_variance = trial.suggest_float("scale_groups_variance", 0, 100)
+    scale_group_mean = trial.suggest_float("scale_group_mean", 0, 10)
+    scale_groups_variance = trial.suggest_float("scale_groups_variance", 0, 10)
 
     strategy = FedCustom(
         scale_group_mean=scale_group_mean,
@@ -666,15 +666,14 @@ def objective(trial):
 
 # Criar o estudo de otimização
 study = optuna.create_study(direction="minimize")
-study.optimize(objective, n_trials=20)  # Define o número de iterações (trials)
+study.optimize(objective, n_trials=40)  # Define o número de iterações (trials)
 
 # Imprimir os melhores parâmetros
 best_params = study.best_params
 print(f"Melhores parâmetros encontrados: {best_params}")
 
-# Best is trial 0 with value: 0.00024338382467577508. Melhores parâmetros encontrados: {'scale_group_mean': 20.248980959523667, 'scale_groups_variance': 38.42112431395835}
-
-
+# Best is trial 00 with value: 0.00024338382467577508. Melhores parâmetros encontrados: {'scale_group_mean': 20.248980959523667, 'scale_groups_variance': 38.42112431395835}
+# Best is trial 32 with value: 0.00020407403689521640. Melhores parâmetros encontrados: {'scale_group_mean': 0.016226499412696604, 'scale_groups_variance': 4.715585222554768}
 
 
 

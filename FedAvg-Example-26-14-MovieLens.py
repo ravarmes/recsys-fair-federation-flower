@@ -210,7 +210,7 @@ def load_datasets(num_clients: int, filename: str, seed: int = 42):
 
     return df, trainloaders, valloaders, testloader
 
-avaliacoes_df, trainloaders, valloaders, testloader = load_datasets(NUM_CLIENTS, filename="X.xlsx")
+avaliacoes_df, trainloaders, valloaders, testloader = load_datasets(NUM_CLIENTS, filename="X_MovieLens-1M.xlsx")
 # verificar_trainloaders(trainloaders)
 # verificar_datasets_file(trainloaders, valloaders, testloader)
 
